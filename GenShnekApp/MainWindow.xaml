@@ -1,0 +1,86 @@
+﻿<Window x:Class="GenShnekApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenShnekApp"
+        mc:Ignorable="d"
+  Title="Генератор Шнеков" Height="1080" Width="1920" 
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+    <Grid VerticalAlignment="Center">
+        <Rectangle Margin="222,-25,1161,-353" Stroke="Black"></Rectangle>
+        <TextBlock HorizontalAlignment="Left" Margin="422,3,0,-3">Введите длину трубы (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputTubeLength"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces"
+            Text="1000"
+            Height="30" Width="100" Margin="445,28,1375,-3"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="277,317,0,-317">Шаг винта (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputStep"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces1"
+            Text="100"
+            Height="30" Width="100" Margin="270,342,1550,-317" IsEnabled="False"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="280,217,0,-217">Введите S (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputHexSize"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces2"
+            Text="55"
+            Height="30" Width="100" Margin="270,242,1550,-217"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="278,107,0,-107">Введите D (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputShnekDiam"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces3"
+            Text="135"
+            Height="30" Width="100" Margin="270,132,1550,-107"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="628,108,0,-107">Введите d (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputHoleDiam"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces4"
+            Text="24"
+            Height="30" Width="100" Margin="620,132,1200,-107"/>
+        <TextBlock HorizontalAlignment="Left" Margin="630,217,0,-217">Введите l (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputHoleDistance"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces5"
+            Text="52"
+            Height="30" Width="100" Margin="620,242,1200,-217"/>
+        <TextBlock HorizontalAlignment="Left" Margin="613,317,0,-317">Толщина винта (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputShnekThick"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces6"
+            Text="2"
+            Height="30" Width="100" Margin="620,342,1200,-317" IsEnabled="False"></TextBox>
+        <Button
+            Height="30"
+            Width="100"
+            Content="Создать"
+            Click="CreationButton"
+            IsDefault="True"
+            Margin="909,439,911,-414" />
+        <Image Source="ShnekSketch.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
+        <Image Source="ShnekTable.png" Height="415" Margin="668,-20,-106,-340" Width="1358"/>
+    </Grid>
+</Window>
