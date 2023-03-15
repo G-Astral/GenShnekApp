@@ -159,8 +159,7 @@ namespace GenShnekApp
             double shnekDiam = shnekDiamConv;
             double hexSize = hexSizeConv;
             double holeDistance = holeDistanceConv;
-            double tubeDiam = hexSize * 0.75;
-            double hexHeight = hexSize * Math.Tan(30 * Math.PI / 180);
+            double tubeRad = hexSize * 0.75;
             double step = stepConv;
 
             //KompasObject kompas;
@@ -193,39 +192,25 @@ namespace GenShnekApp
                         offsetPlaneDefUP.direction = true;
                         offsetPlaneDefUP.offset = -60;
                         offsetPlaneDefUP.SetPlane(basePlaneZOY);
-                        basePlaneOffsetUP.Create();
-
-                        ksEntity basePlaneOffsetDOWN = (ksEntity)part.NewEntity((short)Obj3dType.o3d_planeOffset);
-                        PlaneOffsetDefinition offsetPlaneDefDOWN = basePlaneOffsetDOWN.GetDefinition();
-                        offsetPlaneDefDOWN.direction = true;
-                        offsetPlaneDefDOWN.offset = 90;
-                        offsetPlaneDefDOWN.SetPlane(basePlaneZOY);
-                        basePlaneOffsetDOWN.Create();
-
-                        ksEntity basePlaneOffsetFORWARD = (ksEntity)part.NewEntity((short)Obj3dType.o3d_planeOffset);
-                        PlaneOffsetDefinition offsetPlaneDefFORWARD = basePlaneOffsetFORWARD.GetDefinition();
-                        offsetPlaneDefFORWARD.direction = true;
-                        offsetPlaneDefFORWARD.offset = 40;
-                        offsetPlaneDefFORWARD.SetPlane(basePlaneXOY);
-                        basePlaneOffsetFORWARD.Create();*/
+                        basePlaneOffsetUP.Create();*/
 
 
 
             ///////////////////////////Создание трубы шнека/////////////////////////////
-            CylinderCreation(tubeDiam, tubeLength, basePlaneZOY, 0, 0, (part)part);
+            CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
 
             ///////////////////////////Создание шестигранника/////////////////////////////
-            HexCreation(hexSize, hexHeight, holeDistance, basePlaneZOY, (part)part);
+            HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
 
             ///////////////////////////Создание отверстия шестигранника/////////////////////////////
             HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
 
             ///////////////////////////Создание винта/////////////////////////////
-            SpyralCreation(tubeDiam, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ, (part)part);      
+            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ, (part)part);      
 
         }
 
-        private void CylinderCreation(double diam, double length, ksEntity plane, double x, double y, part part)
+        private void CylinderCreation(double rad, double length, ksEntity plane, double x, double y, part part)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch); // создание нового скетча
 
@@ -235,7 +220,7 @@ namespace GenShnekApp
             ksSketchE.Create();          // создадим эскиз
             ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
 
-            Sketch2D.ksCircle(x, y, diam, 1);
+            Sketch2D.ksCircle(x, y, rad, 1);
 
             ksSketchDef.EndEdit(); // заканчивает редактирование эскиза
 
@@ -284,7 +269,7 @@ namespace GenShnekApp
             }
         }
 
-        private void HexCreation(double size, double height, double length, ksEntity plane, part part)
+        private void HexCreation(double size, double length, ksEntity plane, part part)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -325,7 +310,7 @@ namespace GenShnekApp
             }
         }
 
-        private void SpyralCreation(double diam, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane, part part)
+        private void SpyralCreation(double rad, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane, part part)
         {
             //траектория
             ksEntity ksSketchE3 = part.NewEntity((short)Obj3dType.o3d_cylindricSpiral);
@@ -334,7 +319,7 @@ namespace GenShnekApp
 
             ksSketchDef3.SetPlane(plane);
 
-            ksSketchDef3.diam = diam;
+            ksSketchDef3.diam = rad*2;
             ksSketchDef3.buildMode = 0;
             ksSketchDef3.step = spyralStep;
             ksSketchDef3.turn = turn / spyralStep;
@@ -354,33 +339,28 @@ namespace GenShnekApp
             ksSketchE4.Create();
             ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
 
-            /*            ksRectangleParam rect2 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
-                        if (rect2 != null)
-                        {
-                            // Параметры прямоугольника
-                            rect2.ang = 0;
-                            rect2.x = -thick / 2;
-                            rect2.y = diam;
-                            rect2.width = sDiam - diam;
-                            rect2.height = thick;
-                            rect2.style = 1;
-                            Sketch2D4.ksRectangle(rect2);
-                        }*/
-
-            Sketch2D4.ksLineSeg(-thick / 2, diam, thick / 2, diam, 1);
-            Sketch2D4.ksLineSeg(thick / 2, diam, thick / 2, sDiam / 2, 1);
-            Sketch2D4.ksLineSeg(thick / 2, sDiam / 2, -thick / 2, sDiam / 2, 1);
-            Sketch2D4.ksLineSeg(-thick / 2, sDiam / 2, -thick / 2, diam, 1);
+            ksRectangleParam rect2 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+            if (rect2 != null)
+            {
+                // Параметры прямоугольника
+                rect2.ang = 0;
+                rect2.x = -thick;
+                rect2.y = rad;
+                rect2.width = thick;
+                rect2.height = sDiam / 2 - rad;
+                rect2.style = 1;
+                Sketch2D4.ksRectangle(rect2);
+            }
 
             ksSketchDef4.EndEdit();
 
             //выдавливание профиля по траектории
-            ksEntity traectoryExtr5 = part.NewEntity((short)Obj3dType.o3d_baseEvolution);
-            ksBaseEvolutionDefinition extrDef5 = traectoryExtr5.GetDefinition();
+            ksEntity trajectoryExtr5 = part.NewEntity((short)Obj3dType.o3d_baseEvolution);
+            ksBaseEvolutionDefinition extrDef5 = trajectoryExtr5.GetDefinition();
 
             extrDef5.PathPartArray().add(ksSketchE3);
             extrDef5.SetSketch(ksSketchE4);
-            traectoryExtr5.Create();
+            trajectoryExtr5.Create();
         }
     }
 }
