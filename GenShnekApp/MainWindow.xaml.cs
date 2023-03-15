@@ -57,6 +57,7 @@ namespace GenShnekApp
         int shnekDiamConv;
         int hexSizeConv;
         int stepConv;
+        KompasObject kompas;
 
         public MainWindow()
         {
@@ -162,7 +163,7 @@ namespace GenShnekApp
             double hexHeight = hexSize * Math.Tan(30 * Math.PI / 180);
             double step = stepConv;
 
-            KompasObject kompas;
+            //KompasObject kompas;
             try
             {
                 kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
@@ -293,12 +294,19 @@ namespace GenShnekApp
             ksSketchE.Create();
             ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
 
-            Sketch2D.ksLineSeg(height, 0, height / 2, -size / 2, 1);
-            Sketch2D.ksLineSeg(height / 2, -size / 2, -height / 2, -size / 2, 1);
-            Sketch2D.ksLineSeg(-height / 2, -size / 2, -height, 0, 1);
-            Sketch2D.ksLineSeg(-height, 0, -height / 2, size / 2, 1);
-            Sketch2D.ksLineSeg(-height / 2, size / 2, height / 2, size / 2, 1);
-            Sketch2D.ksLineSeg(height / 2, size / 2, height, 0, 1);
+            ksRegularPolygonParam hex = (ksRegularPolygonParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RegularPolygonParam);
+
+            if (hex != null)
+            {
+                hex.xc = 0;
+                hex.yc = 0;
+                hex.ang = 90;
+                hex.count = 6;
+                hex.describe = true;
+                hex.radius = size/2;
+                hex.style = 1;
+                Sketch2D.ksRegularPolygon(hex);
+            }
 
             ksSketchDef.EndEdit();
 
@@ -345,6 +353,19 @@ namespace GenShnekApp
             ksSketchE4.hidden = true;
             ksSketchE4.Create();
             ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
+
+            /*            ksRectangleParam rect2 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+                        if (rect2 != null)
+                        {
+                            // Параметры прямоугольника
+                            rect2.ang = 0;
+                            rect2.x = -thick / 2;
+                            rect2.y = diam;
+                            rect2.width = sDiam - diam;
+                            rect2.height = thick;
+                            rect2.style = 1;
+                            Sketch2D4.ksRectangle(rect2);
+                        }*/
 
             Sketch2D4.ksLineSeg(-thick / 2, diam, thick / 2, diam, 1);
             Sketch2D4.ksLineSeg(thick / 2, diam, thick / 2, sDiam / 2, 1);
