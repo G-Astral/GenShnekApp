@@ -169,10 +169,13 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ShnekSketch.png" />
+    <Resource Include="ShnekSketch1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ShnekTable.png" />
+    <Resource Include="ShnekTable1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ShnekSketch2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

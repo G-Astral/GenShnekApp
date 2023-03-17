@@ -25,31 +25,7 @@ namespace GenShnekApp
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        //TODO задать длину шнека по шагу винта
-        
-        //TODO добавить второе исполнение (используя switch)
-
-        //TODO проверить все тесты на дауна, удаление пробелов итд
-
-        //TODO ВСЕ ВЫПАДАЮЩИЕ СПИСКИ БЕЗ ПУСТОГО ЗНАЧЕНИЯ
-        //TODO добавить в окно выпадающий список для выбора госта
-        //TODO добавить выпадающий список для исполнения и свитч кейс
-        //TODO создать поля для ввода всех необходимых параметров
-        //TODO в зависимости от выбранного госта активны те или иные поля для ввода
-        //TODO создать выпадающий список по дефолтным значениям из таблицы
-        //TODO при изменении поля ввода в списке надпись "тип госта" меняется на "пользовательские настройки"
-        //TODO 
-        
-        //TODO создать вкладки, где первая вкладка - моделирование, а вторая вкладка - расчёты, а третья - графики
-        //TODO мб вторая и третья вкладки будут в одной вкладке
-
-        //TODO для дальнейшей перестройки проги в встроенную прогу:
-        //TODO      1) убрать функцию создания нового документа
-        //TODO      2) перед созданием модели написать проверку на созданую модель:
-        //TODO          2.1) если интерфейс компаса пустой - создать модель;
-        //TODO          2.2) если уже есть модель - удалить модель и построить новую
-        
+    {       
         int holeDiamConv;
         int holeDistanceConv;
         int tubeLengthConv;
@@ -57,11 +33,63 @@ namespace GenShnekApp
         int shnekDiamConv;
         int hexSizeConv;
         int stepConv;
+        
         KompasObject kompas;
+        
+        int typeCount;
 
         public MainWindow()
         {
             InitializeComponent();
+
+        }
+
+        private void GhostTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShnekType.Items.Clear();
+            switch (GhostType.SelectedIndex)
+            {
+                case 0:
+                    ShnekType.IsEnabled = true;
+                    typeCount = 2;
+                    //ImgSketch.Source = "ShnekSketch.png";
+                    //ImgTable.Source = "ShnekTable.png";
+                    break;
+                case 1:
+                    ShnekType.IsEnabled = false;
+                    break;
+                default:
+                    typeCount = 2;
+                    break;
+            }
+
+            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i+1}");
+            ShnekType.SelectedIndex = 0;
+        }
+
+        private void ShnekTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+            switch (ShnekType.SelectedIndex)
+            {
+                case 0:
+                    BitmapImage myBitmapImage1 = new BitmapImage();
+                    myBitmapImage1.BeginInit();
+                    myBitmapImage1.UriSource = new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png");
+                    myBitmapImage1.EndInit();
+                    ImgSketch.Source = myBitmapImage1;
+                    break;
+                case 1:
+                    BitmapImage myBitmapImage2 = new BitmapImage();
+                    myBitmapImage2.BeginInit();
+                    myBitmapImage2.UriSource = new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png");
+                    myBitmapImage2.EndInit();
+                    ImgSketch.Source = myBitmapImage2;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void TextBoxInput(object sender, TextCompositionEventArgs e)
@@ -362,5 +390,6 @@ namespace GenShnekApp
             extrDef5.SetSketch(ksSketchE4);
             trajectoryExtr5.Create();
         }
+
     }
 }

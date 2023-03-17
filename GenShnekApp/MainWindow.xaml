@@ -80,7 +80,25 @@
             Click="CreationButton"
             IsDefault="True"
             Margin="909,439,911,-414" />
-        <Image Source="ShnekSketch.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
-        <Image Source="ShnekTable.png" Height="415" Margin="668,-20,-106,-340" Width="1358"/>
+        <ComboBox 
+            x:Name="ShnekType" 
+            Margin="394,119,1332,-115"
+            SelectionChanged="ShnekTypeSelectionChanged"
+            >
+        </ComboBox>
+        <ComboBox 
+            x:Name="GhostType"
+            Margin="175,-132,1551,135" 
+            SelectionChanged="GhostTypeSelectionChanged"
+            >
+            <ComboBoxItem IsSelected="True">
+                <TextBlock>ГОСТ 24328-80</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>Произвольный шнек</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+        <Image x:Name="ImgSketch" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
+        <Image x:Name="ImgTable" Source="ShnekTable1.png" Height="415" Margin="668,-20,-106,-340" Width="1358"/>
     </Grid>
 </Window>
