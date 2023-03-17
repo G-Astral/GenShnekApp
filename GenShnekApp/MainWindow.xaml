@@ -87,6 +87,11 @@
             >
         </ComboBox>
         <ComboBox 
+            x:Name="ShnekStyle" 
+            Margin="398,232,1328,-227"
+            >
+        </ComboBox>
+        <ComboBox 
             x:Name="GhostType"
             Margin="175,-132,1551,135" 
             SelectionChanged="GhostTypeSelectionChanged"
@@ -98,7 +103,7 @@
                 <TextBlock>Произвольный шнек</TextBlock>
             </ComboBoxItem>
         </ComboBox>
-        <Image x:Name="ImgSketch" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
+        <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
         <Image x:Name="ImgTable" Source="ShnekTable1.png" Height="415" Margin="668,-20,-106,-340" Width="1358"/>
     </Grid>
 </Window>

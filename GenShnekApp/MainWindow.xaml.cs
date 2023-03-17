@@ -33,10 +33,19 @@ namespace GenShnekApp
         int shnekDiamConv;
         int hexSizeConv;
         int stepConv;
-        
+
+        double holeDiam;
+        double tubeLength;
+        double shnekThick;
+        double shnekDiam;
+        double hexSize;
+        double holeDistance;
+        double tubeRad;
+        double step;
         KompasObject kompas;
         
         int typeCount;
+        int styleCount;
 
         public MainWindow()
         {
@@ -52,8 +61,23 @@ namespace GenShnekApp
                 case 0:
                     ShnekType.IsEnabled = true;
                     typeCount = 2;
-                    //ImgSketch.Source = "ShnekSketch.png";
-                    //ImgTable.Source = "ShnekTable.png";
+
+                    holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
+                    tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
+                    shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
+                    shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
+                    hexSizeConv = Convert.ToInt32(inputHexSize.Text);
+                    holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
+                    stepConv = Convert.ToInt32(inputStep.Text);
+
+                    holeDiam = holeDiamConv;
+                    tubeLength = tubeLengthConv;
+                    shnekThick = shnekThickConv;
+                    shnekDiam = shnekDiamConv;
+                    hexSize = hexSizeConv;
+                    holeDistance = holeDistanceConv;
+                    tubeRad = hexSize * 0.75;
+                    step = stepConv;
                     break;
                 case 1:
                     ShnekType.IsEnabled = false;
@@ -69,27 +93,22 @@ namespace GenShnekApp
 
         private void ShnekTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
             switch (ShnekType.SelectedIndex)
             {
                 case 0:
-                    BitmapImage myBitmapImage1 = new BitmapImage();
-                    myBitmapImage1.BeginInit();
-                    myBitmapImage1.UriSource = new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png");
-                    myBitmapImage1.EndInit();
-                    ImgSketch.Source = myBitmapImage1;
+                    if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
+                    styleCount = 2;
                     break;
                 case 1:
-                    BitmapImage myBitmapImage2 = new BitmapImage();
-                    myBitmapImage2.BeginInit();
-                    myBitmapImage2.UriSource = new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png");
-                    myBitmapImage2.EndInit();
-                    ImgSketch.Source = myBitmapImage2;
+                    if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
+                    styleCount = 2;
                     break;
                 default:
                     break;
             }
+
+            for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
+            ShnekStyle.SelectedIndex = 0;
         }
 
         private void TextBoxInput(object sender, TextCompositionEventArgs e)
@@ -135,13 +154,6 @@ namespace GenShnekApp
 
         private void CreationButton(object sender, RoutedEventArgs e)
         {
-            holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
-            tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
-            shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
-            shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
-            hexSizeConv = Convert.ToInt32(inputHexSize.Text);
-            holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
-            stepConv = Convert.ToInt32(inputStep.Text);
 
             if (holeDiamConv == 0)
             {
@@ -181,14 +193,7 @@ namespace GenShnekApp
                 MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбеим параметрам присвоено значение по умолчанию");
             }
 
-            double holeDiam = holeDiamConv;
-            double tubeLength = tubeLengthConv;
-            double shnekThick = shnekThickConv;
-            double shnekDiam = shnekDiamConv;
-            double hexSize = hexSizeConv;
-            double holeDistance = holeDistanceConv;
-            double tubeRad = hexSize * 0.75;
-            double step = stepConv;
+
 
             //KompasObject kompas;
             try
@@ -222,19 +227,37 @@ namespace GenShnekApp
                         offsetPlaneDefUP.SetPlane(basePlaneZOY);
                         basePlaneOffsetUP.Create();*/
 
+            switch (ShnekStyle.SelectedIndex)
+            {
+                case 0:
+                    ///////////////////////////Создание трубы шнека/////////////////////////////
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
 
+                    ///////////////////////////Создание шестигранника/////////////////////////////
+                    HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
 
-            ///////////////////////////Создание трубы шнека/////////////////////////////
-            CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
+                    ///////////////////////////Создание отверстия шестигранника/////////////////////////////
+                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
 
-            ///////////////////////////Создание шестигранника/////////////////////////////
-            HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
+                    ///////////////////////////Создание винта/////////////////////////////
+                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ, (part)part);
+                    break;
+                case 1:
+                    ///////////////////////////Создание трубы шнека/////////////////////////////
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
 
-            ///////////////////////////Создание отверстия шестигранника/////////////////////////////
-            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
+                    ///////////////////////////Создание шестигранника/////////////////////////////
+                    HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
 
-            ///////////////////////////Создание винта/////////////////////////////
-            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ, (part)part);      
+                    ///////////////////////////Создание отверстия шестигранника/////////////////////////////
+                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
+
+                    break;
+                default:
+                    break;
+            }
+
+    
 
         }
 
