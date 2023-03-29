@@ -43,7 +43,9 @@ namespace GenShnekApp
         double tubeRad;
         double step;
         KompasObject kompas;
-        
+        ksPart part;
+
+
         int typeCount;
         int styleCount;
 
@@ -61,23 +63,6 @@ namespace GenShnekApp
                 case 0:
                     ShnekType.IsEnabled = true;
                     typeCount = 2;
-
-                    holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
-                    tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
-                    shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
-                    shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
-                    hexSizeConv = Convert.ToInt32(inputHexSize.Text);
-                    holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
-                    stepConv = Convert.ToInt32(inputStep.Text);
-
-                    holeDiam = holeDiamConv;
-                    tubeLength = tubeLengthConv;
-                    shnekThick = shnekThickConv;
-                    shnekDiam = shnekDiamConv;
-                    hexSize = hexSizeConv;
-                    holeDistance = holeDistanceConv;
-                    tubeRad = hexSize * 0.75;
-                    step = stepConv;
                     break;
                 case 1:
                     ShnekType.IsEnabled = false;
@@ -154,6 +139,7 @@ namespace GenShnekApp
 
         private void CreationButton(object sender, RoutedEventArgs e)
         {
+            ParamConv();
 
             if (holeDiamConv == 0)
             {
@@ -194,8 +180,6 @@ namespace GenShnekApp
             }
 
 
-
-            //KompasObject kompas;
             try
             {
                 kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
@@ -213,7 +197,7 @@ namespace GenShnekApp
             ksDoc3d = kompas.ActiveDocument3D(); // указатель на интерфейс 3д модели 
             ksDoc3d.author = "Garnik";   // указание имени автора
 
-            ksPart part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
+            part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
             ksEntity basePlaneXOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);  // получим интерфейс базовой плоскости XOY
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);  // получим интерфейс базовой плоскости YOZ
             ksEntity basePlaneXOZ = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);  // получим интерфейс базовой плоскости XOZ
@@ -230,38 +214,21 @@ namespace GenShnekApp
             switch (ShnekStyle.SelectedIndex)
             {
                 case 0:
-                    ///////////////////////////Создание трубы шнека/////////////////////////////
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
-
-                    ///////////////////////////Создание шестигранника/////////////////////////////
-                    HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
-
-                    ///////////////////////////Создание отверстия шестигранника/////////////////////////////
-                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
-
-                    ///////////////////////////Создание винта/////////////////////////////
-                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ, (part)part);
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0);
+                    HexCreation(hexSize, holeDistance, basePlaneZOY);
+                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
                     break;
                 case 1:
-                    ///////////////////////////Создание трубы шнека/////////////////////////////
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0, (part)part);
-
-                    ///////////////////////////Создание шестигранника/////////////////////////////
-                    HexCreation(hexSize, holeDistance, basePlaneZOY, (part)part);
-
-                    ///////////////////////////Создание отверстия шестигранника/////////////////////////////
-                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0, (part)part);
-
-                    break;
-                default:
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0);
+                    HexCreation(hexSize, holeDistance, basePlaneZOY);
+                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
                     break;
             }
-
-    
-
         }
 
-        private void CylinderCreation(double rad, double length, ksEntity plane, double x, double y, part part)
+        ///////////////////////////Создание трубы шнека/////////////////////////////
+        private void CylinderCreation(double rad, double length, ksEntity plane, double x, double y)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch); // создание нового скетча
 
@@ -290,7 +257,8 @@ namespace GenShnekApp
             }
         }
 
-        private void HoleCreation(double diam, double length, ksEntity plane, double x, double y, part part)
+        ///////////////////////////Создание отверстия шестигранника/////////////////////////////
+        private void HoleCreation(double diam, double length, ksEntity plane, double x, double y)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -320,7 +288,8 @@ namespace GenShnekApp
             }
         }
 
-        private void HexCreation(double size, double length, ksEntity plane, part part)
+        ///////////////////////////Создание шестигранника/////////////////////////////
+        private void HexCreation(double size, double length, ksEntity plane)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -361,7 +330,8 @@ namespace GenShnekApp
             }
         }
 
-        private void SpyralCreation(double rad, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane, part part)
+        ///////////////////////////Создание винта/////////////////////////////
+        private void SpyralCreation(double rad, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane)
         {
             //траектория
             ksEntity ksSketchE3 = part.NewEntity((short)Obj3dType.o3d_cylindricSpiral);
@@ -412,6 +382,26 @@ namespace GenShnekApp
             extrDef5.PathPartArray().add(ksSketchE3);
             extrDef5.SetSketch(ksSketchE4);
             trajectoryExtr5.Create();
+        }
+
+        private void ParamConv()
+        {
+            holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
+            tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
+            shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
+            shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
+            hexSizeConv = Convert.ToInt32(inputHexSize.Text);
+            holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
+            stepConv = Convert.ToInt32(inputStep.Text);
+
+            holeDiam = holeDiamConv;
+            tubeLength = tubeLengthConv;
+            shnekThick = shnekThickConv;
+            shnekDiam = shnekDiamConv;
+            hexSize = hexSizeConv;
+            holeDistance = holeDistanceConv;
+            tubeRad = hexSize * 0.75;
+            step = stepConv;
         }
 
     }
