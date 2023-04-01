@@ -100,7 +100,30 @@
                 <TextBlock>ГОСТ 24328-80</TextBlock>
             </ComboBoxItem>
             <ComboBoxItem>
-                <TextBlock>Произвольный шнек</TextBlock>
+                <TextBlock TextWrapping="Wrap">ГОСТ 24328-80 (Пользовательский)</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+        <ComboBox            
+            x:Name="DefaultShnekChose"
+            Margin="394,318,1332,-315" 
+            SelectionChanged="GhostTypeSelectionChanged">
+            <ComboBoxItem IsSelected="True">
+                <TextBlock>ШБ-135</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>ШБ-150</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>ШБ-180</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>ШБ-200</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>ШБ-300</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>ШБ-300У</TextBlock>
             </ComboBoxItem>
         </ComboBox>
         <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>

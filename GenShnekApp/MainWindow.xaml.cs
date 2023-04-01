@@ -42,9 +42,9 @@ namespace GenShnekApp
         double holeDistance;
         double tubeRad;
         double step;
+
         KompasObject kompas;
         ksPart part;
-
 
         int typeCount;
         int styleCount;
@@ -57,27 +57,29 @@ namespace GenShnekApp
 
         private void GhostTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //Выбор ГОСТа (строго/произвольно)
             ShnekType.Items.Clear();
             switch (GhostType.SelectedIndex)
             {
                 case 0:
-                    ShnekType.IsEnabled = true;
-                    typeCount = 2;
+                    GOSTSelection1();
                     break;
                 case 1:
-                    ShnekType.IsEnabled = false;
+                    GOSTSelection2();
                     break;
-                default:
+/*                default:
                     typeCount = 2;
-                    break;
+                    break;*/
             }
 
             for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i+1}");
             ShnekType.SelectedIndex = 0;
         }
 
+        //Выбор Типа шнека
         private void ShnekTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ShnekStyle.Items.Clear();
             switch (ShnekType.SelectedIndex)
             {
                 case 0:
@@ -86,10 +88,11 @@ namespace GenShnekApp
                     break;
                 case 1:
                     if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
+                    styleCount = 3;
+                    break;
+/*                default:
                     styleCount = 2;
-                    break;
-                default:
-                    break;
+                    break;*/
             }
 
             for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
@@ -141,45 +144,6 @@ namespace GenShnekApp
         {
             ParamConv();
 
-            if (holeDiamConv == 0)
-            {
-                holeDiamConv = 24;
-                MessageBox.Show("Введён неверный диаметр отверстия!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (tubeLengthConv < 1000)
-            {
-                tubeLengthConv = 1000;
-                MessageBox.Show("Введена неверная длина шнека!" +
-                    "\nПараметру присвоено значение по умолчанию!");
-            }
-            if (hexSizeConv == 0)
-            {
-                hexSizeConv = 55;
-                MessageBox.Show("Введён неверный размер шестигранника!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (holeDistanceConv == 0)
-            {
-                holeDistanceConv = 52;
-                MessageBox.Show("Введена неверная толщина винта шнека!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (shnekDiamConv == 0)
-            {
-                shnekDiamConv = 135;
-                MessageBox.Show("Введён неверный внешний диаметр шнека!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (hexSizeConv*1.5 >= shnekDiamConv)
-            {
-                shnekDiamConv = hexSizeConv*3;
-                MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!\nВнешний диаметр был увеличен!");
-            }
-            if (holeDiamConv*2 >= hexSizeConv)
-            {
-                holeDiamConv = 24;
-                hexSizeConv = 55;
-                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбеим параметрам присвоено значение по умолчанию");
-            }
-
-
             try
             {
                 kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
@@ -196,6 +160,7 @@ namespace GenShnekApp
             ksDoc3d.Create(false, true); // false - видимый режим, true - деталь
             ksDoc3d = kompas.ActiveDocument3D(); // указатель на интерфейс 3д модели 
             ksDoc3d.author = "Garnik";   // указание имени автора
+            ksDoc3d.fileName = "Шнек";
 
             part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
             ksEntity basePlaneXOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);  // получим интерфейс базовой плоскости XOY
@@ -211,24 +176,25 @@ namespace GenShnekApp
                         offsetPlaneDefUP.SetPlane(basePlaneZOY);
                         basePlaneOffsetUP.Create();*/
 
+            //Выбор исполнения шнека
             switch (ShnekStyle.SelectedIndex)
             {
                 case 0:
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0);
-                    HexCreation(hexSize, holeDistance, basePlaneZOY);
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                    JointCreation1(hexSize, holeDistance, basePlaneZOY);
                     HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
                     SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
                     break;
                 case 1:
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY, 0, 0);
-                    HexCreation(hexSize, holeDistance, basePlaneZOY);
-                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                    JointCreation2(90, 85, 100, basePlaneZOY);
                     break;
             }
         }
 
         ///////////////////////////Создание трубы шнека/////////////////////////////
-        private void CylinderCreation(double rad, double length, ksEntity plane, double x, double y)
+        private void CylinderCreation(double rad, double length, ksEntity plane)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch); // создание нового скетча
 
@@ -238,7 +204,7 @@ namespace GenShnekApp
             ksSketchE.Create();          // создадим эскиз
             ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
 
-            Sketch2D.ksCircle(x, y, rad, 1);
+            Sketch2D.ksCircle(0, 0, rad, 1);
 
             ksSketchDef.EndEdit(); // заканчивает редактирование эскиза
 
@@ -288,8 +254,8 @@ namespace GenShnekApp
             }
         }
 
-        ///////////////////////////Создание шестигранника/////////////////////////////
-        private void HexCreation(double size, double length, ksEntity plane)
+        ///////////////////////////Создание присоединительного элемента 1/////////////////////////////
+        private void JointCreation1(double size, double length, ksEntity plane)
         {
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -330,58 +296,104 @@ namespace GenShnekApp
             }
         }
 
+        ///////////////////////////Создание присоединительного элемента 2/////////////////////////////
+        private void JointCreation2(double diam, double size, double length, ksEntity plane)
+        {
+            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef = ksSketchE.GetDefinition();
+
+            ksSketchDef.SetPlane(plane);
+            ksSketchE.Create();
+            ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
+            
+            Sketch2D.ksCircle(0, 0, diam / 2, 1);
+
+            ksRegularPolygonParam triangle = (ksRegularPolygonParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RegularPolygonParam);
+
+            if (triangle != null)
+            {
+                triangle.xc = 0;
+                triangle.yc = 0;
+                triangle.ang = 270;
+                triangle.count = 3;
+                triangle.describe = true;
+                triangle.radius = size / 2;
+                triangle.style = 1;
+                Sketch2D.ksRegularPolygon(triangle);
+            }
+
+            ksSketchDef.EndEdit();
+
+
+            ksEntity bossExtr = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef = bossExtr.GetDefinition();
+            ksExtrusionParam extrProp = (ksExtrusionParam)extrDef.ExtrusionParam();
+
+            
+            if (extrProp != null)
+            {
+                extrDef.SetSketch(ksSketchE);
+
+                extrProp.direction = (short)Direction_Type.dtReverse;
+                extrProp.typeNormal = (short)End_Type.etBlind;
+                extrProp.depthReverse = length;
+                bossExtr.Create();
+            }
+        }
+
         ///////////////////////////Создание винта/////////////////////////////
         private void SpyralCreation(double rad, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane)
         {
             //траектория
-            ksEntity ksSketchE3 = part.NewEntity((short)Obj3dType.o3d_cylindricSpiral);
+            ksEntity ksSketchE1 = part.NewEntity((short)Obj3dType.o3d_cylindricSpiral);
 
-            CylindricSpiralDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
+            CylindricSpiralDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
 
-            ksSketchDef3.SetPlane(plane);
+            ksSketchDef1.SetPlane(plane);
 
-            ksSketchDef3.diam = rad*2;
-            ksSketchDef3.buildMode = 0;
-            ksSketchDef3.step = spyralStep;
-            ksSketchDef3.turn = turn / spyralStep;
-            ksSketchDef3.buildDir = buildDir;
-            ksSketchDef3.turnDir = turnDir;
-            ksSketchE3.hidden = true;
+            ksSketchDef1.diam = rad*2;
+            ksSketchDef1.buildMode = 0;
+            ksSketchDef1.step = spyralStep;
+            ksSketchDef1.turn = turn / spyralStep;
+            ksSketchDef1.buildDir = buildDir;
+            ksSketchDef1.turnDir = turnDir;
+            ksSketchE1.hidden = true;
 
-            ksSketchE3.Create();
+            ksSketchE1.Create();
 
             //выдавливаемый профиль
-            ksEntity ksSketchE4 = part.NewEntity((short)Obj3dType.o3d_sketch);
+            ksEntity ksSketchE2 = part.NewEntity((short)Obj3dType.o3d_sketch);
 
-            SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
+            SketchDefinition ksSketchDef2 = ksSketchE2.GetDefinition();
 
-            ksSketchDef4.SetPlane(profilePlane);
-            ksSketchE4.hidden = true;
-            ksSketchE4.Create();
-            ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
+            ksSketchDef2.SetPlane(profilePlane);
+            ksSketchE2.hidden = true;
+            ksSketchE2.Create();
+            ksDocument2D Sketch2D2 = (ksDocument2D)ksSketchDef2.BeginEdit();
 
-            ksRectangleParam rect2 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
-            if (rect2 != null)
+            ksRectangleParam rect = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+            if (rect != null)
             {
                 // Параметры прямоугольника
-                rect2.ang = 0;
-                rect2.x = -thick;
-                rect2.y = rad;
-                rect2.width = thick;
-                rect2.height = sDiam / 2 - rad;
-                rect2.style = 1;
-                Sketch2D4.ksRectangle(rect2);
+                rect.ang = 0;
+                rect.x = -thick;
+                rect.y = rad;
+                rect.width = thick;
+                rect.height = sDiam / 2 - rad;
+                rect.style = 1;
+                Sketch2D2.ksRectangle(rect);
             }
 
-            ksSketchDef4.EndEdit();
+            ksSketchDef2.EndEdit();
 
             //выдавливание профиля по траектории
-            ksEntity trajectoryExtr5 = part.NewEntity((short)Obj3dType.o3d_baseEvolution);
-            ksBaseEvolutionDefinition extrDef5 = trajectoryExtr5.GetDefinition();
+            ksEntity trajectoryExtr = part.NewEntity((short)Obj3dType.o3d_baseEvolution);
+            ksBaseEvolutionDefinition extrDef = trajectoryExtr.GetDefinition();
 
-            extrDef5.PathPartArray().add(ksSketchE3);
-            extrDef5.SetSketch(ksSketchE4);
-            trajectoryExtr5.Create();
+            extrDef.PathPartArray().add(ksSketchE1);
+            extrDef.SetSketch(ksSketchE2);
+            trajectoryExtr.Create();
         }
 
         private void ParamConv()
@@ -394,6 +406,48 @@ namespace GenShnekApp
             holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
             stepConv = Convert.ToInt32(inputStep.Text);
 
+            if (holeDiamConv == 0)
+            {
+                holeDiamConv = 24;
+                MessageBox.Show("Введён неверный диаметр отверстия!\nПараметру присвоено значение по умолчанию!");
+            }
+            if (tubeLengthConv < 1000)
+            {
+                tubeLengthConv = 1000;
+                MessageBox.Show("Длина шнека меньше миниального!\nПараметру присвоено минимальное значение!");
+            }
+            if (tubeLengthConv > 2500)
+            {
+                tubeLengthConv = 2500;
+                MessageBox.Show("Длина шнека больше максимального!\nПараметру присвоено максимальное значение!");
+            }
+            if (hexSizeConv == 0)
+            {
+                hexSizeConv = 55;
+                MessageBox.Show("Введён неверный размер шестигранника!\nПараметру присвоено значение по умолчанию!");
+            }
+            if (holeDistanceConv == 0)
+            {
+                holeDistanceConv = 52;
+                MessageBox.Show("Введена неверная толщина винта шнека!\nПараметру присвоено значение по умолчанию!");
+            }
+            if (shnekDiamConv == 0)
+            {
+                shnekDiamConv = 135;
+                MessageBox.Show("Введён неверный внешний диаметр шнека!\nПараметру присвоено значение по умолчанию!");
+            }
+            if (hexSizeConv * 1.5 >= shnekDiamConv)
+            {
+                shnekDiamConv = hexSizeConv * 3;
+                MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!\nВнешний диаметр был увеличен!");
+            }
+            if (holeDiamConv * 2 >= hexSizeConv)
+            {
+                holeDiamConv = 24;
+                hexSizeConv = 55;
+                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбеим параметрам присвоено значение по умолчанию");
+            }
+
             holeDiam = holeDiamConv;
             tubeLength = tubeLengthConv;
             shnekThick = shnekThickConv;
@@ -404,5 +458,30 @@ namespace GenShnekApp
             step = stepConv;
         }
 
+        private void InputFieldIsActive(bool isActive)
+        {
+            inputHoleDiam.IsEnabled = isActive;
+            inputTubeLength.IsEnabled = isActive;
+            //inputShnekThick.IsEnabled = isActive;
+            inputShnekDiam.IsEnabled = isActive;
+            inputHexSize.IsEnabled = isActive;
+            inputHoleDistance.IsEnabled = isActive;
+            //inputStep.IsEnabled = isActive;
+        }
+
+        private void GOSTSelection1()
+        {
+            ShnekType.IsEnabled = true;
+            typeCount = 2;
+            InputFieldIsActive(false);
+            ShnekStyle.IsEnabled = false;
+        }
+
+        private void GOSTSelection2()
+        {
+            InputFieldIsActive(true);
+            ShnekType.IsEnabled = false;
+            ShnekStyle.IsEnabled = true;
+        }
     }
 }
