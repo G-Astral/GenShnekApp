@@ -187,8 +187,9 @@ namespace GenShnekApp
                     break;
                 case 1:
                     CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
-                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
                     JointCreation2(90, 85, 100, basePlaneZOY);
+                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
                     break;
             }
         }
@@ -482,6 +483,48 @@ namespace GenShnekApp
             InputFieldIsActive(true);
             ShnekType.IsEnabled = false;
             ShnekStyle.IsEnabled = true;
+        }
+
+        private void Shnek135()
+        {
+            shnekDiam = 135;
+            holeDiam = 24;
+            hexSize = 55;
+            holeDistance = 52;
+        }
+        private void Shnek150()
+        {
+            shnekDiam = 150;
+            holeDiam = 24;
+            hexSize = 55;
+            holeDistance = 52;
+        }
+        private void Shnek180()
+        {
+            shnekDiam = 180;
+            holeDiam = 24;
+            hexSize = 55;
+            holeDistance = 52;
+        }
+        private void Shnek200()
+        {
+            shnekDiam = 200;
+            holeDiam = 27;
+            hexSize = 60;
+            holeDistance = 55;
+        }
+        private void Shnek300()
+        {
+            shnekDiam = 300;
+            holeDiam = 27;
+            hexSize = 60;
+            holeDistance = 55;
+        }
+        private void Shnek300Y()
+        {
+            shnekDiam = 300;
+            holeDiam = 30;
+            holeDistance = 95;
         }
     }
 }
