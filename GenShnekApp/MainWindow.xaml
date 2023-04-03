@@ -91,22 +91,9 @@
             Margin="398,232,1328,-227"
             >
         </ComboBox>
-        <ComboBox 
-            x:Name="GhostType"
-            Margin="175,-132,1551,135" 
-            SelectionChanged="GhostTypeSelectionChanged"
-            >
-            <ComboBoxItem IsSelected="True">
-                <TextBlock>ГОСТ 24328-80</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock TextWrapping="Wrap">ГОСТ 24328-80 (Пользовательский)</TextBlock>
-            </ComboBoxItem>
-        </ComboBox>
         <ComboBox            
-            x:Name="DefaultShnekChose"
-            Margin="394,318,1332,-315" 
-            SelectionChanged="GhostTypeSelectionChanged">
+            x:Name="DefaultShnekChoose"
+            Margin="394,318,1332,-315">
             <ComboBoxItem IsSelected="True">
                 <TextBlock>ШБ-135</TextBlock>
             </ComboBoxItem>
@@ -124,6 +111,18 @@
             </ComboBoxItem>
             <ComboBoxItem>
                 <TextBlock>ШБ-300У</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+        <ComboBox 
+            x:Name="GhostType"
+            Margin="175,-132,1551,135" 
+            SelectionChanged="GhostTypeSelectionChanged"
+            >
+            <ComboBoxItem IsSelected="True">
+                <TextBlock>ГОСТ 24328-80</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock TextWrapping="Wrap">ГОСТ 24328-80 (Пользовательский)</TextBlock>
             </ComboBoxItem>
         </ComboBox>
         <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>

@@ -80,15 +80,18 @@ namespace GenShnekApp
         private void ShnekTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ShnekStyle.Items.Clear();
+            DefaultShnekChoose.Items.Clear();
             switch (ShnekType.SelectedIndex)
             {
                 case 0:
                     if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
                     styleCount = 2;
+                    DefaultShnekItems1();
                     break;
                 case 1:
                     if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
-                    styleCount = 3;
+                    styleCount = 2;
+                    DefaultShnekItems2();
                     break;
 /*                default:
                     styleCount = 2;
@@ -176,21 +179,82 @@ namespace GenShnekApp
                         offsetPlaneDefUP.SetPlane(basePlaneZOY);
                         basePlaneOffsetUP.Create();*/
 
-            //Выбор исполнения шнека
-            switch (ShnekStyle.SelectedIndex)
+            //Шнеки первого типа
+            if (ShnekType.SelectedIndex == 0)
             {
-                case 0:
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
-                    JointCreation1(hexSize, holeDistance, basePlaneZOY);
-                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
-                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
-                    break;
-                case 1:
-                    CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
-                    JointCreation2(90, 85, 100, basePlaneZOY);
-                    HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
-                    SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
-                    break;
+                //Дефолтные шнеки
+                if (DefaultShnekChoose.IsEnabled == true)
+                {
+                    switch (DefaultShnekChoose.SelectedIndex)
+                    {
+                        case 0:
+                            Shnek135();
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 1:
+                            Shnek150();
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 2:
+                            Shnek180();
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 3:
+                            Shnek200();
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 4:
+                            Shnek300();
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 5:
+                            Shnek300Y();
+                            JointCreation2(90, holeDistance * 3 / 2, basePlaneZOY);
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                    }
+                }
+
+                //Выбор исполнения шнека
+                if (ShnekStyle.IsEnabled == true)
+                {
+                    switch (ShnekStyle.SelectedIndex)
+                    {
+                        case 0:
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            JointCreation1(hexSize, holeDistance, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 1:
+                            JointCreation2(90, 100, basePlaneZOY);
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Второй тип в процессе разработки");
             }
         }
 
@@ -298,17 +362,43 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 2/////////////////////////////
-        private void JointCreation2(double diam, double size, double length, ksEntity plane)
+        private void JointCreation2(double diam, double length, ksEntity plane)
         {
-            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
+            ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
-            SketchDefinition ksSketchDef = ksSketchE.GetDefinition();
+            SketchDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
 
-            ksSketchDef.SetPlane(plane);
-            ksSketchE.Create();
-            ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
+            ksSketchDef1.SetPlane(plane);
+            ksSketchE1.Create();
+            ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
             
-            Sketch2D.ksCircle(0, 0, diam / 2, 1);
+            Sketch2D1.ksCircle(0, 0, diam / 2, 1);
+
+            ksSketchDef1.EndEdit();
+
+            ksEntity bossExtr1 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef1 = bossExtr1.GetDefinition();
+            ksExtrusionParam extrProp1 = (ksExtrusionParam)extrDef1.ExtrusionParam();
+
+            if (extrProp1 != null)
+            {
+                extrDef1.SetSketch(ksSketchE1);
+
+                extrProp1.direction = (short)Direction_Type.dtReverse;
+                extrProp1.typeNormal = (short)End_Type.etBlind;
+                extrProp1.depthReverse = length;
+                bossExtr1.Create();
+            }
+
+            double size = diam * 80 / 90;
+
+            ksEntity ksSketchE2 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef2 = ksSketchE2.GetDefinition();
+
+            ksSketchDef2.SetPlane(plane);
+            ksSketchE2.Create();
+            ksDocument2D Sketch2D2 = (ksDocument2D)ksSketchDef2.BeginEdit();
 
             ksRegularPolygonParam triangle = (ksRegularPolygonParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RegularPolygonParam);
 
@@ -321,26 +411,26 @@ namespace GenShnekApp
                 triangle.describe = true;
                 triangle.radius = size / 2;
                 triangle.style = 1;
-                Sketch2D.ksRegularPolygon(triangle);
+                Sketch2D2.ksRegularPolygon(triangle);
             }
 
-            ksSketchDef.EndEdit();
+            ksSketchDef2.EndEdit();
 
+            ksEntity bossExtr2 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef2 = bossExtr2.GetDefinition();
+            ksExtrusionParam extrProp2 = (ksExtrusionParam)extrDef2.ExtrusionParam();
 
-            ksEntity bossExtr = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
-            ksBaseExtrusionDefinition extrDef = bossExtr.GetDefinition();
-            ksExtrusionParam extrProp = (ksExtrusionParam)extrDef.ExtrusionParam();
-
-            
-            if (extrProp != null)
+            if (extrProp2 != null)
             {
-                extrDef.SetSketch(ksSketchE);
+                extrDef2.SetSketch(ksSketchE2);
+                extrDef2.cut = false;
 
-                extrProp.direction = (short)Direction_Type.dtReverse;
-                extrProp.typeNormal = (short)End_Type.etBlind;
-                extrProp.depthReverse = length;
-                bossExtr.Create();
+                extrProp2.direction = (short)Direction_Type.dtNormal;
+                extrProp2.typeNormal = (short)End_Type.etBlind;
+                extrProp2.depthNormal = length;
+                bossExtr2.Create();
             }
+
         }
 
         ///////////////////////////Создание винта/////////////////////////////
@@ -462,7 +552,7 @@ namespace GenShnekApp
         private void InputFieldIsActive(bool isActive)
         {
             inputHoleDiam.IsEnabled = isActive;
-            inputTubeLength.IsEnabled = isActive;
+            //inputTubeLength.IsEnabled = isActive;
             //inputShnekThick.IsEnabled = isActive;
             inputShnekDiam.IsEnabled = isActive;
             inputHexSize.IsEnabled = isActive;
@@ -472,17 +562,66 @@ namespace GenShnekApp
 
         private void GOSTSelection1()
         {
-            ShnekType.IsEnabled = true;
+            //ShnekType.IsEnabled = true;
             typeCount = 2;
             InputFieldIsActive(false);
             ShnekStyle.IsEnabled = false;
+            DefaultShnekChoose.IsEnabled = true;
         }
 
         private void GOSTSelection2()
         {
             InputFieldIsActive(true);
-            ShnekType.IsEnabled = false;
+            //ShnekType.IsEnabled = false;
             ShnekStyle.IsEnabled = true;
+            DefaultShnekChoose.IsEnabled = false;
+        }
+
+        private void DefaultShnekItems1()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-135");
+                }
+                if (i == 1)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-150");
+                }
+                if (i == 2)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-180");
+                }
+                if (i == 3)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-200");
+                }
+                if (i == 4)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-300");
+                }
+                if (i == 5)
+                {
+                    DefaultShnekChoose.Items.Add($"ШБ-300У");
+                }
+            }
+            DefaultShnekChoose.SelectedIndex = 0;
+        }
+        private void DefaultShnekItems2()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultShnekChoose.Items.Add($"ШС-80");
+                }
+                if (i == 1)
+                {
+                    DefaultShnekChoose.Items.Add($"ШС-100");
+                }
+            }
+            DefaultShnekChoose.SelectedIndex = 0;
         }
 
         private void Shnek135()
