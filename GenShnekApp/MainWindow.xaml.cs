@@ -163,7 +163,7 @@ namespace GenShnekApp
             ksDoc3d.Create(false, true); // false - видимый режим, true - деталь
             ksDoc3d = kompas.ActiveDocument3D(); // указатель на интерфейс 3д модели 
             ksDoc3d.author = "Garnik";   // указание имени автора
-            ksDoc3d.fileName = "Шнек";
+            //ksDoc3d.fileName = "Шнек";
 
             part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
             ksEntity basePlaneXOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);  // получим интерфейс базовой плоскости XOY
@@ -252,9 +252,41 @@ namespace GenShnekApp
                     }
                 }
             }
+            //Шнеки второго типа
             else
             {
-                MessageBox.Show("Второй тип в процессе разработки");
+                //Дефолтные шнеки
+                if (DefaultShnekChoose.IsEnabled == true)
+                {
+                    switch (DefaultShnekChoose.SelectedIndex)
+                    {
+                        case 0:
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            JointCreation3(tubeRad, tubeLength, basePlaneXOZ);
+                            break;
+                        case 1:
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                        case 2:
+                            CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                            SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                            break;
+                    }
+                }
+                else
+                {
+                    if (ShnekStyle.SelectedIndex == 0)
+                    {
+                        MessageBox.Show("Шнек типа 2 исполнения 1 (ШС-200)\nне предусмотрен для параметризации!");
+                    }
+                    else
+                    {
+                        CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
+                        SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
+                    }
+                }
             }
         }
 
@@ -433,6 +465,45 @@ namespace GenShnekApp
 
         }
 
+        ///////////////////////////Создание присоединительного элемента 3/////////////////////////////
+        private void JointCreation3(double diam, double length, ksEntity plane)
+        {
+            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef = ksSketchE.GetDefinition();
+
+            ksSketchDef.SetPlane(plane);
+            ksSketchE.Create();
+            ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
+
+            Sketch2D.ksLineSeg(-length, -36, -length - 4, -36, 1);
+            Sketch2D.ksLineSeg(-length - 4, -36, -length - 4, -44, 1);
+            Sketch2D.ksLineSeg(-length - 4, -44, -length - 164, -44, 1);
+            Sketch2D.ksLineSeg(-length - 164, -44, -length - 164, -40, 1);
+            Sketch2D.ksLineSeg(-length - 164, -40, -length - 170, -40, 1);
+            Sketch2D.ksLineSeg(-length - 170, -40, -length - 174, -36, 1);
+            Sketch2D.ksLineSeg(-length - 174, -36, -length - 174, -0, 1);
+            Sketch2D.ksLineSeg(-length - 174, -0, -length, -0, 1);
+            Sketch2D.ksLineSeg(-length, -0, -length, -36, 1);
+
+            ksSketchDef.EndEdit();
+
+            ksEntity baseRot = part.NewEntity((short)Obj3dType.o3d_baseRotated);
+            ksBaseRotatedDefinition rotDef = baseRot.GetDefinition();
+            ksRotatedParam rotProp = (ksRotatedParam)rotDef.RotatedParam();
+
+            if (rotProp != null)
+            {
+                rotDef.SetSketch(ksSketchE);
+                rotDef.SetSideParam(true, 360);
+                
+                
+                rotProp.direction = (short)Direction_Type.dtNormal;
+                baseRot.Create();
+            }
+        }
+
+
         ///////////////////////////Создание винта/////////////////////////////
         private void SpyralCreation(double rad, double spyralStep, double turn, bool buildDir, bool turnDir, double thick, double sDiam, ksEntity plane, ksEntity profilePlane)
         {
@@ -610,7 +681,7 @@ namespace GenShnekApp
         }
         private void DefaultShnekItems2()
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 if (i == 0)
                 {
@@ -619,6 +690,10 @@ namespace GenShnekApp
                 if (i == 1)
                 {
                     DefaultShnekChoose.Items.Add($"ШС-100");
+                }
+                if (i == 2)
+                {
+                    DefaultShnekChoose.Items.Add($"ШС-200");
                 }
             }
             DefaultShnekChoose.SelectedIndex = 0;
@@ -630,6 +705,7 @@ namespace GenShnekApp
             holeDiam = 24;
             hexSize = 55;
             holeDistance = 52;
+            tubeRad = hexSize * 0.75;
         }
         private void Shnek150()
         {
@@ -637,6 +713,7 @@ namespace GenShnekApp
             holeDiam = 24;
             hexSize = 55;
             holeDistance = 52;
+            tubeRad = hexSize * 0.75;
         }
         private void Shnek180()
         {
@@ -644,6 +721,7 @@ namespace GenShnekApp
             holeDiam = 24;
             hexSize = 55;
             holeDistance = 52;
+            tubeRad = hexSize * 0.75;
         }
         private void Shnek200()
         {
@@ -651,6 +729,7 @@ namespace GenShnekApp
             holeDiam = 27;
             hexSize = 60;
             holeDistance = 55;
+            tubeRad = hexSize * 0.75;
         }
         private void Shnek300()
         {
@@ -658,12 +737,14 @@ namespace GenShnekApp
             holeDiam = 27;
             hexSize = 60;
             holeDistance = 55;
+            tubeRad = hexSize * 0.75;
         }
         private void Shnek300Y()
         {
             shnekDiam = 300;
             holeDiam = 30;
             holeDistance = 95;
+            tubeRad = hexSize * 0.75;
         }
     }
 }
