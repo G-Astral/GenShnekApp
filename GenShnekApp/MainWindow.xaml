@@ -9,8 +9,13 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <Grid VerticalAlignment="Center">
-        <Rectangle Margin="222,-25,1161,-353" Stroke="Black"></Rectangle>
-        <TextBlock HorizontalAlignment="Left" Margin="422,3,0,-3">Введите длину трубы (мм):</TextBlock>
+        <Rectangle Margin="478,0,1228,-355" Stroke="Black"></Rectangle>
+        <Rectangle Margin="113,0,1555,-355" Stroke="Black"></Rectangle>
+        <TextBlock HorizontalAlignment="Left" Margin="512,27,0,-27">Введите длину трубы (мм):</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="171,40,0,-40">Выберите тип построения:</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="180,136,0,-136">Выберите тип шнека:</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="162,239,0,-239">Выберите исполнение шнека:</TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="158,334,0,-334">Выберите стандартный шнек:</TextBlock>
         <TextBox 
             x:Name="inputTubeLength"
             TextAlignment="Center"
@@ -18,8 +23,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces"
             Text="1000"
-            Height="30" Width="100" Margin="445,28,1375,-3"></TextBox>
-        <TextBlock HorizontalAlignment="Left" Margin="277,317,0,-317">Шаг винта (мм):</TextBlock>
+            Height="30" Width="100" Margin="535,52,1285,-27"></TextBox>
+        <!--<TextBlock HorizontalAlignment="Left" Margin="277,317,0,-317">Шаг винта (мм):</TextBlock>
         <TextBox 
             x:Name="inputStep"
             TextAlignment="Center"
@@ -27,8 +32,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces1"
             Text="100"
-            Height="30" Width="100" Margin="270,342,1550,-317" IsEnabled="False"></TextBox>
-        <TextBlock HorizontalAlignment="Left" Margin="280,217,0,-217">Введите S (мм):</TextBlock>
+            Height="30" Width="100" Margin="270,342,1550,-317" IsEnabled="False"></TextBox>-->
+        <TextBlock HorizontalAlignment="Left" Margin="546,262,0,-262">Введите S (мм):</TextBlock>
         <TextBox 
             x:Name="inputHexSize"
             TextAlignment="Center"
@@ -36,8 +41,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces2"
             Text="55"
-            Height="30" Width="100" Margin="270,242,1550,-217"></TextBox>
-        <TextBlock HorizontalAlignment="Left" Margin="278,107,0,-107">Введите D (мм):</TextBlock>
+            Height="30" Width="100" Margin="536,287,1284,-262"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="543,109,0,-109">Введите D (мм):</TextBlock>
         <TextBox 
             x:Name="inputShnekDiam"
             TextAlignment="Center"
@@ -45,8 +50,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces3"
             Text="135"
-            Height="30" Width="100" Margin="270,132,1550,-107"></TextBox>
-        <TextBlock HorizontalAlignment="Left" Margin="628,108,0,-107">Введите d (мм):</TextBlock>
+            Height="30" Width="100" Margin="535,134,1285,-109"></TextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="543,195,0,-194">Введите d (мм):</TextBlock>
         <TextBox 
             x:Name="inputHoleDiam"
             TextAlignment="Center"
@@ -54,8 +59,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces4"
             Text="24"
-            Height="30" Width="100" Margin="620,132,1200,-107"/>
-        <TextBlock HorizontalAlignment="Left" Margin="630,217,0,-217">Введите l (мм):</TextBlock>
+            Height="30" Width="100" Margin="535,219,1285,-194" RenderTransformOrigin="0.21,0.551"/>
+        <TextBlock HorizontalAlignment="Left" Margin="545,340,0,-340">Введите l (мм):</TextBlock>
         <TextBox 
             x:Name="inputHoleDistance"
             TextAlignment="Center"
@@ -63,8 +68,8 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces5"
             Text="52"
-            Height="30" Width="100" Margin="620,242,1200,-217"/>
-        <TextBlock HorizontalAlignment="Left" Margin="613,317,0,-317">Толщина винта (мм):</TextBlock>
+            Height="30" Width="100" Margin="535,365,1285,-340"/>
+        <!--<TextBlock HorizontalAlignment="Left" Margin="613,317,0,-317">Толщина винта (мм):</TextBlock>
         <TextBox 
             x:Name="inputShnekThick"
             TextAlignment="Center"
@@ -72,7 +77,7 @@
             VerticalContentAlignment="Center"
             TextChanged="DeleteSpaces6"
             Text="2"
-            Height="30" Width="100" Margin="620,342,1200,-317" IsEnabled="False"></TextBox>
+            Height="30" Width="100" Margin="620,342,1200,-317" IsEnabled="False"></TextBox>-->
         <Button
             Height="30"
             Width="100"
@@ -82,18 +87,18 @@
             Margin="909,439,911,-414" />
         <ComboBox 
             x:Name="ShnekType" 
-            Margin="394,119,1332,-115"
-            SelectionChanged="ShnekTypeSelectionChanged"
+            Margin="144,159,1576,-123"
+            SelectionChanged="ShnekTypeSelectionChanged" Width="200" Height="30"
             >
         </ComboBox>
         <ComboBox 
             x:Name="ShnekStyle" 
-            Margin="398,232,1328,-227"
+            Margin="144,259,1576,-223" Width="200" Height="30"
             >
         </ComboBox>
         <ComboBox            
             x:Name="DefaultShnekChoose"
-            Margin="394,318,1332,-315">
+            Margin="144,356,1576,-320" Width="200" Height="30">
             <ComboBoxItem IsSelected="True">
                 <TextBlock>ШБ-135</TextBlock>
             </ComboBoxItem>
@@ -115,8 +120,8 @@
         </ComboBox>
         <ComboBox 
             x:Name="GhostType"
-            Margin="175,-132,1551,135" 
-            SelectionChanged="GhostTypeSelectionChanged"
+            Margin="144,58,1576,-22" 
+            SelectionChanged="GhostTypeSelectionChanged" Width="200" Height="30"
             >
             <ComboBoxItem IsSelected="True">
                 <TextBlock>ГОСТ 24328-80</TextBlock>
@@ -125,7 +130,7 @@
                 <TextBlock TextWrapping="Wrap">ГОСТ 24328-80 (Пользовательский)</TextBlock>
             </ComboBoxItem>
         </ComboBox>
-        <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="374,-440,0,0" VerticalAlignment="Top" Width="1358"/>
-        <Image x:Name="ImgTable" Source="ShnekTable1.png" Height="415" Margin="668,-20,-106,-340" Width="1358"/>
+        <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="423,-470,0,0" VerticalAlignment="Top" Width="1358"/>
+        <Image x:Name="ImgTable" Source="ShnekTable1.png" Height="415" Margin="668,-5,-106,-355" Width="1358"/>
     </Grid>
 </Window>

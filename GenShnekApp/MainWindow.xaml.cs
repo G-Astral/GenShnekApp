@@ -29,10 +29,10 @@ namespace GenShnekApp
         int holeDiamConv;
         int holeDistanceConv;
         int tubeLengthConv;
-        int shnekThickConv;
+        //int shnekThickConv;
         int shnekDiamConv;
         int hexSizeConv;
-        int stepConv;
+        //int stepConv;
 
         double holeDiam;
         double tubeLength;
@@ -112,11 +112,11 @@ namespace GenShnekApp
             inputTubeLength.Text = inputTubeLength.Text.Replace(" ", string.Empty);
             inputTubeLength.SelectionStart = inputTubeLength.Text.Length;
         }
-        private void DeleteSpaces1(object sender, TextChangedEventArgs e)
+/*        private void DeleteSpaces1(object sender, TextChangedEventArgs e)
         {
             inputStep.Text = inputStep.Text.Replace(" ", string.Empty);
             inputStep.SelectionStart = inputStep.Text.Length;
-        }
+        }*/
         private void DeleteSpaces2(object sender, TextChangedEventArgs e)
         {
             inputHexSize.Text = inputHexSize.Text.Replace(" ", string.Empty);
@@ -137,11 +137,11 @@ namespace GenShnekApp
             inputHoleDistance.Text = inputHoleDistance.Text.Replace(" ", string.Empty);
             inputHoleDistance.SelectionStart = inputHoleDistance.Text.Length;
         }
-        private void DeleteSpaces6(object sender, TextChangedEventArgs e)
+/*        private void DeleteSpaces6(object sender, TextChangedEventArgs e)
         {
             inputShnekThick.Text = inputShnekThick.Text.Replace(" ", string.Empty);
             inputShnekThick.SelectionStart = inputShnekThick.Text.Length;
-        }
+        }*/
 
         private void CreationButton(object sender, RoutedEventArgs e)
         {
@@ -562,11 +562,11 @@ namespace GenShnekApp
         {
             holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
             tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
-            shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
+            //shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
             shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
             hexSizeConv = Convert.ToInt32(inputHexSize.Text);
             holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
-            stepConv = Convert.ToInt32(inputStep.Text);
+            //stepConv = Convert.ToInt32(inputStep.Text);
 
             if (holeDiamConv == 0)
             {
@@ -612,12 +612,14 @@ namespace GenShnekApp
 
             holeDiam = holeDiamConv;
             tubeLength = tubeLengthConv;
-            shnekThick = shnekThickConv;
+            //shnekThick = shnekThickConv;
+            shnekThick = 2;
             shnekDiam = shnekDiamConv;
             hexSize = hexSizeConv;
             holeDistance = holeDistanceConv;
             tubeRad = hexSize * 0.75;
-            step = stepConv;
+            //step = stepConv;
+            step = 100;
         }
 
         private void InputFieldIsActive(bool isActive)
