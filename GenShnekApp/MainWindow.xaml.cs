@@ -31,6 +31,7 @@ namespace GenShnekApp
         double shnekThick = 2;
         double shnekDiam;
         double hexSize;
+        double hex2Size = 90;
         double holeDistance;
         double tubeRad;
         double step = 100;
@@ -236,7 +237,7 @@ namespace GenShnekApp
                             SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
                             break;
                         case 1:
-                            JointCreation2(90, 100, basePlaneZOY);
+                            JointCreation2(hex2Size, holeDistance * 3 / 2, basePlaneZOY);
                             CylinderCreation(tubeRad, tubeLength, basePlaneZOY);
                             HoleCreation(holeDiam, hexSize, basePlaneXOZ, holeDistance, 0);
                             SpyralCreation(tubeRad, step, tubeLength, true, true, shnekThick, shnekDiam, basePlaneZOY, basePlaneXOZ);
@@ -597,7 +598,7 @@ namespace GenShnekApp
             {
                 holeDiam = 24;
                 hexSize = 55;
-                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбеим параметрам присвоено значение по умолчанию");
+                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбоим параметрам присвоено значение по умолчанию");
             }
             tubeRad = hexSize * 0.75;
         }
