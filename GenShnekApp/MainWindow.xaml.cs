@@ -25,23 +25,15 @@ namespace GenShnekApp
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {       
-        int holeDiamConv;
-        int holeDistanceConv;
-        int tubeLengthConv;
-        //int shnekThickConv;
-        int shnekDiamConv;
-        int hexSizeConv;
-        //int stepConv;
-
+    {
         double holeDiam;
         double tubeLength;
-        double shnekThick;
+        double shnekThick = 2;
         double shnekDiam;
         double hexSize;
         double holeDistance;
         double tubeRad;
-        double step;
+        double step = 100;
 
         KompasObject kompas;
         ksPart part;
@@ -560,66 +552,54 @@ namespace GenShnekApp
 
         private void ParamConv()
         {
-            holeDiamConv = Convert.ToInt32(inputHoleDiam.Text);
-            tubeLengthConv = Convert.ToInt32(inputTubeLength.Text);
-            //shnekThickConv = Convert.ToInt32(inputShnekThick.Text);
-            shnekDiamConv = Convert.ToInt32(inputShnekDiam.Text);
-            hexSizeConv = Convert.ToInt32(inputHexSize.Text);
-            holeDistanceConv = Convert.ToInt32(inputHoleDistance.Text);
-            //stepConv = Convert.ToInt32(inputStep.Text);
+            holeDiam = Convert.ToDouble(inputHoleDiam.Text);
+            tubeLength = Convert.ToDouble(inputTubeLength.Text);
+            shnekDiam = Convert.ToDouble(inputShnekDiam.Text);
+            hexSize = Convert.ToDouble(inputHexSize.Text);
+            holeDistance = Convert.ToDouble(inputHoleDistance.Text);
 
-            if (holeDiamConv == 0)
+            if (holeDiam == 0)
             {
-                holeDiamConv = 24;
+                holeDiam = 24;
                 MessageBox.Show("Введён неверный диаметр отверстия!\nПараметру присвоено значение по умолчанию!");
             }
-            if (tubeLengthConv < 1000)
+            if (tubeLength < 1000)
             {
-                tubeLengthConv = 1000;
+                tubeLength = 1000;
                 MessageBox.Show("Длина шнека меньше миниального!\nПараметру присвоено минимальное значение!");
             }
-            if (tubeLengthConv > 2500)
+            if (tubeLength > 2500)
             {
-                tubeLengthConv = 2500;
+                tubeLength = 2500;
                 MessageBox.Show("Длина шнека больше максимального!\nПараметру присвоено максимальное значение!");
             }
-            if (hexSizeConv == 0)
+            if (hexSize == 0)
             {
-                hexSizeConv = 55;
+                hexSize = 55;
                 MessageBox.Show("Введён неверный размер шестигранника!\nПараметру присвоено значение по умолчанию!");
             }
-            if (holeDistanceConv == 0)
+            if (holeDistance == 0)
             {
-                holeDistanceConv = 52;
+                holeDistance = 52;
                 MessageBox.Show("Введена неверная толщина винта шнека!\nПараметру присвоено значение по умолчанию!");
             }
-            if (shnekDiamConv == 0)
+            if (shnekDiam == 0)
             {
-                shnekDiamConv = 135;
+                shnekDiam = 135;
                 MessageBox.Show("Введён неверный внешний диаметр шнека!\nПараметру присвоено значение по умолчанию!");
             }
-            if (hexSizeConv * 1.5 >= shnekDiamConv)
+            if (hexSize * 1.5 >= shnekDiam)
             {
-                shnekDiamConv = hexSizeConv * 3;
+                shnekDiam = hexSize * 3;
                 MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!\nВнешний диаметр был увеличен!");
             }
-            if (holeDiamConv * 2 >= hexSizeConv)
+            if (holeDiam * 2 >= hexSize)
             {
-                holeDiamConv = 24;
-                hexSizeConv = 55;
+                holeDiam = 24;
+                hexSize = 55;
                 MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбеим параметрам присвоено значение по умолчанию");
             }
-
-            holeDiam = holeDiamConv;
-            tubeLength = tubeLengthConv;
-            //shnekThick = shnekThickConv;
-            shnekThick = 2;
-            shnekDiam = shnekDiamConv;
-            hexSize = hexSizeConv;
-            holeDistance = holeDistanceConv;
             tubeRad = hexSize * 0.75;
-            //step = stepConv;
-            step = 100;
         }
 
         private void InputFieldIsActive(bool isActive)
