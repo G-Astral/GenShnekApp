@@ -42,6 +42,8 @@ namespace GenShnekApp
         int typeCount;
         int styleCount;
 
+        bool mistakeCheck;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -139,7 +141,17 @@ namespace GenShnekApp
         private void CreationButton(object sender, RoutedEventArgs e)
         {
             ParamConv();
+            if (mistakeCheck == true)
+            {
+                e.Handled = false;
+            }
+            if (mistakeCheck == false)
+            {
+                e.Handled = true;
+                return;
+            }
 
+            // Удалить когда модуль станет интегрированным
             try
             {
                 kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
@@ -148,6 +160,7 @@ namespace GenShnekApp
             {
                 kompas = (KompasObject)Activator.CreateInstance(Type.GetTypeFromProgID("KOMPAS.Application.5"));
             }
+            //kompas = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5"); //использовать когда модуль станет интегрированным
             if (kompas == null) return;
             kompas.Visible = true;
 
@@ -649,53 +662,81 @@ namespace GenShnekApp
 
         private void ParamConv()
         {
+            mistakeCheck = true;
+
+            if (mistakeCheck == true)
+            {
+                foreach (TextBox textBox in FindVisualChildren<TextBox>(System.Windows.Application.Current.MainWindow))
+                {
+                    // Set the border brush of each TextBox
+                    textBox.BorderBrush = new SolidColorBrush(Color.FromRgb(171, 173, 179));
+                    //inputTubeLength.BorderBrush = new SolidColorBrush(Color.FromRgb(171, 173, 179));
+                }
+            }
+
             holeDiam = Convert.ToDouble(inputHoleDiam.Text);
             tubeLength = Convert.ToDouble(inputTubeLength.Text);
             shnekDiam = Convert.ToDouble(inputShnekDiam.Text);
             hexSize = Convert.ToDouble(inputHexSize.Text);
             holeDistance = Convert.ToDouble(inputHoleDistance.Text);
 
-            if (holeDiam == 0)
+            if (tubeLength < 1000 || tubeLength > 2500)
             {
-                holeDiam = 24;
-                MessageBox.Show("Введён неверный диаметр отверстия!\nПараметру присвоено значение по умолчанию!");
+                //tubeLength = 1000;
+                inputTubeLength.BorderBrush = Brushes.Red;
+                MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
+                mistakeCheck = false;
             }
-            if (tubeLength < 1000)
+
+
+            if (GhostType.SelectedIndex != 0)
             {
-                tubeLength = 1000;
-                MessageBox.Show("Длина шнека меньше миниального!\nПараметру присвоено минимальное значение!");
+                if (holeDiam == 0)
+                {
+                    //holeDiam = 24;
+                    inputHoleDiam.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Введён неверный диаметр отверстия!");
+                    mistakeCheck = false;
+                }
+                if (hexSize == 0)
+                {
+                    //hexSize = 55;
+                    inputHexSize.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Введён неверный размер шестигранника!");
+                    mistakeCheck = false;
+                }
+                if (holeDistance == 0)
+                {
+                    //holeDistance = 52;
+                    inputHoleDistance.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Введено неверное расстояние отверстия!");
+                    mistakeCheck = false;
+                }
+                if (shnekDiam == 0)
+                {
+                    //shnekDiam = 135;
+                    inputShnekDiam.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                    mistakeCheck = false;
+                }
+                if (hexSize * 1.5 >= shnekDiam)
+                {
+                    //shnekDiam = hexSize * 3;
+                    inputShnekDiam.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
+                    mistakeCheck = false;
+                }
+                if (holeDiam * 2 >= hexSize)
+                {
+                    //holeDiam = 24;
+                    //hexSize = 55;
+                    inputHoleDiam.BorderBrush = Brushes.Red;
+                    inputHexSize.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
+                    mistakeCheck = false;
+                }
             }
-            if (tubeLength > 2500)
-            {
-                tubeLength = 2500;
-                MessageBox.Show("Длина шнека больше максимального!\nПараметру присвоено максимальное значение!");
-            }
-            if (hexSize == 0)
-            {
-                hexSize = 55;
-                MessageBox.Show("Введён неверный размер шестигранника!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (holeDistance == 0)
-            {
-                holeDistance = 52;
-                MessageBox.Show("Введена неверная толщина винта шнека!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (shnekDiam == 0)
-            {
-                shnekDiam = 135;
-                MessageBox.Show("Введён неверный внешний диаметр шнека!\nПараметру присвоено значение по умолчанию!");
-            }
-            if (hexSize * 1.5 >= shnekDiam)
-            {
-                shnekDiam = hexSize * 3;
-                MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!\nВнешний диаметр был увеличен!");
-            }
-            if (holeDiam * 2 >= hexSize)
-            {
-                holeDiam = 24;
-                hexSize = 55;
-                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!\nОбоим параметрам присвоено значение по умолчанию");
-            }
+            
             //tubeRad = hexSize * 0.75;
         }
 
@@ -777,5 +818,27 @@ namespace GenShnekApp
             }
             DefaultShnekChoose.SelectedIndex = 0;
         }
+
+        //Метод для поиска всех текстбоксов (для изменения цвета)
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
     }
 }
