@@ -158,9 +158,6 @@ namespace GenShnekApp
             ksDoc3d.author = "Garnik";   // указание имени автора
 
             part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
-            ksEntity basePlaneXOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOY);  // получим интерфейс базовой плоскости XOY
-            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);  // получим интерфейс базовой плоскости YOZ
-            ksEntity basePlaneXOZ = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);  // получим интерфейс базовой плоскости XOZ
 
             //Шнеки первого типа
             if (ShnekType.SelectedIndex == 0)
@@ -242,7 +239,7 @@ namespace GenShnekApp
                         case 0:
                             CylinderCreation(tubeRad, tubeLength);
                             SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            JointCreation3(90, tubeLength, basePlaneZOY);
+                            JointCreation3(90, tubeLength);
                             break;
                         case 1:
                             CylinderCreation(tubeRad, tubeLength);
@@ -454,8 +451,10 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 3 (тип 2 исполнение 1)/////////////////////////////
-        private void JointCreation3(double diam, double length, ksEntity plane)
+        private void JointCreation3(double diam, double length)
         {
+            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
+
             double rad1 = (diam * 0.8) / 2;
             double rad2 = diam / 2;
             double len1 = 174 * 0.05;
@@ -464,7 +463,7 @@ namespace GenShnekApp
             double len4 = 174 * 0.025;
 
 
-            ksEntity plane1 = OffsetPlaneCreation(length, plane);
+            ksEntity plane1 = OffsetPlaneCreation(length, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
@@ -492,7 +491,7 @@ namespace GenShnekApp
             }
 
 
-            ksEntity plane2 = OffsetPlaneCreation(length + len1, plane);
+            ksEntity plane2 = OffsetPlaneCreation(length + len1, basePlaneZOY);
             ksEntity ksSketchE2 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef2 = ksSketchE2.GetDefinition();
@@ -519,7 +518,7 @@ namespace GenShnekApp
                 bossExtr2.Create();
             }
 
-            ksEntity plane3 = OffsetPlaneCreation(length + len1 + len2, plane);
+            ksEntity plane3 = OffsetPlaneCreation(length + len1 + len2, basePlaneZOY);
             ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
@@ -547,7 +546,7 @@ namespace GenShnekApp
             }
 
 
-            ksEntity plane4 = OffsetPlaneCreation(length + len1 + len2 + len3, plane);
+            ksEntity plane4 = OffsetPlaneCreation(length + len1 + len2 + len3, basePlaneZOY);
             ksEntity ksSketchE4 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
