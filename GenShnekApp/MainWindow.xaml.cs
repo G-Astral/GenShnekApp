@@ -668,96 +668,105 @@ namespace GenShnekApp
             {
                 foreach (TextBox textBox in FindVisualChildren<TextBox>(System.Windows.Application.Current.MainWindow))
                 {
-                    // Set the border brush of each TextBox
                     textBox.BorderBrush = new SolidColorBrush(Color.FromRgb(171, 173, 179));
                 }
             }
 
-            foreach (TextBox textBox in FindVisualChildren<TextBox>(System.Windows.Application.Current.MainWindow))
+            if (string.IsNullOrEmpty(inputTubeLength.Text))
             {
-                if (string.IsNullOrEmpty(textBox.Text))
-                {
-                    mistakeCheck = false;
-                    this.BorderBrush = Brushes.Red;
-                    MessageBox.Show("Обнаружено пустое поле ввода!");
-                    break;
-                }
-                else
-                {
-                    tubeLength = Convert.ToDouble(inputTubeLength.Text);
-                    shnekDiam = Convert.ToDouble(inputShnekDiam.Text);
-                    holeDiam = Convert.ToDouble(inputHoleDiam.Text);
-                    hexSize = Convert.ToDouble(inputHexSize.Text);
-                    holeDistance = Convert.ToDouble(inputHoleDistance.Text);
+                mistakeCheck = false;
+                inputTubeLength.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputShnekDiam.Text))
+            {
+                mistakeCheck = false;
+                inputShnekDiam.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputHoleDiam.Text))
+            {
+                mistakeCheck = false;
+                inputHoleDiam.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputHexSize.Text))
+            {
+                mistakeCheck = false;
+                inputHexSize.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputHoleDistance.Text))
+            {
+                mistakeCheck = false;
+                inputHoleDistance.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else
+            {
+                //mistakeCheck = true;
+                tubeLength = Convert.ToDouble(inputTubeLength.Text);
+                shnekDiam = Convert.ToDouble(inputShnekDiam.Text);
+                holeDiam = Convert.ToDouble(inputHoleDiam.Text);
+                hexSize = Convert.ToDouble(inputHexSize.Text);
+                holeDistance = Convert.ToDouble(inputHoleDistance.Text);
 
-                    if (tubeLength < 1000 || tubeLength > 2500)
+                if (tubeLength < 1000 || tubeLength > 2500)
+                {
+                    inputTubeLength.BorderBrush = Brushes.Red;
+                    MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
+                    mistakeCheck = false;
+                }
+
+
+                if (GhostType.SelectedIndex != 0)
+                {
+                    if (holeDiam == 0)
                     {
-                        //tubeLength = 1000;
-                        inputTubeLength.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
+                        inputHoleDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный диаметр отверстия!");
                         mistakeCheck = false;
                     }
-
-
-                    if (GhostType.SelectedIndex != 0)
+                    if (hexSize == 0)
                     {
-                        if (holeDiam == 0)
-                        {
-                            //holeDiam = 24;
-                            inputHoleDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный диаметр отверстия!");
-                            mistakeCheck = false;
-                        }
-                        if (hexSize == 0)
-                        {
-                            //hexSize = 55;
-                            inputHexSize.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный размер шестигранника!");
-                            mistakeCheck = false;
-                        }
-                        if (holeDistance == 0)
-                        {
-                            //holeDistance = 52;
-                            inputHoleDistance.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введено неверное расстояние отверстия!");
-                            mistakeCheck = false;
-                        }
-                        if (shnekDiam == 0)
-                        {
-                            //shnekDiam = 135;
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                            mistakeCheck = false;
-                        }
-                        if (hexSize * 1.5 >= shnekDiam)
-                        {
-                            //shnekDiam = hexSize * 3;
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
-                            mistakeCheck = false;
-                        }
-                        if (holeDiam * 2 >= hexSize)
-                        {
-                            //holeDiam = 24;
-                            //hexSize = 55;
-                            inputHoleDiam.BorderBrush = Brushes.Red;
-                            inputHexSize.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
-                            mistakeCheck = false;
-                        }
-                        if (holeDiam > holeDistance / 2)
-                        {
-                            inputHoleDiam.BorderBrush = Brushes.Red;
-                            inputHoleDistance.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Диаметр отверстия не может превышать длину присоединительного элемента!");
-                            mistakeCheck = false;
-                        }
+                        inputHexSize.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный размер шестигранника!");
+                        mistakeCheck = false;
+                    }
+                    if (holeDistance == 0)
+                    {
+                        inputHoleDistance.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введено неверное расстояние отверстия!");
+                        mistakeCheck = false;
+                    }
+                    if (shnekDiam == 0)
+                    {
+                        inputShnekDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                        mistakeCheck = false;
+                    }
+                    if (hexSize * 1.5 >= shnekDiam)
+                    {
+                        inputShnekDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
+                        mistakeCheck = false;
+                    }
+                    if (holeDiam * 2 >= hexSize)
+                    {
+                        inputHoleDiam.BorderBrush = Brushes.Red;
+                        inputHexSize.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
+                        mistakeCheck = false;
+                    }
+                    if (holeDiam > holeDistance / 2)
+                    {
+                        inputHoleDiam.BorderBrush = Brushes.Red;
+                        inputHoleDistance.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Диаметр отверстия не может превышать длину присоединительного элемента!");
+                        mistakeCheck = false;
                     }
                 }
             }
-            
-            
-            //tubeRad = hexSize * 0.75;
         }
 
         private void InputFieldIsActive(bool isActive)
@@ -859,6 +868,5 @@ namespace GenShnekApp
                 }
             }
         }
-
     }
 }
