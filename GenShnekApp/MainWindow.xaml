@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenShnekApp"
         mc:Ignorable="d"
-  Title="Генератор Шнеков" Height="1080" Width="1920" 
+  Title="Генератор шнеков" Height="1080" Width="1920" 
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <Grid VerticalAlignment="Center">
@@ -33,15 +33,6 @@
             TextChanged="DeleteSpaces1"
             Text="100"
             Height="30" Width="100" Margin="270,342,1550,-317" IsEnabled="False"></TextBox>-->
-        <TextBlock HorizontalAlignment="Left" Margin="546,262,0,-262">Введите S (мм):</TextBlock>
-        <TextBox 
-            x:Name="inputHexSize"
-            TextAlignment="Center"
-            PreviewTextInput="TextBoxInput"
-            VerticalContentAlignment="Center"
-            TextChanged="DeleteSpaces2"
-            Text="55"
-            Height="30" Width="100" Margin="536,287,1284,-262"></TextBox>
         <TextBlock HorizontalAlignment="Left" Margin="543,109,0,-109">Введите D (мм):</TextBlock>
         <TextBox 
             x:Name="inputShnekDiam"
@@ -60,6 +51,15 @@
             TextChanged="DeleteSpaces4"
             Text="24"
             Height="30" Width="100" Margin="535,219,1285,-194" RenderTransformOrigin="0.21,0.551"/>
+        <TextBlock HorizontalAlignment="Left" Margin="546,262,0,-262">Введите S (мм):</TextBlock>
+        <TextBox 
+            x:Name="inputHexSize"
+            TextAlignment="Center"
+            PreviewTextInput="TextBoxInput"
+            VerticalContentAlignment="Center"
+            TextChanged="DeleteSpaces2"
+            Text="55"
+            Height="30" Width="100" Margin="536,287,1284,-262"></TextBox>
         <TextBlock HorizontalAlignment="Left" Margin="545,340,0,-340">Введите l (мм):</TextBlock>
         <TextBox 
             x:Name="inputHoleDistance"
@@ -99,35 +99,20 @@
         <ComboBox            
             x:Name="DefaultShnekChoose"
             Margin="144,356,1576,-320" Width="200" Height="30">
-            <ComboBoxItem IsSelected="True">
-                <TextBlock>ШБ-135</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock>ШБ-150</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock>ШБ-180</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock>ШБ-200</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock>ШБ-300</TextBlock>
-            </ComboBoxItem>
-            <ComboBoxItem>
-                <TextBlock>ШБ-300У</TextBlock>
-            </ComboBoxItem>
         </ComboBox>
         <ComboBox 
             x:Name="GhostType"
             Margin="144,58,1576,-22" 
             SelectionChanged="GhostTypeSelectionChanged" Width="200" Height="30"
             >
-            <ComboBoxItem IsSelected="True">
+            <ComboBoxItem IsSelected="False">
                 <TextBlock>ГОСТ 24328-80</TextBlock>
             </ComboBoxItem>
             <ComboBoxItem>
                 <TextBlock TextWrapping="Wrap">ГОСТ 24328-80 (Пользовательский)</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem IsSelected="True">
+                <TextBlock>ГОСТ 14773-80</TextBlock>
             </ComboBoxItem>
         </ComboBox>
         <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="415" Margin="423,-470,0,0" VerticalAlignment="Top" Width="1358"/>

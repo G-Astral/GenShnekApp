@@ -62,6 +62,9 @@ namespace GenShnekApp
                 case 1:
                     GOSTSelection2();
                     break;
+                case 2:
+                    GOSTSelection3();
+                    break;
 /*                default:
                     typeCount = 2;
                     break;*/
@@ -172,110 +175,133 @@ namespace GenShnekApp
 
             part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
 
-            //Шнеки первого типа
-            if (ShnekType.SelectedIndex == 0)
+            //Буровые шнеки
+            if (GhostType.SelectedIndex != 2)
             {
-                tubeRad = hexSize * 0.75;
-                //Дефолтные шнеки
-                if (DefaultShnekChoose.IsEnabled == true)
+                //Шнеки первого типа
+                if (ShnekType.SelectedIndex == 0)
                 {
-                    switch (DefaultShnekChoose.SelectedIndex)
+                    tubeRad = hexSize * 0.75;
+                    //Дефолтные шнеки
+                    if (DefaultShnekChoose.IsEnabled == true)
                     {
-                        case 0:
-                            CylinderCreation(55 * 0.75, tubeLength);
-                            JointCreation1(55, 52);
-                            JointHoleCreation(24, 52, 0);
-                            SpyralCreation(55 * 0.75, 100, tubeLength, 2, 135);
-                            break;
-                        case 1:
-                            CylinderCreation(55 * 0.75, tubeLength);
-                            JointCreation1(55, 52);
-                            JointHoleCreation(24, 52, 0);
-                            SpyralCreation(55 * 0.75, 100, tubeLength, 2, 150);
-                            break;
-                        case 2:
-                            CylinderCreation(55 * 0.75, tubeLength);
-                            JointCreation1(55, 52);
-                            JointHoleCreation(24, 52, 0);
-                            SpyralCreation(55 * 0.75, 100, tubeLength, 2, 180);
-                            break;
-                        case 3:
-                            CylinderCreation(60 * 0.75, tubeLength);
-                            JointCreation1(60, 55);
-                            JointHoleCreation(27, 55, 0);
-                            SpyralCreation(60 * 0.75, 100, tubeLength, 2, 200);
-                            break;
-                        case 4:
-                            CylinderCreation(60 * 0.75, tubeLength);
-                            JointCreation1(60, 55);
-                            JointHoleCreation(27, 55, 0);
-                            SpyralCreation(60 * 0.75, 100, tubeLength, 2, 300);
-                            break;
-                        case 5:
-                            JointCreation2(90, 95 * 3 / 2);
-                            CylinderCreation(90 * 0.75, tubeLength);
-                            JointHoleCreation(30, 95, 0);
-                            SpyralCreation(90 * 0.75, 100, tubeLength, 2, 300);
-                            break;
+                        switch (DefaultShnekChoose.SelectedIndex)
+                        {
+                            case 0:
+                                CylinderCreation(55 * 0.75, tubeLength);
+                                JointCreation1(55, 52);
+                                JointHoleCreation(24, 52, 0);
+                                JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
+                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 135);
+                                break;
+                            case 1:
+                                CylinderCreation(55 * 0.75, tubeLength);
+                                JointCreation1(55, 52);
+                                JointHoleCreation(24, 52, 0);
+                                JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
+                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 150);
+                                break;
+                            case 2:
+                                CylinderCreation(55 * 0.75, tubeLength);
+                                JointCreation1(55, 52);
+                                JointHoleCreation(24, 52, 0);
+                                JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
+                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 180);
+                                break;
+                            case 3:
+                                CylinderCreation(60 * 0.75, tubeLength);
+                                JointCreation1(60, 55);
+                                JointHoleCreation(27, 55, 0);
+                                JointHoleCreation(24, -tubeLength + (55 * 2 / 3), 0);
+                                SpyralCreation(60 * 0.75, 100, tubeLength, 2, 200);
+                                break;
+                            case 4:
+                                CylinderCreation(60 * 0.75, tubeLength);
+                                JointCreation1(60, 55);
+                                JointHoleCreation(27, 55, 0);
+                                JointHoleCreation(24, -tubeLength + (55 * 2 / 3), 0);
+                                SpyralCreation(60 * 0.75, 100, tubeLength, 2, 300);
+                                break;
+                            case 5:
+                                JointCreation2(90, 95 * 3 / 2);
+                                CylinderCreation(90 * 0.75, tubeLength);
+                                JointHoleCreation(30, 95, 0);
+                                JointHoleCreation(24, -tubeLength + (95 * 2 / 3), 0);
+                                SpyralCreation(90 * 0.75, 100, tubeLength, 2, 300);
+                                break;
+                        }
+                    }
+                    //Выбор исполнения шнека
+                    if (ShnekStyle.IsEnabled == true)
+                    {
+                        switch (ShnekStyle.SelectedIndex)
+                        {
+                            case 0:
+                                CylinderCreation(tubeRad, tubeLength);
+                                JointCreation1(hexSize, holeDistance);
+                                JointHoleCreation(holeDiam, holeDistance, 0);
+                                JointHoleCreation(holeDiam, -tubeLength + (holeDistance * 2 / 3), 0);
+                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                break;
+                            case 1:
+                                JointCreation2(hex2Size, holeDistance * 3 / 2);
+                                CylinderCreation(tubeRad, tubeLength);
+                                JointHoleCreation(holeDiam, holeDistance, 0);
+                                JointHoleCreation(holeDiam, -tubeLength + (holeDistance * 2 / 3), 0);
+                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                break;
+                        }
                     }
                 }
-                //Выбор исполнения шнека
-                if (ShnekStyle.IsEnabled == true)
+                //Шнеки второго типа
+                else
                 {
-                    switch (ShnekStyle.SelectedIndex)
+                    shnekDiam = 270;
+                    tubeRad = (shnekDiam * 10 / 27) / 2;
+                    //Дефолтные шнеки
+                    if (DefaultShnekChoose.IsEnabled == true)
                     {
-                        case 0:
+                        switch (DefaultShnekChoose.SelectedIndex)
+                        {
+                            case 0:
+                                CylinderCreation(tubeRad, tubeLength);
+                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                JointCreation3(90, tubeLength);
+                                break;
+                            case 1:
+                                CylinderCreation(tubeRad, tubeLength);
+                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                break;
+                            case 2:
+                                CylinderCreation(tubeRad, tubeLength);
+                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                break;
+                        }
+                    }
+                    //Выбор исполнения шнека
+                    else
+                    {
+                        if (ShnekStyle.SelectedIndex == 0)
+                        {
+                            MessageBox.Show("Шнек типа 2 исполнения 1 (ШС-200)\nне предусмотрен для параметризации!");
+                        }
+                        else
+                        {
                             CylinderCreation(tubeRad, tubeLength);
-                            JointCreation1(hexSize, holeDistance);
-                            JointHoleCreation(holeDiam, holeDistance, 0);
                             SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            break;
-                        case 1:
-                            JointCreation2(hex2Size, holeDistance * 3 / 2);
-                            CylinderCreation(tubeRad, tubeLength);
-                            JointHoleCreation(holeDiam, holeDistance, 0);
-                            SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            break;
+                        }
                     }
                 }
             }
-            //Шнеки второго типа
+            //Экструзионные шнеки
             else
             {
-                shnekDiam = 270;
-                tubeRad = (shnekDiam * 10 / 27) / 2;
-                //Дефолтные шнеки
-                if (DefaultShnekChoose.IsEnabled == true)
+                switch (DefaultShnekChoose.SelectedIndex)
                 {
-                    switch (DefaultShnekChoose.SelectedIndex)
-                    {
-                        case 0:
-                            CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            JointCreation3(90, tubeLength);
-                            break;
-                        case 1:
-                            CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            break;
-                        case 2:
-                            CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                            break;
-                    }
-                }
-                //Выбор исполнения шнека
-                else
-                {
-                    if (ShnekStyle.SelectedIndex == 0)
-                    {
-                        MessageBox.Show("Шнек типа 2 исполнения 1 (ШС-200)\nне предусмотрен для параметризации!");
-                    }
-                    else
-                    {
-                        CylinderCreation(tubeRad, tubeLength);
-                        SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
-                    }
+                    case 0:
+                        CylinderCreation(10 - (0.005 * 10), 20 * 20);
+                        SpyralCreation((0.005 * 20) / 2, 20 * 1.2, 20 * 20/3, 20 * 0.06, 20);
+                        break;
                 }
             }
         }
@@ -785,16 +811,33 @@ namespace GenShnekApp
             //ShnekType.IsEnabled = true;
             typeCount = 2;
             InputFieldIsActive(false);
+            inputTubeLength.IsEnabled = true;
             ShnekStyle.IsEnabled = false;
+            ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = true;
         }
 
         private void GOSTSelection2()
         {
+            typeCount = 2;
             InputFieldIsActive(true);
+            inputTubeLength.IsEnabled = true;
             //ShnekType.IsEnabled = false;
             ShnekStyle.IsEnabled = true;
+            ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = false;
+        }
+
+        private void GOSTSelection3()
+        {
+            typeCount = 0;
+            InputFieldIsActive(false);
+            inputTubeLength.IsEnabled = false;
+            ShnekStyle.IsEnabled = false;
+            ShnekStyle.Items.Clear();
+            ShnekType.IsEnabled = false;
+            DefaultShnekChoose.IsEnabled = true;
+            DefaultShnekItems3();
         }
 
         private void DefaultShnekItems1()
@@ -803,27 +846,27 @@ namespace GenShnekApp
             {
                 if (i == 0)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-135");
+                    DefaultShnekChoose.Items.Add("ШБ-135");
                 }
                 if (i == 1)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-150");
+                    DefaultShnekChoose.Items.Add("ШБ-150");
                 }
                 if (i == 2)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-180");
+                    DefaultShnekChoose.Items.Add("ШБ-180");
                 }
                 if (i == 3)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-200");
+                    DefaultShnekChoose.Items.Add("ШБ-200");
                 }
                 if (i == 4)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-300");
+                    DefaultShnekChoose.Items.Add("ШБ-300");
                 }
                 if (i == 5)
                 {
-                    DefaultShnekChoose.Items.Add($"ШБ-300У");
+                    DefaultShnekChoose.Items.Add("ШБ-300У");
                 }
             }
             DefaultShnekChoose.SelectedIndex = 0;
@@ -834,18 +877,78 @@ namespace GenShnekApp
             {
                 if (i == 0)
                 {
-                    DefaultShnekChoose.Items.Add($"ШС-80");
+                    DefaultShnekChoose.Items.Add("ШС-80");
                 }
                 if (i == 1)
                 {
-                    DefaultShnekChoose.Items.Add($"ШС-100");
+                    DefaultShnekChoose.Items.Add("ШС-100");
                 }
                 if (i == 2)
                 {
-                    DefaultShnekChoose.Items.Add($"ШС-200");
+                    DefaultShnekChoose.Items.Add("ШС-200");
                 }
             }
             DefaultShnekChoose.SelectedIndex = 0;
+        }
+
+        private void DefaultShnekItems3()
+        {
+            for (int i = 0; i < 13; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 20х20");
+                }
+                if (i == 1)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 32х20");
+                }
+                if (i == 2)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 45х20");
+                }
+                if (i == 3)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 45х25");
+                }
+                if (i == 4)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 63х20");
+                }
+                if (i == 5)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 63х25");
+                }
+                if (i == 6)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 63х30");
+                }
+                if (i == 7)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 90х20");
+                }
+                if (i == 8)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 90х25");
+                }
+                if (i == 9)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 90х30");
+                }
+                if (i == 10)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 125х25");
+                }
+                if (i == 11)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 160х20");
+                }
+                if (i == 12)
+                {
+                    DefaultShnekChoose.Items.Add("ЧП 200х20");
+                }
+                DefaultShnekChoose.SelectedIndex = 0;
+            }
         }
 
         //Метод для поиска всех текстбоксов (для изменения цвета)
