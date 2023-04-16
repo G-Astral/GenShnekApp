@@ -28,13 +28,13 @@ namespace GenShnekApp
     {
         double holeDiam;
         double tubeLength;
-        double shnekThick = 2;
+        double shnekThick;
         double shnekDiam;
         double hexSize;
-        double hex2Size = 90;
+        double hex2Size;
         double holeDistance;
         double tubeRad;
-        double step = 100;
+        double step;
 
         KompasObject kompas;
         ksPart part;
@@ -83,11 +83,13 @@ namespace GenShnekApp
             {
                 case 0:
                     if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
                     styleCount = 2;
                     DefaultShnekItems1();
                     break;
                 case 1:
                     if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
                     styleCount = 2;
                     DefaultShnekItems2();
                     break;
@@ -110,11 +112,11 @@ namespace GenShnekApp
             inputTubeLength.Text = inputTubeLength.Text.Replace(" ", string.Empty);
             inputTubeLength.SelectionStart = inputTubeLength.Text.Length;
         }
-/*        private void DeleteSpaces1(object sender, TextChangedEventArgs e)
+        private void DeleteSpaces1(object sender, TextChangedEventArgs e)
         {
             inputStep.Text = inputStep.Text.Replace(" ", string.Empty);
             inputStep.SelectionStart = inputStep.Text.Length;
-        }*/
+        }
         private void DeleteSpaces2(object sender, TextChangedEventArgs e)
         {
             inputHexSize.Text = inputHexSize.Text.Replace(" ", string.Empty);
@@ -135,11 +137,16 @@ namespace GenShnekApp
             inputHoleDistance.Text = inputHoleDistance.Text.Replace(" ", string.Empty);
             inputHoleDistance.SelectionStart = inputHoleDistance.Text.Length;
         }
-/*        private void DeleteSpaces6(object sender, TextChangedEventArgs e)
+        private void DeleteSpaces6(object sender, TextChangedEventArgs e)
         {
             inputShnekThick.Text = inputShnekThick.Text.Replace(" ", string.Empty);
             inputShnekThick.SelectionStart = inputShnekThick.Text.Length;
-        }*/
+        }
+        private void DeleteSpaces7(object sender, TextChangedEventArgs e)
+        {
+            inputHex2Size.Text = inputHex2Size.Text.Replace(" ", string.Empty);
+            inputHex2Size.SelectionStart = inputHex2Size.Text.Length;
+        }
 
         private void CreationButton(object sender, RoutedEventArgs e)
         {
@@ -192,42 +199,42 @@ namespace GenShnekApp
                                 JointCreation1(55, 52);
                                 JointHoleCreation(24, 52, 0);
                                 JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
-                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 135);
+                                SpyralCreation(55 * 0.75, 100, 0, tubeLength, 2, 135);
                                 break;
                             case 1:
                                 CylinderCreation(55 * 0.75, tubeLength);
                                 JointCreation1(55, 52);
                                 JointHoleCreation(24, 52, 0);
                                 JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
-                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 150);
+                                SpyralCreation(55 * 0.75, 100, 0, tubeLength, 2, 150);
                                 break;
                             case 2:
                                 CylinderCreation(55 * 0.75, tubeLength);
                                 JointCreation1(55, 52);
                                 JointHoleCreation(24, 52, 0);
                                 JointHoleCreation(24, -tubeLength + (52 * 2 / 3), 0);
-                                SpyralCreation(55 * 0.75, 100, tubeLength, 2, 180);
+                                SpyralCreation(55 * 0.75, 100, 0, tubeLength, 2, 180);
                                 break;
                             case 3:
                                 CylinderCreation(60 * 0.75, tubeLength);
                                 JointCreation1(60, 55);
                                 JointHoleCreation(27, 55, 0);
                                 JointHoleCreation(24, -tubeLength + (55 * 2 / 3), 0);
-                                SpyralCreation(60 * 0.75, 100, tubeLength, 2, 200);
+                                SpyralCreation(60 * 0.75, 100, 0, tubeLength, 2, 200);
                                 break;
                             case 4:
                                 CylinderCreation(60 * 0.75, tubeLength);
                                 JointCreation1(60, 55);
                                 JointHoleCreation(27, 55, 0);
                                 JointHoleCreation(24, -tubeLength + (55 * 2 / 3), 0);
-                                SpyralCreation(60 * 0.75, 100, tubeLength, 2, 300);
+                                SpyralCreation(60 * 0.75, 100, 0, tubeLength, 2, 300);
                                 break;
                             case 5:
                                 JointCreation2(90, 95 * 3 / 2);
                                 CylinderCreation(90 * 0.75, tubeLength);
                                 JointHoleCreation(30, 95, 0);
                                 JointHoleCreation(24, -tubeLength + (95 * 2 / 3), 0);
-                                SpyralCreation(90 * 0.75, 100, tubeLength, 2, 300);
+                                SpyralCreation(90 * 0.75, 100, 0, tubeLength, 2, 300);
                                 break;
                         }
                     }
@@ -237,18 +244,22 @@ namespace GenShnekApp
                         switch (ShnekStyle.SelectedIndex)
                         {
                             case 0:
+                                /*inputHexSize.IsEnabled = true;
+                                inputHex2Size.IsEnabled = false;*/
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointCreation1(hexSize, holeDistance);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
                                 JointHoleCreation(holeDiam, -tubeLength + (holeDistance * 2 / 3), 0);
-                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                             case 1:
+/*                                inputHexSize.IsEnabled = false;
+                                inputHex2Size.IsEnabled = true;*/
                                 JointCreation2(hex2Size, holeDistance * 3 / 2);
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
                                 JointHoleCreation(holeDiam, -tubeLength + (holeDistance * 2 / 3), 0);
-                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                         }
                     }
@@ -265,16 +276,16 @@ namespace GenShnekApp
                         {
                             case 0:
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 JointCreation3(90, tubeLength);
                                 break;
                             case 1:
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                             case 2:
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                         }
                     }
@@ -288,7 +299,7 @@ namespace GenShnekApp
                         else
                         {
                             CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, tubeLength, shnekThick, shnekDiam);
+                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                         }
                     }
                 }
@@ -300,7 +311,7 @@ namespace GenShnekApp
                 {
                     case 0:
                         CylinderCreation(10 - (0.005 * 10), 20 * 20);
-                        SpyralCreation((0.005 * 20) / 2, 20 * 1.2, 20 * 20/3, 20 * 0.06, 20);
+                        SpyralCreation((0.005 * 20) / 2, 20 * 1.2, 0, 20 * 20/3, 20 * 0.06, 20);
                         break;
                 }
             }
@@ -630,22 +641,23 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание винта/////////////////////////////
-        private void SpyralCreation(double rad, double spyralStep, double turn, double thick, double sDiam)
+        private void SpyralCreation(double rad, double spyralStep, double start, double end, double thick, double sDiam)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
             ksEntity basePlaneXOZ = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);
+            ksEntity startPlane = OffsetPlaneCreation(start, basePlaneZOY);
 
             //траектория
             ksEntity ksSketchE1 = part.NewEntity((short)Obj3dType.o3d_cylindricSpiral);
 
             CylindricSpiralDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
 
-            ksSketchDef1.SetPlane(basePlaneZOY);
+            ksSketchDef1.SetPlane(startPlane);
 
             ksSketchDef1.diam = rad*2;
             ksSketchDef1.buildMode = 0;
             ksSketchDef1.step = spyralStep;
-            ksSketchDef1.turn = turn / spyralStep;
+            ksSketchDef1.turn = end / spyralStep;
             ksSketchDef1.buildDir = true;
             ksSketchDef1.turnDir = true;
             ksSketchE1.hidden = true;
@@ -736,6 +748,9 @@ namespace GenShnekApp
                 holeDiam = Convert.ToDouble(inputHoleDiam.Text);
                 hexSize = Convert.ToDouble(inputHexSize.Text);
                 holeDistance = Convert.ToDouble(inputHoleDistance.Text);
+                hex2Size = Convert.ToDouble(inputHex2Size.Text);
+                step = Convert.ToDouble(inputStep.Text);
+                shnekThick = Convert.ToDouble(inputShnekThick.Text);
 
                 if (tubeLength < 1000 || tubeLength > 2500)
                 {
@@ -743,7 +758,6 @@ namespace GenShnekApp
                     MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
                     mistakeCheck = false;
                 }
-
 
                 if (GhostType.SelectedIndex != 0)
                 {
@@ -771,6 +785,24 @@ namespace GenShnekApp
                         MessageBox.Show("Введён неверный внешний диаметр шнека!");
                         mistakeCheck = false;
                     }
+                    if (step == 0)
+                    {
+                        inputShnekDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                        mistakeCheck = false;
+                    }
+                    if (hex2Size == 0)
+                    {
+                        inputShnekDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                        mistakeCheck = false;
+                    }
+                    if (shnekThick == 0)
+                    {
+                        inputShnekDiam.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                        mistakeCheck = false;
+                    }
                     if (hexSize * 1.5 >= shnekDiam)
                     {
                         inputShnekDiam.BorderBrush = Brushes.Red;
@@ -784,11 +816,31 @@ namespace GenShnekApp
                         MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
                         mistakeCheck = false;
                     }
+                    if (holeDiam * 55 / 24 >= hex2Size)
+                    {
+                        inputHoleDiam.BorderBrush = Brushes.Red;
+                        inputHex2Size.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Диаметр отверстия не может быть больше боковой грани присоединительного элемента!");
+                        mistakeCheck = false;
+                    }
                     if (holeDiam > holeDistance / 2)
                     {
                         inputHoleDiam.BorderBrush = Brushes.Red;
                         inputHoleDistance.BorderBrush = Brushes.Red;
                         MessageBox.Show("Диаметр отверстия не может превышать длину присоединительного элемента!");
+                        mistakeCheck = false;
+                    }
+                    if (shnekThick >= step)
+                    {
+                        inputShnekThick.BorderBrush = Brushes.Red;
+                        inputStep.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Толщина винта должна быть меньше шага!");
+                        mistakeCheck = false;
+                    }
+                    if (step < 50 || step > 200)
+                    {
+                        inputStep.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Шаг винта должен находиться в диапазоне от 50 до 200 мм!");
                         mistakeCheck = false;
                     }
                 }
@@ -799,11 +851,12 @@ namespace GenShnekApp
         {
             inputHoleDiam.IsEnabled = isActive;
             //inputTubeLength.IsEnabled = isActive;
-            //inputShnekThick.IsEnabled = isActive;
+            inputShnekThick.IsEnabled = isActive;
             inputShnekDiam.IsEnabled = isActive;
             inputHexSize.IsEnabled = isActive;
             inputHoleDistance.IsEnabled = isActive;
-            //inputStep.IsEnabled = isActive;
+            inputStep.IsEnabled = isActive;
+            inputHex2Size.IsEnabled = isActive;
         }
 
         private void GOSTSelection1()
@@ -970,6 +1023,11 @@ namespace GenShnekApp
                     }
                 }
             }
+        }
+
+        private void CloseButton(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }
