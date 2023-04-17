@@ -767,12 +767,6 @@ namespace GenShnekApp
                         MessageBox.Show("Введён неверный диаметр отверстия!");
                         mistakeCheck = false;
                     }
-                    if (hexSize == 0)
-                    {
-                        inputHexSize.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный размер шестигранника!");
-                        mistakeCheck = false;
-                    }
                     if (holeDistance == 0)
                     {
                         inputHoleDistance.BorderBrush = Brushes.Red;
@@ -791,12 +785,6 @@ namespace GenShnekApp
                         MessageBox.Show("Введён неверный внешний диаметр шнека!");
                         mistakeCheck = false;
                     }
-                    if (hex2Size == 0)
-                    {
-                        inputShnekDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                        mistakeCheck = false;
-                    }
                     if (shnekThick == 0)
                     {
                         inputShnekDiam.BorderBrush = Brushes.Red;
@@ -809,19 +797,40 @@ namespace GenShnekApp
                         MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
                         mistakeCheck = false;
                     }
-                    if (holeDiam * 2 >= hexSize)
+                    if (ShnekType.SelectedIndex == 0)
                     {
-                        inputHoleDiam.BorderBrush = Brushes.Red;
-                        inputHexSize.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
-                        mistakeCheck = false;
-                    }
-                    if (holeDiam * 55 / 24 >= hex2Size)
-                    {
-                        inputHoleDiam.BorderBrush = Brushes.Red;
-                        inputHex2Size.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Диаметр отверстия не может быть больше боковой грани присоединительного элемента!");
-                        mistakeCheck = false;
+                        if (ShnekStyle.SelectedIndex == 0)
+                        {
+                            if (hexSize == 0)
+                            {
+                                inputHexSize.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный размер шестигранника!");
+                                mistakeCheck = false;
+                            }
+                            if (holeDiam * 2 >= hexSize)
+                            {
+                                inputHoleDiam.BorderBrush = Brushes.Red;
+                                inputHexSize.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани шестигранника!");
+                                mistakeCheck = false;
+                            }
+                        }
+                        else
+                        {
+                            if (hex2Size == 0)
+                            {
+                                inputShnekDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                                mistakeCheck = false;
+                            }
+                            if (holeDiam * 55 / 24 >= hex2Size)
+                            {
+                                inputHoleDiam.BorderBrush = Brushes.Red;
+                                inputHex2Size.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Диаметр отверстия не может быть больше боковой грани присоединительного элемента!");
+                                mistakeCheck = false;
+                            }
+                        }
                     }
                     if (holeDiam > holeDistance / 2)
                     {
@@ -859,6 +868,48 @@ namespace GenShnekApp
             inputHex2Size.IsEnabled = isActive;
         }
 
+        private void InputFieldIvVisible(bool isVisible)
+        {
+            if (isVisible)
+            {
+                inputTubeLengthText.Visibility = Visibility.Visible;
+                inputTubeLength.Visibility = Visibility.Visible;
+                inputShnekDiamText.Visibility = Visibility.Visible;
+                inputShnekDiam.Visibility = Visibility.Visible;
+                inputHoleDiamText.Visibility = Visibility.Visible;
+                inputHoleDiam.Visibility = Visibility.Visible;
+                inputHexSizeText.Visibility = Visibility.Visible;
+                inputHexSize.Visibility = Visibility.Visible;
+                inputHoleDistanceText.Visibility = Visibility.Visible;
+                inputHoleDistance.Visibility = Visibility.Visible;
+                inputHex2SizeText.Visibility = Visibility.Visible;
+                inputHex2Size.Visibility = Visibility.Visible;
+                inputStepText.Visibility = Visibility.Visible;
+                inputStep.Visibility = Visibility.Visible;
+                inputShnekThickText.Visibility = Visibility.Visible;
+                inputShnekThick.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                inputTubeLengthText.Visibility = Visibility.Collapsed;
+                inputTubeLength.Visibility = Visibility.Collapsed;
+                inputShnekDiamText.Visibility = Visibility.Collapsed;
+                inputShnekDiam.Visibility = Visibility.Collapsed;
+                inputHoleDiamText.Visibility = Visibility.Collapsed;
+                inputHoleDiam.Visibility = Visibility.Collapsed;
+                inputHexSizeText.Visibility = Visibility.Collapsed;
+                inputHexSize.Visibility = Visibility.Collapsed;
+                inputHoleDistanceText.Visibility = Visibility.Collapsed;
+                inputHoleDistance.Visibility = Visibility.Collapsed;
+                inputHex2SizeText.Visibility = Visibility.Collapsed;
+                inputHex2Size.Visibility = Visibility.Collapsed;
+                inputStepText.Visibility = Visibility.Collapsed;
+                inputStep.Visibility = Visibility.Collapsed;
+                inputShnekThickText.Visibility = Visibility.Collapsed;
+                inputShnekThick.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void GOSTSelection1()
         {
             //ShnekType.IsEnabled = true;
@@ -868,6 +919,7 @@ namespace GenShnekApp
             ShnekStyle.IsEnabled = false;
             ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = true;
+            InputFieldIvVisible(true);
         }
 
         private void GOSTSelection2()
@@ -879,6 +931,7 @@ namespace GenShnekApp
             ShnekStyle.IsEnabled = true;
             ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = false;
+            InputFieldIvVisible(true);
         }
 
         private void GOSTSelection3()
@@ -891,6 +944,7 @@ namespace GenShnekApp
             ShnekType.IsEnabled = false;
             DefaultShnekChoose.IsEnabled = true;
             DefaultShnekItems3();
+            InputFieldIvVisible(false);
         }
 
         private void DefaultShnekItems1()
