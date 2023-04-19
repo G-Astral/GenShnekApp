@@ -9,9 +9,9 @@
         Title="Генератор шнеков" Height="720" Width="1200" 
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-    <TabControl>
+    <TabControl  Background="LightGray">
         <TabItem Header="Моделирование">
-            <Grid Height="700" Width="1200" Background="LightGray" Margin="0,0,-6,0">
+            <Grid Height="700" Width="1200" Margin="0,0,-6,0">
                 <Rectangle Margin="31,25,34,426" Stroke="Black"></Rectangle>
                 <Rectangle Margin="31,25,34,657" Stroke="Black"></Rectangle>
                 <Rectangle Margin="487,25,34,426" Stroke="Black"></Rectangle>
