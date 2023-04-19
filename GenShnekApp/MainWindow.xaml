@@ -14,14 +14,16 @@
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
                 <Rectangle Margin="31,25,34,426" Stroke="Black"></Rectangle>
                 <Rectangle Margin="31,25,34,657" Stroke="Black"></Rectangle>
-                <Rectangle Margin="487,25,34,426" Stroke="Black"></Rectangle>
+                <Rectangle Margin="466,25,34,426" Stroke="Black"></Rectangle>
                 <Rectangle Margin="31,301,34,126" Stroke="Black"></Rectangle>
                 <Rectangle Margin="31,301,34,381" Stroke="Black"></Rectangle>
+                <Rectangle Margin="466,301,34,126" Stroke="Black"></Rectangle>
                 <TextBlock Height="20" HorizontalAlignment="Left" Margin="35,301,0,379">Параметры</TextBlock>
                 <TextBlock Height="20" HorizontalAlignment="Left" Margin="35,25,0,655">Выбор режима</TextBlock>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="496,25,0,655">Таблица размеров</TextBlock>
+                <TextBlock Height="20" HorizontalAlignment="Left" Margin="471,25,0,655">Таблица размеров</TextBlock>
                 <TextBlock Height="20" x:Name="inputTubeLengthText" HorizontalAlignment="Left" Margin="35,328,0,352">Длина трубы, мм</TextBlock>
                 <TextBlock Height="20" x:Name="inputTubeLengthTextLet" HorizontalAlignment="Left" Margin="225,328,0,352">---</TextBlock>
+                <TextBlock Height="20" HorizontalAlignment="Left" Margin="471,301,0,379">Чертёж</TextBlock>
                 <TextBox 
                     x:Name="inputTubeLength"
                     TextAlignment="Left"
