@@ -180,5 +180,11 @@
   <ItemGroup>
     <Resource Include="ShnekTable2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ShnekSketch3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ShnekTable3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

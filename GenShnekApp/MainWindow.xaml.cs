@@ -79,24 +79,25 @@ namespace GenShnekApp
         {
             ShnekStyle.Items.Clear();
             DefaultShnekChoose.Items.Clear();
-            switch (ShnekType.SelectedIndex)
+            if (ShnekType.SelectedIndex != 2)
             {
-                case 0:
-                    if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
-                    styleCount = 2;
-                    DefaultShnekItems1();
-                    break;
-                case 1:
-                    if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
-                    styleCount = 2;
-                    DefaultShnekItems2();
-                    break;
-/*                default:
-                    styleCount = 2;
-                    break;*/
+                switch (ShnekType.SelectedIndex)
+                {
+                    case 0:
+                        if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
+                        if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
+                        styleCount = 2;
+                        DefaultShnekItems1();
+                        break;
+                    case 1:
+                        if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
+                        if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
+                        styleCount = 2;
+                        DefaultShnekItems2();
+                        break;
+                }
             }
+            
 
             for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
             ShnekStyle.SelectedIndex = 0;
@@ -310,8 +311,8 @@ namespace GenShnekApp
                 switch (DefaultShnekChoose.SelectedIndex)
                 {
                     case 0:
-                        CylinderCreation(10 - (0.005 * 10), 20 * 20);
-                        SpyralCreation((0.005 * 20) / 2, 20 * 1.2, 0, 20 * 20/3, 20 * 0.06, 20);
+                        CylinderCreation(10, 20 * 20);
+                        SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20 / 3, 20 * 0.06, 20);
                         break;
                 }
             }
@@ -873,39 +874,55 @@ namespace GenShnekApp
             if (isVisible)
             {
                 inputTubeLengthText.Visibility = Visibility.Visible;
+                inputTubeLengthTextLet.Visibility = Visibility.Visible;
                 inputTubeLength.Visibility = Visibility.Visible;
                 inputShnekDiamText.Visibility = Visibility.Visible;
+                inputShnekDiamTextLet.Visibility = Visibility.Visible;
                 inputShnekDiam.Visibility = Visibility.Visible;
                 inputHoleDiamText.Visibility = Visibility.Visible;
+                inputHoleDiamTextLet.Visibility = Visibility.Visible;
                 inputHoleDiam.Visibility = Visibility.Visible;
                 inputHexSizeText.Visibility = Visibility.Visible;
+                inputHexSizeTextLet.Visibility = Visibility.Visible;
                 inputHexSize.Visibility = Visibility.Visible;
                 inputHoleDistanceText.Visibility = Visibility.Visible;
+                inputHoleDistanceTextLet.Visibility = Visibility.Visible;
                 inputHoleDistance.Visibility = Visibility.Visible;
                 inputHex2SizeText.Visibility = Visibility.Visible;
+                inputHex2SizeTextLet.Visibility = Visibility.Visible;
                 inputHex2Size.Visibility = Visibility.Visible;
                 inputStepText.Visibility = Visibility.Visible;
+                inputStepTextLet.Visibility = Visibility.Visible;
                 inputStep.Visibility = Visibility.Visible;
                 inputShnekThickText.Visibility = Visibility.Visible;
+                inputShnekThickTextLet.Visibility = Visibility.Visible;
                 inputShnekThick.Visibility = Visibility.Visible;
             }
             else
             {
                 inputTubeLengthText.Visibility = Visibility.Collapsed;
+                inputTubeLengthTextLet.Visibility = Visibility.Collapsed;
                 inputTubeLength.Visibility = Visibility.Collapsed;
                 inputShnekDiamText.Visibility = Visibility.Collapsed;
+                inputShnekDiamTextLet.Visibility = Visibility.Collapsed;
                 inputShnekDiam.Visibility = Visibility.Collapsed;
                 inputHoleDiamText.Visibility = Visibility.Collapsed;
+                inputHoleDiamTextLet.Visibility = Visibility.Collapsed;
                 inputHoleDiam.Visibility = Visibility.Collapsed;
                 inputHexSizeText.Visibility = Visibility.Collapsed;
+                inputHexSizeTextLet.Visibility = Visibility.Collapsed;
                 inputHexSize.Visibility = Visibility.Collapsed;
                 inputHoleDistanceText.Visibility = Visibility.Collapsed;
+                inputHoleDistanceTextLet.Visibility = Visibility.Collapsed;
                 inputHoleDistance.Visibility = Visibility.Collapsed;
                 inputHex2SizeText.Visibility = Visibility.Collapsed;
+                inputHex2SizeTextLet.Visibility = Visibility.Collapsed;
                 inputHex2Size.Visibility = Visibility.Collapsed;
                 inputStepText.Visibility = Visibility.Collapsed;
+                inputStepTextLet.Visibility = Visibility.Collapsed;
                 inputStep.Visibility = Visibility.Collapsed;
                 inputShnekThickText.Visibility = Visibility.Collapsed;
+                inputShnekThickTextLet.Visibility = Visibility.Collapsed;
                 inputShnekThick.Visibility = Visibility.Collapsed;
             }
         }
@@ -945,6 +962,9 @@ namespace GenShnekApp
             DefaultShnekChoose.IsEnabled = true;
             DefaultShnekItems3();
             InputFieldIvVisible(false);
+            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
+            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
+
         }
 
         private void DefaultShnekItems1()
