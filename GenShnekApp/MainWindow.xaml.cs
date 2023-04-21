@@ -18,6 +18,7 @@ using Kompas6Constants;
 using System.Runtime.InteropServices;
 using KompasAPI7;
 using System.IO;
+using static System.Math;
 
 namespace GenShnekApp
 {
@@ -65,12 +66,12 @@ namespace GenShnekApp
                 case 2:
                     GOSTSelection3();
                     break;
-/*                default:
-                    typeCount = 2;
-                    break;*/
+                    /*                default:
+                                        typeCount = 2;
+                                        break;*/
             }
 
-            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i+1}");
+            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i + 1}");
             ShnekType.SelectedIndex = 0;
         }
 
@@ -97,7 +98,7 @@ namespace GenShnekApp
                         break;
                 }
             }
-            
+
 
             for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
             ShnekStyle.SelectedIndex = 0;
@@ -254,8 +255,8 @@ namespace GenShnekApp
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                             case 1:
-/*                                inputHexSize.IsEnabled = false;
-                                inputHex2Size.IsEnabled = true;*/
+                                /*                                inputHexSize.IsEnabled = false;
+                                                                inputHex2Size.IsEnabled = true;*/
                                 JointCreation2(hex2Size, holeDistance * 3 / 2);
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
@@ -405,7 +406,7 @@ namespace GenShnekApp
                 hex.ang = 90;
                 hex.count = 6;
                 hex.describe = true;
-                hex.radius = size/2;
+                hex.radius = size / 2;
                 hex.style = 1;
                 Sketch2D.ksRegularPolygon(hex);
             }
@@ -439,7 +440,7 @@ namespace GenShnekApp
             ksSketchDef1.SetPlane(basePlaneZOY);
             ksSketchE1.Create();
             ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
-            
+
             Sketch2D1.ksCircle(0, 0, diam / 2, 1);
 
             ksSketchDef1.EndEdit();
@@ -655,7 +656,7 @@ namespace GenShnekApp
 
             ksSketchDef1.SetPlane(startPlane);
 
-            ksSketchDef1.diam = rad*2;
+            ksSketchDef1.diam = rad * 2;
             ksSketchDef1.buildMode = 0;
             ksSketchDef1.step = spyralStep;
             ksSketchDef1.turn = end / spyralStep;
@@ -1102,6 +1103,101 @@ namespace GenShnekApp
         private void CloseButton(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+        }
+
+        //Расчёт шнека на прочность, жёсткость и устойчивость
+        private void ShnekCalc(double SIG, double RO, double P, double d1, double d, double L, double H, double FI, double T, double E1, double N, double W)
+        {
+            //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
+            const double PI = Math.PI;
+            const double g = 9.8;
+
+            double A = 400;
+            double B;
+            double GAM;
+            double ZX;
+            double Q;
+            double MKR;
+            double F;
+
+            //ОТДЕЛЬНАЯ КАСТА ПЕРЕМЕННЫХ, КОТОРЫЕ ЧЁРТ ЗНАЕТ ОТКУДА ПОЯВИЛИСЬ (ПОКА НЕ ВЫЯСНЮ ОТКУДА, БУДУТ РАВНЫ 1)            
+            double DL;
+            DL = 1;
+            double K;
+            K = 1;
+
+            int size = 401;
+            double[] MIZ = new double[size];
+            double[] X = new double[size];
+            double[] MK = new double[size];
+            double[] Fmax1 = new double[size];
+            double[] Fmax2 = new double[size];
+            double[] Fmax01 = new double[size];
+            double[] Fmax02 = new double[size];
+            double[] Fmax03 = new double[size];
+
+            double AF = 0;
+            double dX = 0.0045;
+            double hx1 = 0.0045;
+            double E = 200000000000; //модуль упругости Юнга, Па
+
+            if (AF == 0)
+            {
+                //Входные параметры
+                SIG = 400000000; //допускаемое напряжение, Па
+                RO = 7850; //плотность материала шнека, кг/м3
+                P = 50000000; //давление развиваемое шнеком, Па
+                d1 = 0.001; //диаметр осевого отверстия шнека, м
+                d = 0.032; //наружный диаметр шнека, м
+                L = 0.64; //длина нарезной части шнека, м
+                H = 0.0032; //глубина винтового канала шнека, м
+                FI = 17; //угол наклона винтовой линии шнека, град
+                T = 0.032; //шаг винтовой нарезки шнека, м
+                E1 = 0.0032; //ширина гребня винтового канала шнека, м
+                N = 5; //технологическая мощность, кВт
+                W = 70; //частота вращения шнека, об/мин
+            }
+
+            ZX = L / dX;
+            FI = FI * PI / 180;
+            A = PI * d * H * (T - E) * Pow(Cos(FI), 2) / 2;
+            B = Pow(H, 3) * (T - E) * Sin(2 * FI) / (24 * L);
+            GAM = Pow(PI, 2) * Pow(d, 2) * Pow(DL, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
+            Q = A * K * N / (K - B - GAM); //Вывод
+            MKR = 9550 * N / W; //Вывод
+
+            F = PI * Pow(d, 2) / 4;
+
+            //РАСЧЁТ УСИЛИЯ ОТ ДАВЛЕНИЯ ФОРМОВАНИЯ
+            double P1;
+            P1 = F * P; //Вывод
+
+            //РАСЧЁТ ГИБКОСТИ ШНЕКА
+            double AL;
+            double F1;
+            double J1;
+            double I;
+            double MU;
+            double LA;
+
+            AL = d1 / d;
+            F1 = PI * Pow(d, 2) / 4 * (1 - Pow(AL, 2));
+            J1 = PI * Pow(d, 4) / 64 * (1 - Pow(AL, 4));
+            I = d * Sqrt(1 + Pow(AL, 2)) / 4;
+            MU = 2;
+            LA = MU * L / I;
+
+            //РАСЧЁТ МОМЕНТА ВРЕМЕННОГО СОПРОТИВЛЕНИЯ КРУЧЕНИЯ
+            double WR;
+
+            WR = PI * Pow(d, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
+
+            //РАСЧЁТ МАКСИМАЛЬНОГО НАПРЯЖЕНИЯ КРУЧЕНИЯ
+            double TAUmax;
+            double q;
+
+            TAUmax = MKR / WR;
+            q = RO * g * L;     
         }
     }
 }
