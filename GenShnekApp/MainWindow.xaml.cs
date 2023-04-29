@@ -108,46 +108,12 @@ namespace GenShnekApp
         {
             e.Handled = "0123456789".IndexOf(e.Text) < 0;
         }
-
-        private void DeleteSpaces(object sender, TextChangedEventArgs e)
+        private void DeleteSpaces(object sender, KeyEventArgs e)
         {
-            inputTubeLength.Text = inputTubeLength.Text.Replace(" ", string.Empty);
-            inputTubeLength.SelectionStart = inputTubeLength.Text.Length;
-        }
-        private void DeleteSpaces1(object sender, TextChangedEventArgs e)
-        {
-            inputStep.Text = inputStep.Text.Replace(" ", string.Empty);
-            inputStep.SelectionStart = inputStep.Text.Length;
-        }
-        private void DeleteSpaces2(object sender, TextChangedEventArgs e)
-        {
-            inputHexSize.Text = inputHexSize.Text.Replace(" ", string.Empty);
-            inputHexSize.SelectionStart = inputHexSize.Text.Length;
-        }
-        private void DeleteSpaces3(object sender, TextChangedEventArgs e)
-        {
-            inputShnekDiam.Text = inputShnekDiam.Text.Replace(" ", string.Empty);
-            inputShnekDiam.SelectionStart = inputShnekDiam.Text.Length;
-        }
-        private void DeleteSpaces4(object sender, TextChangedEventArgs e)
-        {
-            inputHoleDiam.Text = inputHoleDiam.Text.Replace(" ", string.Empty);
-            inputHoleDiam.SelectionStart = inputHoleDiam.Text.Length;
-        }
-        private void DeleteSpaces5(object sender, TextChangedEventArgs e)
-        {
-            inputHoleDistance.Text = inputHoleDistance.Text.Replace(" ", string.Empty);
-            inputHoleDistance.SelectionStart = inputHoleDistance.Text.Length;
-        }
-        private void DeleteSpaces6(object sender, TextChangedEventArgs e)
-        {
-            inputShnekThick.Text = inputShnekThick.Text.Replace(" ", string.Empty);
-            inputShnekThick.SelectionStart = inputShnekThick.Text.Length;
-        }
-        private void DeleteSpaces7(object sender, TextChangedEventArgs e)
-        {
-            inputHex2Size.Text = inputHex2Size.Text.Replace(" ", string.Empty);
-            inputHex2Size.SelectionStart = inputHex2Size.Text.Length;
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
         }
 
         private void CreationButton(object sender, RoutedEventArgs e)
@@ -874,57 +840,14 @@ namespace GenShnekApp
         {
             if (isVisible)
             {
-                inputTubeLengthText.Visibility = Visibility.Visible;
-                inputTubeLengthTextLet.Visibility = Visibility.Visible;
-                inputTubeLength.Visibility = Visibility.Visible;
-                inputShnekDiamText.Visibility = Visibility.Visible;
-                inputShnekDiamTextLet.Visibility = Visibility.Visible;
-                inputShnekDiam.Visibility = Visibility.Visible;
-                inputHoleDiamText.Visibility = Visibility.Visible;
-                inputHoleDiamTextLet.Visibility = Visibility.Visible;
-                inputHoleDiam.Visibility = Visibility.Visible;
-                inputHexSizeText.Visibility = Visibility.Visible;
-                inputHexSizeTextLet.Visibility = Visibility.Visible;
-                inputHexSize.Visibility = Visibility.Visible;
-                inputHoleDistanceText.Visibility = Visibility.Visible;
-                inputHoleDistanceTextLet.Visibility = Visibility.Visible;
-                inputHoleDistance.Visibility = Visibility.Visible;
-                inputHex2SizeText.Visibility = Visibility.Visible;
-                inputHex2SizeTextLet.Visibility = Visibility.Visible;
-                inputHex2Size.Visibility = Visibility.Visible;
-                inputStepText.Visibility = Visibility.Visible;
-                inputStepTextLet.Visibility = Visibility.Visible;
-                inputStep.Visibility = Visibility.Visible;
-                inputShnekThickText.Visibility = Visibility.Visible;
-                inputShnekThickTextLet.Visibility = Visibility.Visible;
-                inputShnekThick.Visibility = Visibility.Visible;
+                inputSelection1.Visibility = Visibility.Visible;
+                inputSelection2.Visibility = Visibility.Collapsed;
             }
             else
             {
-                inputTubeLengthText.Visibility = Visibility.Collapsed;
-                inputTubeLengthTextLet.Visibility = Visibility.Collapsed;
-                inputTubeLength.Visibility = Visibility.Collapsed;
-                inputShnekDiamText.Visibility = Visibility.Collapsed;
-                inputShnekDiamTextLet.Visibility = Visibility.Collapsed;
-                inputShnekDiam.Visibility = Visibility.Collapsed;
-                inputHoleDiamText.Visibility = Visibility.Collapsed;
-                inputHoleDiamTextLet.Visibility = Visibility.Collapsed;
-                inputHoleDiam.Visibility = Visibility.Collapsed;
-                inputHexSizeText.Visibility = Visibility.Collapsed;
-                inputHexSizeTextLet.Visibility = Visibility.Collapsed;
-                inputHexSize.Visibility = Visibility.Collapsed;
-                inputHoleDistanceText.Visibility = Visibility.Collapsed;
-                inputHoleDistanceTextLet.Visibility = Visibility.Collapsed;
-                inputHoleDistance.Visibility = Visibility.Collapsed;
-                inputHex2SizeText.Visibility = Visibility.Collapsed;
-                inputHex2SizeTextLet.Visibility = Visibility.Collapsed;
-                inputHex2Size.Visibility = Visibility.Collapsed;
-                inputStepText.Visibility = Visibility.Collapsed;
-                inputStepTextLet.Visibility = Visibility.Collapsed;
-                inputStep.Visibility = Visibility.Collapsed;
-                inputShnekThickText.Visibility = Visibility.Collapsed;
-                inputShnekThickTextLet.Visibility = Visibility.Collapsed;
-                inputShnekThick.Visibility = Visibility.Collapsed;
+                inputSelection1.Visibility = Visibility.Collapsed;
+                inputSelection2.Visibility = Visibility.Visible;
+
             }
         }
 
@@ -1121,12 +1044,11 @@ namespace GenShnekApp
             double MKR; //крутящий момент
             double F; //площадь поперечного сечения
             double Sos; //осевое усилие от давления формования
+            double K; //параметр
 
             //ОТДЕЛЬНАЯ КАСТА ПЕРЕМЕННЫХ, КОТОРЫЕ ЧЁРТ ЗНАЕТ ОТКУДА ПОЯВИЛИСЬ (ПОКА НЕ ВЫЯСНЮ ОТКУДА, БУДУТ РАВНЫ 1)            
             double DL;
             DL = 1;
-            double K;
-            K = 1;
 
             int size = 401;
             double[] MIZ = new double[size]; //изгибающий момент
@@ -1170,6 +1092,8 @@ namespace GenShnekApp
             A = PI * d * H * (T - E) * Pow(Cos(FI), 2) / 2;
             B = Pow(H, 3) * (T - E) * Sin(2 * FI) / (24 * L);
             G = Pow(PI, 2) * Pow(d, 2) * Pow(DL, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
+            //K = Sqrt(P/(E*J)); TODO  найти J по формулам
+            K = 1;
             Q = A * K * N / (K - B - G); //Вывод
 
             ///////////(5)ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
