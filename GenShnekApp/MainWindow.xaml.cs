@@ -255,8 +255,8 @@ namespace GenShnekApp
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                             case 1:
-                                /*                                inputHexSize.IsEnabled = false;
-                                                                inputHex2Size.IsEnabled = true;*/
+                                /*inputHexSize.IsEnabled = false;
+                                inputHex2Size.IsEnabled = true;*/
                                 JointCreation2(hex2Size, holeDistance * 3 / 2);
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
@@ -313,7 +313,7 @@ namespace GenShnekApp
                 {
                     case 0:
                         CylinderCreation(10, 20 * 20);
-                        SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20 / 3, 20 * 0.06, 20);
+                        SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20, 20 * 0.06, 20);
                         break;
                 }
             }
@@ -656,13 +656,13 @@ namespace GenShnekApp
 
             ksSketchDef1.SetPlane(startPlane);
 
+            ksSketchE1.hidden = true;
             ksSketchDef1.diam = rad * 2;
             ksSketchDef1.buildMode = 0;
             ksSketchDef1.step = spyralStep;
             ksSketchDef1.turn = end / spyralStep;
             ksSketchDef1.buildDir = true;
             ksSketchDef1.turnDir = true;
-            ksSketchE1.hidden = true;
 
             ksSketchE1.Create();
 
@@ -1106,19 +1106,21 @@ namespace GenShnekApp
         }
 
         //Расчёт шнека на прочность, жёсткость и устойчивость
-        private void ShnekCalc(double SIG, double RO, double P, double d1, double d, double L, double H, double FI, double T, double E1, double N, double W)
+        ///////////(1)НАЧАЛО
+        private void ShnekCalc()
         {
             //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
-            const double PI = Math.PI;
-            const double g = 9.8;
+            const double PI = Math.PI; //Число ПИ
+            const double g = 9.8; //ускорение свободного падения
 
-            double A = 400;
-            double B;
-            double GAM;
-            double ZX;
-            double Q;
-            double MKR;
-            double F;
+            double A; //постоянная прямого потока
+            double B; //постоянная обратного потока
+            double G; //поток утечки
+            double ZX; //число отрезков разбиения
+            double Q; //производительность
+            double MKR; //крутящий момент
+            double F; //площадь поперечного сечения
+            double Sos; //осевое усилие от давления формования
 
             //ОТДЕЛЬНАЯ КАСТА ПЕРЕМЕННЫХ, КОТОРЫЕ ЧЁРТ ЗНАЕТ ОТКУДА ПОЯВИЛИСЬ (ПОКА НЕ ВЫЯСНЮ ОТКУДА, БУДУТ РАВНЫ 1)            
             double DL;
@@ -1127,8 +1129,8 @@ namespace GenShnekApp
             K = 1;
 
             int size = 401;
-            double[] MIZ = new double[size];
-            double[] X = new double[size];
+            double[] MIZ = new double[size]; //изгибающий момент
+            double[] X = new double[size]; //текущая координата по длине шнека, м
             double[] MK = new double[size];
             double[] Fmax1 = new double[size];
             double[] Fmax2 = new double[size];
@@ -1139,65 +1141,67 @@ namespace GenShnekApp
             double AF = 0;
             double dX = 0.0045;
             double hx1 = 0.0045;
-            double E = 200000000000; //модуль упругости Юнга, Па
+            const double E = 200000000000; //модуль упругости Юнга, Па
 
-            if (AF == 0)
-            {
-                //Входные параметры
-                SIG = 400000000; //допускаемое напряжение, Па
-                RO = 7850; //плотность материала шнека, кг/м3
-                P = 50000000; //давление развиваемое шнеком, Па
-                d1 = 0.001; //диаметр осевого отверстия шнека, м
-                d = 0.032; //наружный диаметр шнека, м
-                L = 0.64; //длина нарезной части шнека, м
-                H = 0.0032; //глубина винтового канала шнека, м
-                FI = 17; //угол наклона винтовой линии шнека, град
-                T = 0.032; //шаг винтовой нарезки шнека, м
-                E1 = 0.0032; //ширина гребня винтового канала шнека, м
-                N = 5; //технологическая мощность, кВт
-                W = 70; //частота вращения шнека, об/мин
-            }
+            //if (AF == 0)
+            //{
+            //Входные параметры
+            ///////////(2)ГЛАВНЫЕ ПАРАМЕТРЫ
+            double SIG = 400000000; //допускаемое напряжение, Па
+            double RO = 7850; //плотность материала шнека, кг/м3
+            double P = 50000000; //давление развиваемое шнеком, Па
+            double d1 = 0.001; //диаметр осевого отверстия шнека, м
+            double d = 0.032; //наружный диаметр шнека, м
+            double L = 0.64; //длина нарезной части шнека, м
+            double H = 0.0032; //глубина винтового канала шнека, м
+            double FI = 17; //угол наклона винтовой линии шнека, град
+            double T = 0.032; //шаг винтовой нарезки шнека, м
+            double E1 = 0.0032; //ширина гребня винтового канала шнека, м
+            double N = 5; //технологическая мощность, кВт
+            double W = 70; //частота вращения шнека, об/мин
+            double GAM; //удельный вес материала
+            //}
 
+            ///////////(3)ОПРЕДЕЛЕНЕИ ЧИСЛА ОТРЕЗКОВ РАЗБИЕНИЯ ДЛИНЫ НАРЕЗНОЙ ЧАСТИ ШНЕКА
             ZX = L / dX;
+
+            ///////////(4)ОПРЕДЕЛЕНИЕ ПОСТОЯННЫХ ПРЯМОГО, ОБРАТНОГО ПОТОКА, ПОТОКА УТЕЧКИ И ПРОИЗВОДИТЕЛЬНОСТИ
             FI = FI * PI / 180;
             A = PI * d * H * (T - E) * Pow(Cos(FI), 2) / 2;
             B = Pow(H, 3) * (T - E) * Sin(2 * FI) / (24 * L);
-            GAM = Pow(PI, 2) * Pow(d, 2) * Pow(DL, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
-            Q = A * K * N / (K - B - GAM); //Вывод
+            G = Pow(PI, 2) * Pow(d, 2) * Pow(DL, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
+            Q = A * K * N / (K - B - G); //Вывод
+
+            ///////////(5)ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
-
             F = PI * Pow(d, 2) / 4;
+            Sos = F * P; //Вывод
 
-            //РАСЧЁТ УСИЛИЯ ОТ ДАВЛЕНИЯ ФОРМОВАНИЯ
-            double P1;
-            P1 = F * P; //Вывод
-
-            //РАСЧЁТ ГИБКОСТИ ШНЕКА
-            double AL;
-            double F1;
-            double J1;
-            double I;
-            double MU;
-            double LA;
+            ///////////(6)РАСЧЁТ ГИБКОСТИ ШНЕКА
+            double AL; //альфа, отношение диаметра осевого отверстия шнека к наружному диаметру шнека
+            double F1; // площадь поперечного сечения шнека сечения А-А
+            double J1; // момент инерции поперечного сечения А-А
+            double I; // радиус инерции сечения
+            double MU = 2; //мю, коэффициент, зависящий от способа закрепления концов вала (в данном частном случае 2)
+            double LA; //лямбда, гибкость вала шнека
 
             AL = d1 / d;
             F1 = PI * Pow(d, 2) / 4 * (1 - Pow(AL, 2));
             J1 = PI * Pow(d, 4) / 64 * (1 - Pow(AL, 4));
-            I = d * Sqrt(1 + Pow(AL, 2)) / 4;
-            MU = 2;
+            I = Sqrt(J1 / F1);
+            //I = d * Sqrt(1 + Pow(AL, 2)) / 4; //после подстановки J и F в I=Sqrt(J1/F1) (преобразованная формула)
             LA = MU * L / I;
 
-            //РАСЧЁТ МОМЕНТА ВРЕМЕННОГО СОПРОТИВЛЕНИЯ КРУЧЕНИЯ
-            double WR;
+            ///////////(7)РАСЧЁТ ВРЕМЕННОГО МОМЕНТА СОПРОТИВЛЕНИЯ КРУЧЕНИЮ WR; НАПРЯЖЕНИЯ КРУЧЕНИЯ TAUmax И РАСПРЕДЕЛЕННОЙ НАГРУЗКИ q
+            double WR; //временный момент сопротивления кручению
+            double TAUmax; //максимальное напряжение кручения
+            double q; //распреленная нагрузка
 
             WR = PI * Pow(d, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
-
-            //РАСЧЁТ МАКСИМАЛЬНОГО НАПРЯЖЕНИЯ КРУЧЕНИЯ
-            double TAUmax;
-            double q;
-
             TAUmax = MKR / WR;
-            q = RO * g * L;     
+            q = RO * g * L;
+
+
         }
     }
 }
