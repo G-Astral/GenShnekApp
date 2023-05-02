@@ -36,6 +36,7 @@ namespace GenShnekApp
         double holeDistance;
         double tubeRad;
         double step;
+        double extrDiam;
 
         KompasObject kompas;
         ksPart part;
@@ -280,6 +281,7 @@ namespace GenShnekApp
                     case 0:
                         CylinderCreation(10, 20 * 20);
                         SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20, 20 * 0.06, 20);
+                        ConeCreation(20);
                         break;
                 }
             }
@@ -666,6 +668,43 @@ namespace GenShnekApp
             trajectoryExtr.Create();
         }
 
+        ///////////////////////////Создание конуса экструзионного шнека/////////////////////////////
+        private void ConeCreation(double diam)
+        {
+            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
+
+            double rad = diam / 2;
+            double length = 100;
+
+            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef = ksSketchE.GetDefinition();
+
+            ksSketchDef.SetPlane(basePlaneZOY);
+            ksSketchE.Create();
+            ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
+
+            Sketch2D.ksCircle(0, 0, rad, 1);
+
+            ksSketchDef.EndEdit();
+
+            ksEntity baseExtr = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef = baseExtr.GetDefinition();
+            ksExtrusionParam extrProp = (ksExtrusionParam)extrDef.ExtrusionParam();
+
+            if (extrProp != null)
+            {
+                extrDef.SetSketch(ksSketchE);
+
+                extrProp.direction = (short)Direction_Type.dtReverse;
+                extrProp.typeReverse = (short)End_Type.etBlind;
+                extrProp.depthReverse = length;
+                extrProp.draftOutwardReverse = true;
+                extrProp.draftValueReverse = 30;
+                baseExtr.Create();
+            }
+        }
+
         private void ParamConv()
         {
             mistakeCheck = true;
@@ -719,51 +758,67 @@ namespace GenShnekApp
                 hex2Size = Convert.ToDouble(inputHex2Size.Text);
                 step = Convert.ToDouble(inputStep.Text);
                 shnekThick = Convert.ToDouble(inputShnekThick.Text);
+                extrDiam = Convert.ToDouble(inputExtrDiam.Text);
 
-                if (tubeLength < 1000 || tubeLength > 2500)
+                if (GhostType.SelectedIndex != 2)
                 {
-                    inputTubeLength.BorderBrush = Brushes.Red;
-                    MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
-                    mistakeCheck = false;
+                    if (tubeLength < 1000 || tubeLength > 2500)
+                    {
+                        inputTubeLength.BorderBrush = Brushes.Red;
+                        MessageBox.Show("Длина шнека должна находиться в диапазоне от 1000 до 2500 мм!");
+                        mistakeCheck = false;
+                    }
                 }
 
                 if (GhostType.SelectedIndex != 0)
                 {
-                    if (holeDiam == 0)
+                    if (GhostType.SelectedIndex != 2)
                     {
-                        inputHoleDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный диаметр отверстия!");
-                        mistakeCheck = false;
+                        if (holeDiam == 0)
+                        {
+                            inputHoleDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введён неверный диаметр отверстия!");
+                            mistakeCheck = false;
+                        }
+                        if (holeDistance == 0)
+                        {
+                            inputHoleDistance.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введено неверное расстояние отверстия!");
+                            mistakeCheck = false;
+                        }
+                        if (shnekDiam == 0)
+                        {
+                            inputShnekDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (step == 0)
+                        {
+                            inputShnekDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (shnekThick == 0)
+                        {
+                            inputShnekDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (hexSize * 1.5 >= shnekDiam)
+                        {
+                            inputShnekDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
+                            mistakeCheck = false;
+                        }
                     }
-                    if (holeDistance == 0)
+                    if (GhostType.SelectedIndex == 2)
                     {
-                        inputHoleDistance.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введено неверное расстояние отверстия!");
-                        mistakeCheck = false;
-                    }
-                    if (shnekDiam == 0)
-                    {
-                        inputShnekDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                        mistakeCheck = false;
-                    }
-                    if (step == 0)
-                    {
-                        inputShnekDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                        mistakeCheck = false;
-                    }
-                    if (shnekThick == 0)
-                    {
-                        inputShnekDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                        mistakeCheck = false;
-                    }
-                    if (hexSize * 1.5 >= shnekDiam)
-                    {
-                        inputShnekDiam.BorderBrush = Brushes.Red;
-                        MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
-                        mistakeCheck = false;
+                        if (extrDiam == 0)
+                        {
+                            inputExtrDiam.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введён неверный диаметр экструзионного шнека!");
+                            mistakeCheck = false;
+                        }
                     }
                     if (ShnekType.SelectedIndex == 0)
                     {
@@ -1034,7 +1089,7 @@ namespace GenShnekApp
         {
             //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
             const double PI = Math.PI; //Число ПИ
-            const double g = 9.8; //ускорение свободного падения
+            const double g = 9.81; //ускорение свободного падения
 
             double A; //постоянная прямого потока
             double B; //постоянная обратного потока

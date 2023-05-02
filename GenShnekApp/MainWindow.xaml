@@ -105,7 +105,16 @@
                     Height="20" Width="200" Margin="248,503,752,177"></TextBox>
                 </Grid>
                 <Grid x:Name="inputSelection2">
-                    <TextBlock Height="20" x:Name="inputExtrTest" HorizontalAlignment="Left" Margin="35,328,0,352">здесь будут инпуты для экструзионного шнека</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrDiamTetx" HorizontalAlignment="Left" Margin="35,328,0,352">Диаметр шнека, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrDiamTextLet" HorizontalAlignment="Left" Margin="225,328,0,352">D</TextBlock>
+                    <TextBox 
+                    x:Name="inputExtrDiam"
+                    TextAlignment="Left"
+                    PreviewTextInput="TextBoxInput"
+                    VerticalContentAlignment="Center"
+                    PreviewKeyDown="DeleteSpaces"
+                    Text="20"
+                    Height="20" Width="200" Margin="248,328,752,352"/>
                 </Grid>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,76,0,602">Выберите тип шнека:</TextBlock>
                 <ComboBox 
