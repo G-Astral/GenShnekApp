@@ -37,6 +37,7 @@ namespace GenShnekApp
         double tubeRad;
         double step;
         double extrDiam;
+        double extrRad;
 
         KompasObject kompas;
         ksPart part;
@@ -49,7 +50,6 @@ namespace GenShnekApp
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void GhostTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -65,11 +65,12 @@ namespace GenShnekApp
                     GOSTSelection2();
                     break;
                 case 2:
+                    DefaultShnekChoose.Items.Clear();
                     GOSTSelection3();
                     break;
-                    /*                default:
-                                        typeCount = 2;
-                                        break;*/
+                case 3:
+                    GOSTSelection4();
+                    break;
             }
 
             for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i + 1}");
@@ -81,7 +82,7 @@ namespace GenShnekApp
         {
             ShnekStyle.Items.Clear();
             DefaultShnekChoose.Items.Clear();
-            if (ShnekType.SelectedIndex != 2)
+            if (ShnekType.SelectedIndex == 0 || ShnekType.SelectedIndex == 1)
             {
                 switch (ShnekType.SelectedIndex)
                 {
@@ -152,7 +153,7 @@ namespace GenShnekApp
             part = ksDoc3d.GetPart((int)Part_Type.pTop_Part); // новый компонент
 
             //Буровые шнеки
-            if (GhostType.SelectedIndex != 2)
+            if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
             {
                 //Шнеки первого типа
                 if (ShnekType.SelectedIndex == 0)
@@ -276,13 +277,23 @@ namespace GenShnekApp
             //Экструзионные шнеки
             else
             {
-                switch (DefaultShnekChoose.SelectedIndex)
+                extrRad = extrDiam / 2;
+                if (DefaultShnekChoose.IsEnabled == true)
                 {
-                    case 0:
-                        CylinderCreation(10, 20 * 20);
-                        SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20, 20 * 0.06, 20);
-                        ConeCreation(20);
-                        break;
+                    switch (DefaultShnekChoose.SelectedIndex)
+                    {
+                        case 0:
+                            CylinderCreation(10, 20 * 20);
+                            SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20, 20 * 0.06, 20);
+                            ConeCreation(10);
+                            break;
+                    }
+                }
+                else
+                {
+                    CylinderCreation(extrRad, extrDiam * 20);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * 20, extrDiam * 0.06, extrDiam);
+                    ConeCreation(extrRad);
                 }
             }
         }
@@ -669,12 +680,11 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание конуса экструзионного шнека/////////////////////////////
-        private void ConeCreation(double diam)
+        private void ConeCreation(double rad)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad = diam / 2;
-            double length = 100;
+            double length = rad * 100;
 
             ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -760,7 +770,7 @@ namespace GenShnekApp
                 shnekThick = Convert.ToDouble(inputShnekThick.Text);
                 extrDiam = Convert.ToDouble(inputExtrDiam.Text);
 
-                if (GhostType.SelectedIndex != 2)
+                if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
                 {
                     if (tubeLength < 1000 || tubeLength > 2500)
                     {
@@ -772,7 +782,7 @@ namespace GenShnekApp
 
                 if (GhostType.SelectedIndex != 0)
                 {
-                    if (GhostType.SelectedIndex != 2)
+                    if (GhostType.SelectedIndex == 1)
                     {
                         if (holeDiam == 0)
                         {
@@ -811,7 +821,7 @@ namespace GenShnekApp
                             mistakeCheck = false;
                         }
                     }
-                    if (GhostType.SelectedIndex == 2)
+                    if (GhostType.SelectedIndex == 3)
                     {
                         if (extrDiam == 0)
                         {
@@ -882,13 +892,13 @@ namespace GenShnekApp
         private void InputFieldIsActive(bool isActive)
         {
             inputHoleDiam.IsEnabled = isActive;
-            //inputTubeLength.IsEnabled = isActive;
             inputShnekThick.IsEnabled = isActive;
             inputShnekDiam.IsEnabled = isActive;
             inputHexSize.IsEnabled = isActive;
             inputHoleDistance.IsEnabled = isActive;
             inputStep.IsEnabled = isActive;
             inputHex2Size.IsEnabled = isActive;
+            inputExtrDiam.IsEnabled = isActive;
         }
 
         private void InputFieldIvVisible(bool isVisible)
@@ -934,16 +944,28 @@ namespace GenShnekApp
         {
             typeCount = 0;
             InputFieldIsActive(false);
-            inputTubeLength.IsEnabled = false;
             ShnekStyle.IsEnabled = false;
             ShnekStyle.Items.Clear();
             ShnekType.IsEnabled = false;
             DefaultShnekChoose.IsEnabled = true;
+            //DefaultShnekChoose.Items.Clear();
             DefaultShnekItems3();
             InputFieldIvVisible(false);
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
             if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
-
+        }
+        private void GOSTSelection4()
+        {
+            typeCount = 0;
+            InputFieldIsActive(true);
+            ShnekStyle.IsEnabled = false;
+            ShnekStyle.Items.Clear();
+            ShnekType.IsEnabled = false;
+            DefaultShnekChoose.IsEnabled = false;
+            DefaultShnekItems3();
+            InputFieldIvVisible(false);
+            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
+            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
         }
 
         private void DefaultShnekItems1()
@@ -1181,6 +1203,11 @@ namespace GenShnekApp
             q = RO * g * L;
 
 
+        }
+
+        private void UpdateGraphics(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Это кнопка обновления графиков.");
         }
     }
 }
