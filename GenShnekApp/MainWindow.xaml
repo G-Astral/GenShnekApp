@@ -174,24 +174,12 @@
         </TabItem>
         <TabItem Header="Рассчёты">
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
-                <Rectangle Margin="38,38,25,94" Stroke="Black" Panel.ZIndex="1"></Rectangle>
-                <Rectangle Margin="828,38,25,94" Stroke="Black"></Rectangle>
-                <Rectangle Margin="828,38,25,639" Stroke="Black"></Rectangle>
-                <TextBlock Margin="836,41,264,635">Вывод</TextBlock>
-                <TextBlock Margin="842,71,258,605">Mкр = 150 Н*м</TextBlock>
-                <Button
-                    Height="23"
-                    Width="75"
-                    Content="Обновить"
-                    Click="UpdateGraphics"
-                    IsDefault="True"
-                    Margin="1020,627,105,50"/>
-                <Button 
-                    Height="23"
-                    Width="75"
-                    Content="Отмена"
-                    Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
-                <TabControl Margin="38,37,372,94">
+                <Rectangle Margin="20,32,43,100" Stroke="Black" Panel.ZIndex="1"></Rectangle>
+                <Rectangle Margin="810,32,43,100" Stroke="Black"></Rectangle>
+                <Rectangle Margin="810,32,43,646" Stroke="Black"></Rectangle>
+                <TextBlock Margin="818,35,282,641">Вывод</TextBlock>
+                <TextBlock Margin="824,65,276,611">Mкр = 150 Н*м</TextBlock>
+                <TabControl Margin="20,31,390,100">
                     <TabItem Header="Эпюра прочности">
                         <Grid>
 
@@ -208,6 +196,18 @@
                         </Grid>
                     </TabItem>
                 </TabControl>
+                <Button
+                    Height="23"
+                    Width="75"
+                    Content="Обновить"
+                    Click="UpdateGraphics"
+                    IsDefault="True"
+                    Margin="1020,627,105,50"/>
+                <Button 
+                    Height="23"
+                    Width="75"
+                    Content="Отмена"
+                    Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
             </Grid>
         </TabItem>
     </TabControl>
