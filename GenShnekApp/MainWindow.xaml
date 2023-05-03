@@ -115,15 +115,15 @@
                     PreviewKeyDown="DeleteSpaces"
                     Text="20"
                     Height="20" Width="200" Margin="248,328,752,352"/>
-                    <TextBlock x:Name="inputExtrShnekLengthText" HorizontalAlignment="Left" Margin="35,355,0,329" Width="209">Отношение длины к диаметру</TextBlock>
-                    <TextBlock Height="20" x:Name="inputExtrShnekLengthTextLet" HorizontalAlignment="Left" Margin="225,355,0,325">L/D</TextBlock>
+                    <TextBlock x:Name="inputExtrShnekCoffLengthText" HorizontalAlignment="Left" Margin="35,355,0,329" Width="209">Отношение длины к диаметру</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrShnekCoffLengthTextLet" HorizontalAlignment="Left" Margin="225,355,0,325">L/D</TextBlock>
                     <TextBox
-                    x:Name="inputExtrShnekLength"
+                    x:Name="inputExtrShnekCoffLength"
                     TextAlignment="Left"
                     PreviewTextInput="TextBoxInput"
                     VerticalContentAlignment="Center"
                     PreviewKeyDown="DeleteSpaces"
-                    Text="15"
+                    Text="20"
                     Height="20" Width="200" Margin="248,353,752,327"/>
                 </Grid>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,76,0,602">Выберите тип шнека:</TextBlock>
@@ -147,6 +147,7 @@
                     x:Name="DefaultShnekChoose"
                     Margin="248,125,752,553"
                     Height="22"
+                    SelectionChanged="DefaultShnekChooseSelectionChanged"
                     VerticalContentAlignment="Stretch">
                 </ComboBox>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,50,0,628">Выберите ГОСТ шнека:</TextBlock>
@@ -185,12 +186,15 @@
         </TabItem>
         <TabItem Header="Рассчёты">
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
-                <Rectangle Margin="20,32,43,100" Stroke="Black" Panel.ZIndex="1"></Rectangle>
+                <Rectangle Margin="20,32,43,100" Stroke="Black"></Rectangle>
                 <Rectangle Margin="810,32,43,100" Stroke="Black"></Rectangle>
                 <Rectangle Margin="810,32,43,646" Stroke="Black"></Rectangle>
                 <TextBlock Margin="818,35,282,641">Вывод</TextBlock>
-                <TextBlock Margin="824,65,276,611">Mкр = 150 Н*м</TextBlock>
-                <TabControl Margin="20,31,390,100">
+                <TextBlock x:Name="QOutput" Height="20" Margin="824,65,49,615">Q = x м^3/с</TextBlock>
+                <TextBlock x:Name="MKROutput" Height="20" Margin="824,90,49,590">M_кр = x Н*м</TextBlock>
+                <TextBlock x:Name="SosOutput" Height="20" Margin="824,115,49,565">S_ос = x Н</TextBlock>
+                <TextBlock x:Name="WROutput" Height="20" Margin="824,140,49,540">W_р = x м^3</TextBlock>
+                <TabControl Margin="20,31,390,100"  Panel.ZIndex="-1">
                     <TabItem Header="Эпюра прочности">
                         <Grid>
 

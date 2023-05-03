@@ -39,6 +39,7 @@ namespace GenShnekApp
 
         double extrDiam;
         double extrRad;
+        double extrCoffLength;
         double extrLength;
 
         KompasObject kompas;
@@ -130,6 +131,67 @@ namespace GenShnekApp
                         inputHexSize.IsEnabled = false;
                         inputHex2Size.IsEnabled = true;
                     }
+                }
+            }
+        }
+        private void DefaultShnekChooseSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (GhostType.SelectedIndex == 2)
+            {
+                switch (DefaultShnekChoose.SelectedIndex)
+                {
+                    case 0:
+                        inputExtrShnekDiam.Text = "20";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 1:
+                        inputExtrShnekDiam.Text = "32";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 2:
+                        inputExtrShnekDiam.Text = "45";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 3:
+                        inputExtrShnekDiam.Text = "45";
+                        inputExtrShnekCoffLength.Text = "25";
+                        break;
+                    case 4:
+                        inputExtrShnekDiam.Text = "63";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 5:
+                        inputExtrShnekDiam.Text = "63";
+                        inputExtrShnekCoffLength.Text = "25";
+                        break;
+                    case 6:
+                        inputExtrShnekDiam.Text = "63";
+                        inputExtrShnekCoffLength.Text = "30";
+                        break;
+                    case 7:
+                        inputExtrShnekDiam.Text = "90";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 8:
+                        inputExtrShnekDiam.Text = "90";
+                        inputExtrShnekCoffLength.Text = "25";
+                        break;
+                    case 9:
+                        inputExtrShnekDiam.Text = "90";
+                        inputExtrShnekCoffLength.Text = "30";
+                        break;
+                    case 10:
+                        inputExtrShnekDiam.Text = "125";
+                        inputExtrShnekCoffLength.Text = "25";
+                        break;
+                    case 11:
+                        inputExtrShnekDiam.Text = "160";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
+                    case 12:
+                        inputExtrShnekDiam.Text = "200";
+                        inputExtrShnekCoffLength.Text = "20";
+                        break;
                 }
             }
         }
@@ -311,66 +373,80 @@ namespace GenShnekApp
                     {
                         case 0:
                             extrDiam = 20;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 1:
                             extrDiam = 32;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 2:
                             extrDiam = 45;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 3:
                             extrDiam = 45;
-                            extrLength = 25;
+                            extrCoffLength = 25;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 4:
                             extrDiam = 63;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 5:
                             extrDiam = 63;
-                            extrLength = 25;
+                            extrCoffLength = 25;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 6:
                             extrDiam = 63;
-                            extrLength = 30;
+                            extrCoffLength = 30;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 7:
                             extrDiam = 90;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 8:
                             extrDiam = 90;
-                            extrLength = 25;
+                            extrCoffLength = 25;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 9:
                             extrDiam = 90;
-                            extrLength = 30;
+                            extrCoffLength = 30;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 10:
                             extrDiam = 125;
-                            extrLength = 25;
+                            extrCoffLength = 25;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 11:
                             extrDiam = 160;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                         case 12:
                             extrDiam = 200;
-                            extrLength = 20;
+                            extrCoffLength = 20;
+                            extrLength = extrDiam * extrCoffLength;
                             break;
                     }
                     extrRad = extrDiam / 2;
-                    CylinderCreation(extrRad, extrDiam * extrLength);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * extrLength, extrDiam * 0.06, extrDiam);
+                    CylinderCreation(extrRad, extrLength);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
                 }
                 else
                 {
-                    CylinderCreation(extrRad, extrDiam * extrLength);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * extrLength, extrDiam * 0.06, extrDiam);
+                    extrLength = extrDiam * extrCoffLength;
+                    CylinderCreation(extrRad, extrLength);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
                 }
             }
@@ -907,10 +983,10 @@ namespace GenShnekApp
                 inputExtrShnekDiam.BorderBrush = Brushes.Red;
                 MessageBox.Show("Обнаружено пустое поле ввода!");
             }
-            else if (string.IsNullOrEmpty(inputExtrShnekLength.Text))
+            else if (string.IsNullOrEmpty(inputExtrShnekCoffLength.Text))
             {
                 mistakeCheck = false;
-                inputExtrShnekLength.BorderBrush = Brushes.Red;
+                inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
                 MessageBox.Show("Обнаружено пустое поле ввода!");
             }
             else
@@ -926,7 +1002,7 @@ namespace GenShnekApp
                 shnekThick = Convert.ToDouble(inputShnekThick.Text);
 
                 extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
-                extrLength = Convert.ToDouble(inputExtrShnekLength.Text);
+                extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
 
                 if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
                 {
@@ -987,9 +1063,9 @@ namespace GenShnekApp
                             MessageBox.Show("Введён неверный диаметр экструзионного шнека!");
                             mistakeCheck = false;
                         }
-                        if (extrLength < 15 || extrLength > 35)
+                        if (extrCoffLength < 20 || extrCoffLength > 30)
                         {
-                            inputExtrShnekLength.BorderBrush = Brushes.Red;
+                            inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
                             MessageBox.Show("Отношение длины экструзионного шнека к его диаметру должно находиться в диапазоне от 15 до 35!");
                             mistakeCheck = false;
                         }
@@ -1063,7 +1139,7 @@ namespace GenShnekApp
             inputStep.IsEnabled = isActive;
             inputHex2Size.IsEnabled = isActive;
             inputExtrShnekDiam.IsEnabled = isActive;
-            inputExtrShnekLength.IsEnabled = isActive;
+            inputExtrShnekCoffLength.IsEnabled = isActive;
         }
 
         private void InputFieldIvVisible(bool isVisible)
@@ -1270,7 +1346,7 @@ namespace GenShnekApp
 
         //Расчёт шнека на прочность, жёсткость и устойчивость
         ///////////(1)НАЧАЛО
-        private void ShnekCalc()
+        private void ShnekCalc(double d, double L)
         {
             //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
             const double PI = Math.PI; //Число ПИ
@@ -1313,8 +1389,11 @@ namespace GenShnekApp
             double RO = 7850; //плотность материала шнека, кг/м3
             double P = 50000000; //давление развиваемое шнеком, Па
             double d1 = 0.001; //диаметр осевого отверстия шнека, м
-            double d = 0.032; //наружный диаметр шнека, м
-            double L = 0.64; //длина нарезной части шнека, м
+            //double d = 0.032; //наружный диаметр шнека, м
+            //d = 0.032; //наружный диаметр шнека, м
+            d /= 1000;
+            //double L = 0.64; //длина нарезной части шнека, м
+            L /= 1000;
             double H = 0.0032; //глубина винтового канала шнека, м
             double FI = 17; //угол наклона винтовой линии шнека, град
             double T = 0.032; //шаг винтовой нарезки шнека, м
@@ -1335,11 +1414,14 @@ namespace GenShnekApp
             //K = Sqrt(P/(E*J)); TODO  найти J по формулам
             K = 1;
             Q = A * K * N / (K - B - G); //Вывод
+            QOutput.Text = $"Q = {Q} м^3/с";
 
             ///////////(5)ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
+            MKROutput.Text = $"M_кр = {MKR} Н*м";
             F = PI * Pow(d, 2) / 4;
             Sos = F * P; //Вывод
+            SosOutput.Text = $"S_ос = {Sos} Н";
 
             ///////////(6)РАСЧЁТ ГИБКОСТИ ШНЕКА
             double AL; //альфа, отношение диаметра осевого отверстия шнека к наружному диаметру шнека
@@ -1362,6 +1444,7 @@ namespace GenShnekApp
             double q; //распреленная нагрузка
 
             WR = PI * Pow(d, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
+            WROutput.Text = $"W_р = {WR} м^3";
             TAUmax = MKR / WR;
             q = RO * g * L;
 
@@ -1370,12 +1453,16 @@ namespace GenShnekApp
 
         private void UpdateGraphics(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Это кнопка обновления графиков.");
+            extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
+            extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
+            extrLength = extrDiam * extrCoffLength;
+            ShnekCalc(extrDiam, extrLength);
+            //MessageBox.Show("Это кнопка обновления графиков.");
         }
 
         private void NoteButton(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Расссчёты проводятся только для экструзионных шнеков.");
+            MessageBox.Show("Рассчёты проводятся только для экструзионных шнеков.");
         }
     }
 }
