@@ -105,16 +105,26 @@
                     Height="20" Width="200" Margin="248,503,752,177"></TextBox>
                 </Grid>
                 <Grid x:Name="inputSelection2">
-                    <TextBlock Height="20" x:Name="inputExtrDiamTetx" HorizontalAlignment="Left" Margin="35,328,0,352">Диаметр шнека, мм</TextBlock>
-                    <TextBlock Height="20" x:Name="inputExtrDiamTextLet" HorizontalAlignment="Left" Margin="225,328,0,352">D</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrDiamText" HorizontalAlignment="Left" Margin="35,330,0,350">Диаметр шнека, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrDiamTextLet" HorizontalAlignment="Left" Margin="225,330,0,350">D</TextBlock>
                     <TextBox 
-                    x:Name="inputExtrDiam"
+                    x:Name="inputExtrShnekDiam"
                     TextAlignment="Left"
                     PreviewTextInput="TextBoxInput"
                     VerticalContentAlignment="Center"
                     PreviewKeyDown="DeleteSpaces"
                     Text="20"
                     Height="20" Width="200" Margin="248,328,752,352"/>
+                    <TextBlock x:Name="inputExtrShnekLengthText" HorizontalAlignment="Left" Margin="35,355,0,329" Width="209">Отношение длины к диаметру</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrShnekLengthTextLet" HorizontalAlignment="Left" Margin="225,355,0,325">L/D</TextBlock>
+                    <TextBox
+                    x:Name="inputExtrShnekLength"
+                    TextAlignment="Left"
+                    PreviewTextInput="TextBoxInput"
+                    VerticalContentAlignment="Center"
+                    PreviewKeyDown="DeleteSpaces"
+                    Text="15"
+                    Height="20" Width="200" Margin="248,353,752,327"/>
                 </Grid>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,76,0,602">Выберите тип шнека:</TextBlock>
                 <ComboBox 
@@ -144,21 +154,21 @@
                     x:Name="GhostType"
                     Margin="248,48,752,630" 
                     SelectionChanged="GhostTypeSelectionChanged" VerticalContentAlignment="Stretch">
-                    <ComboBoxItem IsSelected="true">
+                    <ComboBoxItem IsSelected="False">
                         <TextBlock>ГОСТ 24328-80</TextBlock>
                     </ComboBoxItem>
                     <ComboBoxItem>
                         <TextBlock>ГОСТ 24328-80 (Пользовательский)</TextBlock>
                     </ComboBoxItem>
-                    <ComboBoxItem IsSelected="False">
+                    <ComboBoxItem IsSelected="True">
                         <TextBlock>ГОСТ 14773-80</TextBlock>
                     </ComboBoxItem>
                     <ComboBoxItem>
                         <TextBlock>ГОСТ 14773-80 (Пользовательский)</TextBlock>
                     </ComboBoxItem>
                 </ComboBox>
-                <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="236" Margin="478,328,0,0" VerticalAlignment="Top" Width="671"/>
-                <Image Name="ImgTable" Source="ShnekTable1.png" Margin="494,48,52,433"/>
+                <Image Name="ImgSketch" Source="ShnekSketch3.png" HorizontalAlignment="Left" Height="236" Margin="478,328,0,0" VerticalAlignment="Top" Width="671"/>
+                <Image Name="ImgTable" Source="ShnekTable3.png" Margin="494,48,52,433"/>
                 <Button
                     Height="23"
                     Width="75"

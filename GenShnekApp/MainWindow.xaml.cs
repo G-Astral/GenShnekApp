@@ -36,8 +36,10 @@ namespace GenShnekApp
         double holeDistance;
         double tubeRad;
         double step;
+
         double extrDiam;
         double extrRad;
+        double extrLength;
 
         KompasObject kompas;
         ksPart part;
@@ -96,6 +98,7 @@ namespace GenShnekApp
                         if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
                         styleCount = 2;
                         DefaultShnekItems2();
+                        ShnekStyle.IsEnabled = true;
                         break;
                 }
             }
@@ -105,12 +108,28 @@ namespace GenShnekApp
 
         private void ShnekStyleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex ==1)
+            if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
             {
                 if (ShnekType.SelectedIndex == 1)
                 {
                     if (ShnekStyle.SelectedIndex == 0) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch21.png"));
                     if (ShnekStyle.SelectedIndex == 1) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch22.png"));
+                }
+            }
+            if (GhostType.SelectedIndex == 1)
+            {
+                if (ShnekType.SelectedIndex == 0)
+                {
+                    if (ShnekStyle.SelectedIndex == 0)
+                    {
+                        inputHexSize.IsEnabled = true;
+                        inputHex2Size.IsEnabled = false;
+                    }
+                    if (ShnekStyle.SelectedIndex == 1)
+                    {
+                        inputHexSize.IsEnabled = false;
+                        inputHex2Size.IsEnabled = true;
+                    }
                 }
             }
         }
@@ -223,8 +242,6 @@ namespace GenShnekApp
                         switch (ShnekStyle.SelectedIndex)
                         {
                             case 0:
-                                /*inputHexSize.IsEnabled = true;
-                                inputHex2Size.IsEnabled = false;*/
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointCreation1(hexSize, holeDistance);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
@@ -232,8 +249,6 @@ namespace GenShnekApp
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                             case 1:
-                                /*inputHexSize.IsEnabled = false;
-                                inputHex2Size.IsEnabled = true;*/
                                 JointCreation2(hex2Size, holeDistance * 3 / 2);
                                 CylinderCreation(tubeRad, tubeLength);
                                 JointHoleCreation(holeDiam, holeDistance, 0);
@@ -295,16 +310,67 @@ namespace GenShnekApp
                     switch (DefaultShnekChoose.SelectedIndex)
                     {
                         case 0:
-                            CylinderCreation(10, 20 * 20);
-                            SpyralCreation(10 * 1.2, 20 * 1.2, 0, 20 * 20, 20 * 0.06, 20);
-                            ConeCreation(10);
+                            extrDiam = 20;
+                            extrLength = 20;
+                            break;
+                        case 1:
+                            extrDiam = 32;
+                            extrLength = 20;
+                            break;
+                        case 2:
+                            extrDiam = 45;
+                            extrLength = 20;
+                            break;
+                        case 3:
+                            extrDiam = 45;
+                            extrLength = 25;
+                            break;
+                        case 4:
+                            extrDiam = 63;
+                            extrLength = 20;
+                            break;
+                        case 5:
+                            extrDiam = 63;
+                            extrLength = 25;
+                            break;
+                        case 6:
+                            extrDiam = 63;
+                            extrLength = 30;
+                            break;
+                        case 7:
+                            extrDiam = 90;
+                            extrLength = 20;
+                            break;
+                        case 8:
+                            extrDiam = 90;
+                            extrLength = 25;
+                            break;
+                        case 9:
+                            extrDiam = 90;
+                            extrLength = 30;
+                            break;
+                        case 10:
+                            extrDiam = 125;
+                            extrLength = 25;
+                            break;
+                        case 11:
+                            extrDiam = 160;
+                            extrLength = 20;
+                            break;
+                        case 12:
+                            extrDiam = 200;
+                            extrLength = 20;
                             break;
                     }
+                    extrRad = extrDiam / 2;
+                    CylinderCreation(extrRad, extrDiam * extrLength);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * extrLength, extrDiam * 0.06, extrDiam);
+                    ConeCreation(extrRad);
                 }
                 else
                 {
-                    CylinderCreation(extrRad, extrDiam * 20);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * 20, extrDiam * 0.06, extrDiam);
+                    CylinderCreation(extrRad, extrDiam * extrLength);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrDiam * extrLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
                 }
             }
@@ -817,6 +883,36 @@ namespace GenShnekApp
                 inputHoleDistance.BorderBrush = Brushes.Red;
                 MessageBox.Show("Обнаружено пустое поле ввода!");
             }
+            else if (string.IsNullOrEmpty(inputHex2Size.Text))
+            {
+                mistakeCheck = false;
+                inputHex2Size.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputStep.Text))
+            {
+                mistakeCheck = false;
+                inputStep.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputShnekThick.Text))
+            {
+                mistakeCheck = false;
+                inputShnekThick.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputExtrShnekDiam.Text))
+            {
+                mistakeCheck = false;
+                inputExtrShnekDiam.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputExtrShnekLength.Text))
+            {
+                mistakeCheck = false;
+                inputExtrShnekLength.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
             else
             {
                 //mistakeCheck = true;
@@ -828,7 +924,9 @@ namespace GenShnekApp
                 hex2Size = Convert.ToDouble(inputHex2Size.Text);
                 step = Convert.ToDouble(inputStep.Text);
                 shnekThick = Convert.ToDouble(inputShnekThick.Text);
-                extrDiam = Convert.ToDouble(inputExtrDiam.Text);
+
+                extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
+                extrLength = Convert.ToDouble(inputExtrShnekLength.Text);
 
                 if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
                 {
@@ -885,8 +983,14 @@ namespace GenShnekApp
                     {
                         if (extrDiam == 0)
                         {
-                            inputExtrDiam.BorderBrush = Brushes.Red;
+                            inputExtrShnekDiam.BorderBrush = Brushes.Red;
                             MessageBox.Show("Введён неверный диаметр экструзионного шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (extrLength < 15 || extrLength > 35)
+                        {
+                            inputExtrShnekLength.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Отношение длины экструзионного шнека к его диаметру должно находиться в диапазоне от 15 до 35!");
                             mistakeCheck = false;
                         }
                     }
@@ -958,7 +1062,8 @@ namespace GenShnekApp
             inputHoleDistance.IsEnabled = isActive;
             inputStep.IsEnabled = isActive;
             inputHex2Size.IsEnabled = isActive;
-            inputExtrDiam.IsEnabled = isActive;
+            inputExtrShnekDiam.IsEnabled = isActive;
+            inputExtrShnekLength.IsEnabled = isActive;
         }
 
         private void InputFieldIvVisible(bool isVisible)
@@ -972,7 +1077,6 @@ namespace GenShnekApp
             {
                 inputSelection1.Visibility = Visibility.Collapsed;
                 inputSelection2.Visibility = Visibility.Visible;
-
             }
         }
 
