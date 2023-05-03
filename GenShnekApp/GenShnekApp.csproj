@@ -216,9 +216,6 @@
     <Resource Include="ShnekTable1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ShnekSketch2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ShnekTable2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +223,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ShnekTable3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ShnekSketch21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ShnekSketch22.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.3\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.3\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />

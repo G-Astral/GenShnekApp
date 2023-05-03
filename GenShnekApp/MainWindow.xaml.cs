@@ -93,17 +93,26 @@ namespace GenShnekApp
                         DefaultShnekItems1();
                         break;
                     case 1:
-                        if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch2.png"));
                         if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
                         styleCount = 2;
                         DefaultShnekItems2();
                         break;
                 }
             }
-
-
             for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
             ShnekStyle.SelectedIndex = 0;
+        }
+
+        private void ShnekStyleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex ==1)
+            {
+                if (ShnekType.SelectedIndex == 1)
+                {
+                    if (ShnekStyle.SelectedIndex == 0) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch21.png"));
+                    if (ShnekStyle.SelectedIndex == 1) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch22.png"));
+                }
+            }
         }
 
         private void TextBoxInput(object sender, TextCompositionEventArgs e)
@@ -238,16 +247,17 @@ namespace GenShnekApp
                 else
                 {
                     shnekDiam = 270;
-                    tubeRad = (shnekDiam * 10 / 27) / 2;
+                    tubeRad = (shnekDiam * 10 / 18) / 2;
                     //Дефолтные шнеки
                     if (DefaultShnekChoose.IsEnabled == true)
                     {
+                        MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
                         switch (DefaultShnekChoose.SelectedIndex)
                         {
                             case 0:
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                JointCreation3(90, tubeLength);
+                                JointCreation3(tubeRad * 2 * 0.9, tubeLength);
                                 break;
                             case 1:
                                 CylinderCreation(tubeRad, tubeLength);
@@ -264,12 +274,14 @@ namespace GenShnekApp
                     {
                         if (ShnekStyle.SelectedIndex == 0)
                         {
-                            MessageBox.Show("Шнек типа 2 исполнения 1 (ШС-200)\nне предусмотрен для параметризации!");
+                            MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
+                            CylinderCreation(tubeRad, tubeLength);
+                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                            HoleType2Creation1(tubeRad);
                         }
                         else
                         {
-                            CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                            MessageBox.Show("Шнек типа 2 исполнения 2 на данный момент не реализован");
                         }
                     }
                 }
@@ -493,7 +505,6 @@ namespace GenShnekApp
             double len3 = 174 * 0.025;
             double len4 = 174 * 0.025;
 
-
             ksEntity plane1 = OffsetPlaneCreation(length, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -604,6 +615,55 @@ namespace GenShnekApp
                 extrProp4.draftOutwardNormal = true;
                 extrProp4.draftValueNormal = 45;
                 bossExtr4.Create();
+            }
+        }
+
+        //TODO
+        ///////////////////////////Создание сквозного отверстия 1 (тип 2 исполнение 1)/////////////////////////////
+        private void HoleType2Creation1(double diam)
+        {
+            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
+
+            double rad = diam / 2;
+            double len1 = 163;
+
+            ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
+
+            ksSketchDef1.SetPlane(basePlaneZOY);
+            ksSketchE1.Create();
+            ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
+
+            Sketch2D1.ksCircle(0, 0, rad, 1);
+            
+            ksRectangleParam rect1 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+/*            if (rect1 != null)
+            {
+                // Параметры прямоугольника
+                rect1.ang = 0;
+                rect1.x = -thick;
+                rect1.y = rad;
+                rect1.width = thick;
+                rect1.height = sDiam / 2 - rad;
+                rect1.style = 1;
+                Sketch2D1.ksRectangle(rect1);
+            }*/
+
+            ksSketchDef1.EndEdit();
+
+            ksEntity cutExtr1 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef1 = cutExtr1.GetDefinition();
+            ksExtrusionParam extrProp1 = (ksExtrusionParam)extrDef1.ExtrusionParam();
+
+            if (extrProp1 != null)
+            {
+                extrDef1.SetSketch(ksSketchE1);
+
+                extrProp1.direction = (short)Direction_Type.dtNormal;
+                extrProp1.typeNormal = (short)End_Type.etBlind;
+                extrProp1.depthNormal = len1;
+                cutExtr1.Create();
             }
         }
 
@@ -948,7 +1008,6 @@ namespace GenShnekApp
             ShnekStyle.Items.Clear();
             ShnekType.IsEnabled = false;
             DefaultShnekChoose.IsEnabled = true;
-            //DefaultShnekChoose.Items.Clear();
             DefaultShnekItems3();
             InputFieldIvVisible(false);
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
@@ -1208,6 +1267,11 @@ namespace GenShnekApp
         private void UpdateGraphics(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Это кнопка обновления графиков.");
+        }
+
+        private void NoteButton(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Расссчёты проводятся только для экструзионных шнеков.");
         }
     }
 }

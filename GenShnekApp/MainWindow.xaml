@@ -129,6 +129,7 @@
                     x:Name="ShnekStyle" 
                     Margin="248,100,752,578"
                     Height="22"
+                    SelectionChanged="ShnekStyleSelectionChanged"
                     VerticalContentAlignment="Stretch">
                 </ComboBox>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,125,0,553">Выберите стандартный шнек:</TextBlock>
@@ -208,6 +209,11 @@
                     Width="75"
                     Content="Отмена"
                     Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
+                <Button 
+                    Height="23"
+                    Width="75"
+                    Content="Примечание"
+                    Click="NoteButton" Margin="10,627,1115,50" IsCancel="True"/>
             </Grid>
         </TabItem>
     </TabControl>
