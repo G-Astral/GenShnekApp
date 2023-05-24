@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ using System.Runtime.InteropServices;
 using KompasAPI7;
 using System.IO;
 using static System.Math;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.Win32;
 
 namespace GenShnekApp
 {
@@ -132,67 +136,6 @@ namespace GenShnekApp
                         inputHexSize.IsEnabled = false;
                         inputHex2Size.IsEnabled = true;
                     }
-                }
-            }
-        }
-        private void DefaultShnekChooseSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (GhostType.SelectedIndex == 2)
-            {
-                switch (DefaultShnekChoose.SelectedIndex)
-                {
-                    case 0:
-                        inputExtrShnekDiam.Text = "20";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 1:
-                        inputExtrShnekDiam.Text = "32";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 2:
-                        inputExtrShnekDiam.Text = "45";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 3:
-                        inputExtrShnekDiam.Text = "45";
-                        inputExtrShnekCoffLength.Text = "25";
-                        break;
-                    case 4:
-                        inputExtrShnekDiam.Text = "63";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 5:
-                        inputExtrShnekDiam.Text = "63";
-                        inputExtrShnekCoffLength.Text = "25";
-                        break;
-                    case 6:
-                        inputExtrShnekDiam.Text = "63";
-                        inputExtrShnekCoffLength.Text = "30";
-                        break;
-                    case 7:
-                        inputExtrShnekDiam.Text = "90";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 8:
-                        inputExtrShnekDiam.Text = "90";
-                        inputExtrShnekCoffLength.Text = "25";
-                        break;
-                    case 9:
-                        inputExtrShnekDiam.Text = "90";
-                        inputExtrShnekCoffLength.Text = "30";
-                        break;
-                    case 10:
-                        inputExtrShnekDiam.Text = "125";
-                        inputExtrShnekCoffLength.Text = "25";
-                        break;
-                    case 11:
-                        inputExtrShnekDiam.Text = "160";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
-                    case 12:
-                        inputExtrShnekDiam.Text = "200";
-                        inputExtrShnekCoffLength.Text = "20";
-                        break;
                 }
             }
         }
@@ -1612,13 +1555,62 @@ namespace GenShnekApp
 
         }
 
-        private void UpdateGraphics(object sender, RoutedEventArgs e)
+        //Кнопка создания отчёта
+        private void ExtrReportCreation(object sender, RoutedEventArgs e)
         {
-/*            extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
-            extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
-            extrLength = extrDiam * extrCoffLength;
-            ShnekCalc(extrDiam, extrLength);*/
-            MessageBox.Show("Это кнопка обновления графиков.");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+            saveFileDialog.Title = "Save PDF File";
+            saveFileDialog.FileName = "Результат расчётов";
+
+            int counter = 0;
+            string filePath = saveFileDialog.FileName;
+
+            while (File.Exists(filePath))
+            {
+                // Append the counter to the file name
+                string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                string fileExtension = System.IO.Path.GetExtension(filePath);
+                string incrementedFileName = $"{fileNameWithoutExtension} ({counter}){fileExtension}";
+                filePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), incrementedFileName);
+
+                counter++;
+            }
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string path = saveFileDialog.FileName;
+
+                try
+                {
+                    //Создание нового PDF документа
+                    Document document = new Document();
+                    PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
+                    document.Open();
+
+                    BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\4852-font.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    Font font = new Font(baseFont, 16, Font.BOLD);
+
+                    iTextSharp.text.Paragraph header = new iTextSharp.text.Paragraph("ОТЧЁТ ПО ЭКСТРУЗИОННОМУ ШНЕКУ", font);
+                    header.Alignment = Element.ALIGN_CENTER;
+
+                    document.Add(header);
+
+                    document.Close();
+
+                    Process.Start(path);
+                }
+                catch (IOException ex)
+                {
+                    // File is already in use or cannot be accessed
+                    MessageBox.Show($"Невозможно создать PDF файл.\n\nДетали:\n{ex}", "File Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    // Other general exception occurred
+                    MessageBox.Show($"An error occurred.\n\nДетали:\n{ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private void NoteButton(object sender, RoutedEventArgs e)

@@ -147,7 +147,6 @@
                     x:Name="DefaultShnekChoose"
                     Margin="248,125,752,553"
                     Height="22"
-                    SelectionChanged="DefaultShnekChooseSelectionChanged"
                     VerticalContentAlignment="Stretch">
                 </ComboBox>
                 <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,50,0,628">Выберите ГОСТ шнека:</TextBlock>
@@ -214,8 +213,8 @@
                 <Button
                     Height="23"
                     Width="75"
-                    Content="Обновить"
-                    Click="UpdateGraphics"
+                    Content="Отчёт"
+                    Click="ExtrReportCreation"
                     IsDefault="True"
                     Margin="1020,627,105,50"/>
                 <Button 
