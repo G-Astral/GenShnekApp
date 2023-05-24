@@ -184,7 +184,7 @@
                     Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
             </Grid>
         </TabItem>
-        <TabItem Header="Рассчёты">
+        <TabItem Header="Расчёты">
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
                 <Rectangle Margin="20,32,43,100" Stroke="Black"></Rectangle>
                 <Rectangle Margin="810,32,43,100" Stroke="Black"></Rectangle>

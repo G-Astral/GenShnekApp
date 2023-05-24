@@ -75,36 +75,37 @@ namespace GenShnekApp
                     GOSTSelection4();
                     break;
             }
-
-            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i + 1}");
-            ShnekType.SelectedIndex = 0;
         }
 
         //Выбор Типа шнека
         private void ShnekTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShnekStyle.Items.Clear();
-            DefaultShnekChoose.Items.Clear();
-            if (ShnekType.SelectedIndex == 0 || ShnekType.SelectedIndex == 1)
+            if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
             {
-                switch (ShnekType.SelectedIndex)
+                ShnekStyle.Items.Clear();
+                DefaultShnekChoose.Items.Clear();
+                if (ShnekType.SelectedIndex == 0 || ShnekType.SelectedIndex == 1)
                 {
-                    case 0:
-                        if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
-                        if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
-                        styleCount = 2;
-                        DefaultShnekItems1();
-                        break;
-                    case 1:
-                        if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
-                        styleCount = 2;
-                        DefaultShnekItems2();
-                        ShnekStyle.IsEnabled = true;
-                        break;
+                    switch (ShnekType.SelectedIndex)
+                    {
+                        case 0:
+                            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
+                            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
+                            styleCount = 2;
+                            if (GhostType.SelectedIndex == 0) ShnekStyle.IsEnabled = false;
+                            DefaultShnekItems1();
+                            break;
+                        case 1:
+                            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
+                            styleCount = 2;
+                            DefaultShnekItems2();
+                            ShnekStyle.IsEnabled = true;
+                            break;
+                    }
                 }
+                for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
+                ShnekStyle.SelectedIndex = 0;
             }
-            for (int i = 0; i < styleCount; i++) ShnekStyle.Items.Add($"Исполнение {i + 1}");
-            ShnekStyle.SelectedIndex = 0;
         }
 
         private void ShnekStyleSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -323,26 +324,32 @@ namespace GenShnekApp
                 //Шнеки второго типа
                 else
                 {
-                    shnekDiam = 270;
-                    tubeRad = (shnekDiam * 10 / 18) / 2;
                     //Дефолтные шнеки
                     if (DefaultShnekChoose.IsEnabled == true)
                     {
-                        MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
                         switch (DefaultShnekChoose.SelectedIndex)
                         {
                             case 0:
+                                shnekDiam = 80;
+                                tubeRad = (shnekDiam * 10 / 18) / 2;
+                                CylinderCreation(tubeRad, tubeLength);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                                JointCreation4(tubeRad * 2, 56);
+                                break;
+                            case 1:
+                                shnekDiam = 100;
+                                tubeRad = (shnekDiam * 10 / 18) / 2;
+                                CylinderCreation(tubeRad, tubeLength);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                                JointCreation4(tubeRad * 2, 174);
+                                break;
+                            case 2:
+                                MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
+                                shnekDiam = 200;
+                                tubeRad = (shnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 JointCreation3(tubeRad * 2 * 0.9, tubeLength);
-                                break;
-                            case 1:
-                                CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                break;
-                            case 2:
-                                CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 break;
                         }
                     }
@@ -441,6 +448,7 @@ namespace GenShnekApp
                     CylinderCreation(extrRad, extrLength);
                     SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
+                    ShnekCalc(extrDiam, extrLength);
                 }
                 else
                 {
@@ -448,6 +456,7 @@ namespace GenShnekApp
                     CylinderCreation(extrRad, extrLength);
                     SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
+                    ShnekCalc(extrDiam, extrLength);
                 }
             }
         }
@@ -455,33 +464,32 @@ namespace GenShnekApp
         ///////////////////////////Создание трубы шнека/////////////////////////////
         private void CylinderCreation(double rad, double length)
         {
+            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);  // получим интерфейс базовой плоскости YOZ
+            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch);
 
-            ksEntity ksSketchE = part.NewEntity((int)Obj3dType.o3d_sketch); // создание нового скетча
+            SketchDefinition ksSketchDef = ksSketchE.GetDefinition();
 
-            SketchDefinition ksSketchDef = ksSketchE.GetDefinition(); // интерфейс свойств эскиза
-
-            ksSketchDef.SetPlane(basePlaneZOY);  // установим плоскость XOY базовой для эскиза
-            ksSketchE.Create();          // создадим эскиз
+            ksSketchDef.SetPlane(basePlaneZOY);
+            ksSketchE.Create();
             ksDocument2D Sketch2D = (ksDocument2D)ksSketchDef.BeginEdit();
 
             Sketch2D.ksCircle(0, 0, rad, 1);
 
-            ksSketchDef.EndEdit(); // заканчивает редактирование эскиза
+            ksSketchDef.EndEdit();
 
-            ksEntity baseExtr = part.NewEntity((short)Obj3dType.o3d_baseExtrusion); // сущность для выдавливания
-            ksBaseExtrusionDefinition extrDef = baseExtr.GetDefinition(); // интерфейс настроек выдавливания
+            ksEntity baseExtr = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef = baseExtr.GetDefinition();
             ksExtrusionParam extrProp = (ksExtrusionParam)extrDef.ExtrusionParam();
 
             if (extrProp != null)
             {
-                extrDef.SetSketch(ksSketchE); // эскиз операции выдавливания
+                extrDef.SetSketch(ksSketchE);
 
-                extrProp.direction = (short)Direction_Type.dtNormal;      // выбор направления выдавливания
-                extrProp.typeNormal = (short)End_Type.etBlind;      // тип выдавливания (строго на глубину)
-                extrProp.depthNormal = length;         // глубина выдавливания
-                baseExtr.Create();                // создадим операцию
+                extrProp.direction = (short)Direction_Type.dtNormal;
+                extrProp.typeNormal = (short)End_Type.etBlind;
+                extrProp.depthNormal = length;
+                baseExtr.Create();
             }
         }
 
@@ -642,10 +650,10 @@ namespace GenShnekApp
 
             double rad1 = (diam * 0.8) / 2;
             double rad2 = diam / 2;
-            double len1 = 174 * 0.05;
-            double len2 = 174 * 0.9;
-            double len3 = 174 * 0.025;
-            double len4 = 174 * 0.025;
+            double len1 = 174 * 0.1;
+            double len2 = 174 * 0.8;
+            double len3 = 174 * 0.05;
+            double len4 = 174 * 0.05;
 
             ksEntity plane1 = OffsetPlaneCreation(length, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
@@ -756,6 +764,131 @@ namespace GenShnekApp
                 extrProp4.depthNormal = len4;
                 extrProp4.draftOutwardNormal = true;
                 extrProp4.draftValueNormal = 45;
+                bossExtr4.Create();
+            }
+        }
+
+        ///////////////////////////Создание присоединительного элемента 4 (тип 2 исполнение 2)/////////////////////////////
+        private void JointCreation4(double diam, double length)
+        {
+            ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
+
+            length = length * 4 / 3;
+            double rad1 = (diam * 0.85) / 2;
+            double rad2 = (diam * 0.75) / 2;
+            double len1 = length * 0.1;
+            double len2 = length * 0.1;
+            double len3 = length * 0.75;
+            double len4 = length * 0.05;
+
+            ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
+
+            ksSketchDef1.SetPlane(basePlaneZOY);
+            ksSketchE1.Create();
+            ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
+
+            Sketch2D1.ksCircle(0, 0, rad1, 1);
+
+            ksSketchDef1.EndEdit();
+
+            ksEntity bossExtr1 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef1 = bossExtr1.GetDefinition();
+            ksExtrusionParam extrProp1 = (ksExtrusionParam)extrDef1.ExtrusionParam();
+
+            if (extrProp1 != null)
+            {
+                extrDef1.SetSketch(ksSketchE1);
+
+                extrProp1.direction = (short)Direction_Type.dtReverse;
+                extrProp1.typeReverse = (short)End_Type.etBlind;
+                extrProp1.depthReverse = len1;
+                bossExtr1.Create();
+            }
+
+
+            ksEntity plane2 = OffsetPlaneCreation(-len1, basePlaneZOY);
+            ksEntity ksSketchE2 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef2 = ksSketchE2.GetDefinition();
+
+            ksSketchDef2.SetPlane(plane2);
+            ksSketchE2.Create();
+            ksDocument2D Sketch2D2 = (ksDocument2D)ksSketchDef2.BeginEdit();
+
+            Sketch2D2.ksCircle(0, 0, rad2, 1);
+
+            ksSketchDef2.EndEdit();
+
+            ksEntity bossExtr2 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef2 = bossExtr2.GetDefinition();
+            ksExtrusionParam extrProp2 = (ksExtrusionParam)extrDef2.ExtrusionParam();
+
+            if (extrProp2 != null)
+            {
+                extrDef2.SetSketch(ksSketchE2);
+
+                extrProp2.direction = (short)Direction_Type.dtReverse;
+                extrProp2.typeReverse = (short)End_Type.etBlind;
+                extrProp2.depthReverse = len2;
+                bossExtr2.Create();
+            }
+
+            ksEntity plane3 = OffsetPlaneCreation(-len1 - len2, basePlaneZOY);
+            ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
+
+            ksSketchDef3.SetPlane(plane3);
+            ksSketchE3.Create();
+            ksDocument2D Sketch2D3 = (ksDocument2D)ksSketchDef3.BeginEdit();
+
+            Sketch2D3.ksCircle(0, 0, rad1, 1);
+
+            ksSketchDef3.EndEdit();
+
+            ksEntity bossExtr3 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef3 = bossExtr3.GetDefinition();
+            ksExtrusionParam extrProp3 = (ksExtrusionParam)extrDef3.ExtrusionParam();
+
+            if (extrProp3 != null)
+            {
+                extrDef3.SetSketch(ksSketchE3);
+
+                extrProp3.direction = (short)Direction_Type.dtReverse;
+                extrProp3.typeReverse = (short)End_Type.etBlind;
+                extrProp3.depthReverse = len3;
+                bossExtr3.Create();
+            }
+
+
+            ksEntity plane4 = OffsetPlaneCreation(- len1 - len2 - len3, basePlaneZOY);
+            ksEntity ksSketchE4 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
+
+            ksSketchDef4.SetPlane(plane4);
+            ksSketchE4.Create();
+            ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
+
+            Sketch2D4.ksCircle(0, 0, rad1, 1);
+
+            ksSketchDef4.EndEdit();
+
+            ksEntity bossExtr4 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
+            ksBaseExtrusionDefinition extrDef4 = bossExtr4.GetDefinition();
+            ksExtrusionParam extrProp4 = (ksExtrusionParam)extrDef4.ExtrusionParam();
+
+            if (extrProp4 != null)
+            {
+                extrDef4.SetSketch(ksSketchE4);
+
+                extrProp4.direction = (short)Direction_Type.dtReverse;
+                extrProp4.typeReverse = (short)End_Type.etBlind;
+                extrProp4.depthReverse = len4;
+                extrProp4.draftOutwardReverse = true;
+                extrProp4.draftValueReverse = 45;
                 bossExtr4.Create();
             }
         }
@@ -1063,11 +1196,23 @@ namespace GenShnekApp
                             MessageBox.Show("Введён неверный диаметр экструзионного шнека!");
                             mistakeCheck = false;
                         }
-                        if (extrCoffLength < 20 || extrCoffLength > 30)
+                        if (ShnekType.SelectedIndex == 0)
                         {
-                            inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Отношение длины экструзионного шнека к его диаметру должно находиться в диапазоне от 15 до 35!");
-                            mistakeCheck = false;
+                            if (extrCoffLength < 20 || extrCoffLength > 30)
+                            {
+                                inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Отношение длины экструзионного шнека к его диаметру должно находиться в диапазоне от 20 до 30!");
+                                mistakeCheck = false;
+                            }
+                        }
+                        if (ShnekType.SelectedIndex == 1)
+                        {
+                            if (extrCoffLength < 6 || extrCoffLength > 12)
+                            {
+                                inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Отношение длины экструзионного шнека к его диаметру должно находиться в диапазоне от 6 до 12!");
+                                mistakeCheck = false;
+                            }
                         }
                     }
                     if (ShnekType.SelectedIndex == 0)
@@ -1166,6 +1311,8 @@ namespace GenShnekApp
             ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = true;
             InputFieldIvVisible(true);
+            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i + 1}");
+            ShnekType.SelectedIndex = 0;
         }
 
         private void GOSTSelection2()
@@ -1178,31 +1325,45 @@ namespace GenShnekApp
             ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = false;
             InputFieldIvVisible(true);
+            for (int i = 0; i < typeCount; i++) ShnekType.Items.Add($"Тип {i + 1}");
+            ShnekType.SelectedIndex = 0;
         }
 
         private void GOSTSelection3()
         {
-            typeCount = 0;
+            typeCount = 2;
             InputFieldIsActive(false);
             ShnekStyle.IsEnabled = false;
             ShnekStyle.Items.Clear();
-            ShnekType.IsEnabled = false;
+            ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = true;
             DefaultShnekItems3();
             InputFieldIvVisible(false);
+            for (int i = 0; i < typeCount; i++)
+            {
+                if (i == 0 ) ShnekType.Items.Add("Для пластических масс");
+                if (i == 1 ) ShnekType.Items.Add("Для резиновых смесей");
+            }
+            ShnekType.SelectedIndex = 0;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
             if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
         }
         private void GOSTSelection4()
         {
-            typeCount = 0;
+            typeCount = 2;
             InputFieldIsActive(true);
             ShnekStyle.IsEnabled = false;
             ShnekStyle.Items.Clear();
-            ShnekType.IsEnabled = false;
+            ShnekType.IsEnabled = true;
             DefaultShnekChoose.IsEnabled = false;
             DefaultShnekItems3();
             InputFieldIvVisible(false);
+            for (int i = 0; i < typeCount; i++)
+            {
+                if (i == 0) ShnekType.Items.Add("Для пластических масс");
+                if (i == 1) ShnekType.Items.Add("Для резиновых смесей");
+            }
+            ShnekType.SelectedIndex = 0;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
             if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
         }
@@ -1453,16 +1614,16 @@ namespace GenShnekApp
 
         private void UpdateGraphics(object sender, RoutedEventArgs e)
         {
-            extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
+/*            extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
             extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
             extrLength = extrDiam * extrCoffLength;
-            ShnekCalc(extrDiam, extrLength);
-            //MessageBox.Show("Это кнопка обновления графиков.");
+            ShnekCalc(extrDiam, extrLength);*/
+            MessageBox.Show("Это кнопка обновления графиков.");
         }
 
         private void NoteButton(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Рассчёты проводятся только для экструзионных шнеков.");
+            MessageBox.Show("Расчёты проводятся только для экструзионных шнеков.");
         }
     }
 }
