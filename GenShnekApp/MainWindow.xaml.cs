@@ -275,17 +275,23 @@ namespace GenShnekApp
                             case 0:
                                 shnekDiam = 80;
                                 tubeRad = (shnekDiam * 10 / 18) / 2;
+                                tubeLength = 200;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                JointCreation4(tubeRad * 2, 56);
+                                JointCreation4(32, 28, 56);
                                 HoleType2Creation2(32 ,tubeRad * 2, 56, tubeLength);
+                                SpyralCreation(28 / 2, 6, tubeLength - (56 * 7 / 8), 56 * 3 / 4, 3, 32);
+                                SpyralCreation(28 / 2, 6, -56 * 4 / 3 * 0.95, 56, 3, 32);
                                 break;
                             case 1:
                                 shnekDiam = 100;
                                 tubeRad = (shnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                JointCreation4(tubeRad * 2, 63);
+                                JointCreation4(40, 36, 63);
+                                HoleType2Creation2(40 ,tubeRad * 2, 63, tubeLength);
+                                SpyralCreation(36 / 2, 8, tubeLength - (63 * 7 / 8), 63 * 3 / 4, 4, 40);
+                                SpyralCreation(36 / 2, 8, -63 * 4 / 3 * 0.95, 63, 4, 40);
                                 break;
                             case 2:
                                 MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
@@ -713,17 +719,16 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 4 (тип 2 исполнение 2)/////////////////////////////
-        private void JointCreation4(double diam, double length)
+        private void JointCreation4(double threadDiam, double threadDiam0, double length)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
             length = length * 4 / 3;
-            double rad1 = (diam * 0.85) / 2;
-            double rad2 = (diam * 0.75) / 2;
+            double rad1 = threadDiam / 2;
+            double rad2 = threadDiam0 / 2;
             double len1 = length * 0.1;
-            double len2 = length * 0.1;
-            double len3 = length * 0.75;
-            double len4 = length * 0.05;
+            double len2 = length * 0.85;
+            double len3 = length * 0.05;
 
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -779,7 +784,7 @@ namespace GenShnekApp
                 bossExtr2.Create();
             }
 
-            ksEntity plane3 = OffsetPlaneCreation(-len1 - len2, basePlaneZOY);
+            ksEntity plane3 = OffsetPlaneCreation(- len1 - len2, basePlaneZOY);
             ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
@@ -803,38 +808,11 @@ namespace GenShnekApp
                 extrProp3.direction = (short)Direction_Type.dtReverse;
                 extrProp3.typeReverse = (short)End_Type.etBlind;
                 extrProp3.depthReverse = len3;
+                extrProp3.draftOutwardReverse = true;
+                extrProp3.draftValueReverse = 45;
                 bossExtr3.Create();
             }
 
-
-            ksEntity plane4 = OffsetPlaneCreation(- len1 - len2 - len3, basePlaneZOY);
-            ksEntity ksSketchE4 = part.NewEntity((int)Obj3dType.o3d_sketch);
-
-            SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
-
-            ksSketchDef4.SetPlane(plane4);
-            ksSketchE4.Create();
-            ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
-
-            Sketch2D4.ksCircle(0, 0, rad1, 1);
-
-            ksSketchDef4.EndEdit();
-
-            ksEntity bossExtr4 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
-            ksBaseExtrusionDefinition extrDef4 = bossExtr4.GetDefinition();
-            ksExtrusionParam extrProp4 = (ksExtrusionParam)extrDef4.ExtrusionParam();
-
-            if (extrProp4 != null)
-            {
-                extrDef4.SetSketch(ksSketchE4);
-
-                extrProp4.direction = (short)Direction_Type.dtReverse;
-                extrProp4.typeReverse = (short)End_Type.etBlind;
-                extrProp4.depthReverse = len4;
-                extrProp4.draftOutwardReverse = true;
-                extrProp4.draftValueReverse = 45;
-                bossExtr4.Create();
-            }
         }
 
         //TODO
@@ -892,10 +870,10 @@ namespace GenShnekApp
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
             
             double jointLength = threadLength * 4 / 3;
-            double rad1 = (diam * 0.6) / 2;
+            double rad1 = (diam * 0.5) / 2;
             double rad2 = threadDiam / 2;
             double rad3 = rad2 * 7 / 8;
-            double rad4 = rad1 * 3 / 2;
+            double rad4 = rad1 * 1.6;
             double len1 = jointLength * 0.05;
             double len2 = jointLength * 0.9;
             double len3 = jointLength * 0.15;
@@ -1118,7 +1096,7 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание винта/////////////////////////////
-        private void SpyralCreation(double rad, double spyralStep, double start, double end, double thick, double sDiam)
+        private void SpyralCreation(double rad, double spyralStep, double start, double spyralLength, double thick, double sDiam)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
             ksEntity basePlaneXOZ = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeXOZ);
@@ -1135,7 +1113,7 @@ namespace GenShnekApp
             ksSketchDef1.diam = rad * 2;
             ksSketchDef1.buildMode = 0;
             ksSketchDef1.step = spyralStep;
-            ksSketchDef1.turn = end / spyralStep;
+            ksSketchDef1.turn = spyralLength / spyralStep;
             ksSketchDef1.buildDir = true;
             ksSketchDef1.turnDir = true;
 
@@ -1156,7 +1134,7 @@ namespace GenShnekApp
             {
                 // Параметры прямоугольника
                 rect.ang = 0;
-                rect.x = -thick;
+                rect.x = -thick - start;
                 rect.y = rad;
                 rect.width = thick;
                 rect.height = sDiam / 2 - rad;
