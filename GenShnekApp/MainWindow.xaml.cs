@@ -275,7 +275,6 @@ namespace GenShnekApp
                             case 0:
                                 shnekDiam = 80;
                                 tubeRad = (shnekDiam * 10 / 18) / 2;
-                                tubeLength = 200;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
                                 JointCreation4(32, 28, 56);
@@ -294,12 +293,15 @@ namespace GenShnekApp
                                 SpyralCreation(36 / 2, 8, -63 * 4 / 3 * 0.95, 63, 4, 40);
                                 break;
                             case 2:
-                                MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
                                 shnekDiam = 200;
                                 tubeRad = (shnekDiam * 10 / 18) / 2;
+                                tubeLength = 400;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                JointCreation3(tubeRad * 2 * 0.9, tubeLength);
+                                JointCreation3(83, 95, tubeLength, 324/2);
+                                HoleType2Creation1(95, tubeRad * 2, 163, 324, tubeLength);
+                                SpyralCreation(41.5, 16, 163 / 16, 163 * 3 / 4, 8.25, 95);
+                                SpyralCreation(41.5, 16, tubeLength + 324 / 16, 324 * 3 / 8, 8.1, 95);
                                 break;
                         }
                     }
@@ -311,7 +313,7 @@ namespace GenShnekApp
                             MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
                             CylinderCreation(tubeRad, tubeLength);
                             SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                            HoleType2Creation1(tubeRad);
+                            //HoleType2Creation1(tubeRad);
                         }
                         else
                         {
@@ -594,16 +596,16 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 3 (тип 2 исполнение 1)/////////////////////////////
-        private void JointCreation3(double diam, double length)
+        private void JointCreation3(double threadDiam, double threadDiam0, double length, double jointLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad1 = (diam * 0.8) / 2;
-            double rad2 = diam / 2;
-            double len1 = 174 * 0.1;
-            double len2 = 174 * 0.8;
-            double len3 = 174 * 0.05;
-            double len4 = 174 * 0.05;
+            double rad1 = threadDiam / 2;
+            double rad2 = threadDiam / 2;
+            double len1 = jointLength * 0.1;
+            double len2 = jointLength * 0.8;
+            double len3 = jointLength * 0.05;
+            double len4 = jointLength * 0.05;
 
             ksEntity plane1 = OffsetPlaneCreation(length, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
@@ -642,7 +644,7 @@ namespace GenShnekApp
             ksSketchE2.Create();
             ksDocument2D Sketch2D2 = (ksDocument2D)ksSketchDef2.BeginEdit();
 
-            Sketch2D2.ksCircle(0, 0, rad2, 1);
+            Sketch2D2.ksCircle(0, 0, rad1, 1);
 
             ksSketchDef2.EndEdit();
 
@@ -817,25 +819,36 @@ namespace GenShnekApp
 
         //TODO
         ///////////////////////////Создание сквозного отверстия 1 (тип 2 исполнение 1)/////////////////////////////
-        private void HoleType2Creation1(double diam)
+        private void HoleType2Creation1(double thredDiam, double diam, double threadLength1, double threadLength2, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad = diam / 2;
-            double len1 = 163;
+            double rad1 = thredDiam / 2;
+            double rad2 = rad1 * 3 / 5;
+            double rad3 = rad2;
+            double rad4 = rad2;
+            double rad5 = rad4;
+            double rad6 = rad1;
+            double len1 = threadLength1;
+            double len2 = len1 / 20;
+            double len3 = len2 * 2;
+            double len4 = fullLength + threadLength2 / 2;
+            double len5 = len2 * 2;
+            double len6 = len4 - len1 - len2 - len3 - threadLength2 - len5;
 
+            ksEntity plane1 = OffsetPlaneCreation(0, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef1 = ksSketchE1.GetDefinition();
 
-            ksSketchDef1.SetPlane(basePlaneZOY);
+            ksSketchDef1.SetPlane(plane1);
             ksSketchE1.Create();
             ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
 
-            Sketch2D1.ksCircle(0, 0, rad, 1);
+            Sketch2D1.ksCircle(0, 0, rad1, 1);
             
-            ksRectangleParam rect1 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
-/*            if (rect1 != null)
+/*            ksRectangleParam rect1 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+            if (rect1 != null)
             {
                 // Параметры прямоугольника
                 rect1.ang = 0;
@@ -857,10 +870,149 @@ namespace GenShnekApp
             {
                 extrDef1.SetSketch(ksSketchE1);
 
-                extrProp1.direction = (short)Direction_Type.dtNormal;
-                extrProp1.typeNormal = (short)End_Type.etBlind;
-                extrProp1.depthNormal = len1;
+                extrProp1.direction = (short)Direction_Type.dtReverse;
+                extrProp1.typeReverse = (short)End_Type.etBlind;
+                extrProp1.depthReverse = len1;
                 cutExtr1.Create();
+            }
+
+            ksEntity plane2 = OffsetPlaneCreation(len1, basePlaneZOY);
+            ksEntity ksSketchE2 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef2 = ksSketchE2.GetDefinition();
+
+            ksSketchDef2.SetPlane(plane2);
+            ksSketchE2.Create();
+            ksDocument2D Sketch2D2 = (ksDocument2D)ksSketchDef2.BeginEdit();
+
+            Sketch2D2.ksCircle(0, 0, rad2, 1);
+
+            ksSketchDef2.EndEdit();
+
+            ksEntity cutExtr2 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef2 = cutExtr2.GetDefinition();
+            ksExtrusionParam extrProp2 = (ksExtrusionParam)extrDef2.ExtrusionParam();
+
+            if (extrProp2 != null)
+            {
+                extrDef2.SetSketch(ksSketchE2);
+
+                extrProp2.direction = (short)Direction_Type.dtReverse;
+                extrProp2.typeReverse = (short)End_Type.etBlind;
+                extrProp2.depthReverse = len2;
+                cutExtr2.Create();
+            }
+
+            ksEntity plane3 = OffsetPlaneCreation(len1 + len2, basePlaneZOY);
+            ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
+
+            ksSketchDef3.SetPlane(plane3);
+            ksSketchE3.Create();
+            ksDocument2D Sketch2D3 = (ksDocument2D)ksSketchDef3.BeginEdit();
+
+            Sketch2D3.ksCircle(0, 0, rad3, 1);
+
+            ksSketchDef3.EndEdit();
+
+            ksEntity cutExtr3 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef3 = cutExtr3.GetDefinition();
+            ksExtrusionParam extrProp3 = (ksExtrusionParam)extrDef3.ExtrusionParam();
+
+            if (extrProp3 != null)
+            {
+                extrDef3.SetSketch(ksSketchE3);
+
+                extrProp3.direction = (short)Direction_Type.dtReverse;
+                extrProp3.typeReverse = (short)End_Type.etBlind;
+                extrProp3.depthReverse = len3;
+                extrProp3.draftOutwardNormal = true;
+                extrProp3.draftValueReverse = 45;
+                cutExtr3.Create();
+            }
+
+            ksEntity plane4 = OffsetPlaneCreation(len4, basePlaneZOY);
+            ksEntity ksSketchE4 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
+
+            ksSketchDef4.SetPlane(plane4);
+            ksSketchE4.Create();
+            ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
+
+            Sketch2D4.ksCircle(0, 0, rad4, 1);
+
+            ksSketchDef4.EndEdit();
+
+            ksEntity cutExtr4 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef4 = cutExtr4.GetDefinition();
+            ksExtrusionParam extrProp4 = (ksExtrusionParam)extrDef4.ExtrusionParam();
+
+            if (extrProp4 != null)
+            {
+                extrDef4.SetSketch(ksSketchE4);
+
+                extrProp4.direction = (short)Direction_Type.dtNormal;
+                extrProp4.typeNormal = (short)End_Type.etBlind;
+                extrProp4.depthNormal = threadLength2;
+                cutExtr4.Create();
+            }
+
+            ksEntity plane5 = OffsetPlaneCreation(len4 - threadLength2, basePlaneZOY);
+            ksEntity ksSketchE5 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef5 = ksSketchE5.GetDefinition();
+
+            ksSketchDef5.SetPlane(plane5);
+            ksSketchE5.Create();
+            ksDocument2D Sketch2D5 = (ksDocument2D)ksSketchDef5.BeginEdit();
+
+            Sketch2D5.ksCircle(0, 0, rad5, 1);
+
+            ksSketchDef5.EndEdit();
+
+            ksEntity cutExtr5 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef5 = cutExtr5.GetDefinition();
+            ksExtrusionParam extrProp5 = (ksExtrusionParam)extrDef5.ExtrusionParam();
+
+            if (extrProp5 != null)
+            {
+                extrDef5.SetSketch(ksSketchE5);
+
+                extrProp5.direction = (short)Direction_Type.dtNormal;
+                extrProp5.typeNormal = (short)End_Type.etBlind;
+                extrProp5.depthNormal = len5;
+                extrProp5.draftOutwardReverse = true;
+                extrProp5.draftValueNormal = 45;
+                cutExtr5.Create();
+            }
+
+            ksEntity plane6 = OffsetPlaneCreation(len4 - threadLength2 - len5, basePlaneZOY);
+            ksEntity ksSketchE6 = part.NewEntity((int)Obj3dType.o3d_sketch);
+
+            SketchDefinition ksSketchDef6 = ksSketchE6.GetDefinition();
+
+            ksSketchDef6.SetPlane(plane6);
+            ksSketchE6.Create();
+            ksDocument2D Sketch2D6 = (ksDocument2D)ksSketchDef6.BeginEdit();
+
+            Sketch2D6.ksCircle(0, 0, rad6, 1);
+
+            ksSketchDef6.EndEdit();
+
+            ksEntity cutExtr6 = part.NewEntity((short)Obj3dType.o3d_cutExtrusion);
+            ksCutExtrusionDefinition extrDef6 = cutExtr6.GetDefinition();
+            ksExtrusionParam extrProp6 = (ksExtrusionParam)extrDef6.ExtrusionParam();
+
+            if (extrProp6 != null)
+            {
+                extrDef6.SetSketch(ksSketchE6);
+
+                extrProp6.direction = (short)Direction_Type.dtNormal;
+                extrProp6.typeNormal = (short)End_Type.etBlind;
+                extrProp6.depthNormal = len6;
+                cutExtr6.Create();
             }
         }
 
@@ -1076,9 +1228,6 @@ namespace GenShnekApp
                 extrProp7.depthNormal = len7;
                 cutExtr7.Create();
             }
-
-            //TODO
-            //Создать резьбу
         }
 
         ///////////////////////////Создание кастомных плоскостей/////////////////////////////
