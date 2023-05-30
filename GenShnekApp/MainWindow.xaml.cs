@@ -41,6 +41,13 @@ namespace GenShnekApp
         double tubeRad;
         double step;
 
+        double type2ShnekDiam;
+        double type2T;
+        double type2T1;
+        double type2T2;
+        double threadDiam;
+        double threadStep;
+
         double extrDiam;
         double extrRad;
         double extrCoffLength;
@@ -135,6 +142,21 @@ namespace GenShnekApp
                     {
                         inputHexSize.IsEnabled = false;
                         inputHex2Size.IsEnabled = true;
+                    }
+                }
+                else if (ShnekType.SelectedIndex ==1)
+                {
+                    if (ShnekStyle.SelectedIndex == 0)
+                    {
+                        inputType2T.IsEnabled = false;
+                        inputType2T1.IsEnabled = true;
+                        inputType2T2.IsEnabled = true;
+                    }
+                    if (ShnekStyle.SelectedIndex == 1)
+                    {
+                        inputType2T.IsEnabled = true;
+                        inputType2T1.IsEnabled = false;
+                        inputType2T2.IsEnabled = false;
                     }
                 }
             }
@@ -273,33 +295,32 @@ namespace GenShnekApp
                         switch (DefaultShnekChoose.SelectedIndex)
                         {
                             case 0:
-                                shnekDiam = 80;
-                                tubeRad = (shnekDiam * 10 / 18) / 2;
+                                type2ShnekDiam = 80;
+                                tubeRad = (type2ShnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation4(32, 28, 56);
                                 HoleType2Creation2(32 ,tubeRad * 2, 56, tubeLength);
                                 SpyralCreation(28 / 2, 6, tubeLength - (56 * 7 / 8), 56 * 3 / 4, 3, 32);
                                 SpyralCreation(28 / 2, 6, -56 * 4 / 3 * 0.95, 56, 3, 32);
                                 break;
                             case 1:
-                                shnekDiam = 100;
-                                tubeRad = (shnekDiam * 10 / 18) / 2;
+                                type2ShnekDiam = 100;
+                                tubeRad = (type2ShnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation4(40, 36, 63);
                                 HoleType2Creation2(40 ,tubeRad * 2, 63, tubeLength);
                                 SpyralCreation(36 / 2, 8, tubeLength - (63 * 7 / 8), 63 * 3 / 4, 4, 40);
                                 SpyralCreation(36 / 2, 8, -63 * 4 / 3 * 0.95, 63, 4, 40);
                                 break;
                             case 2:
-                                shnekDiam = 200;
-                                tubeRad = (shnekDiam * 10 / 18) / 2;
-                                tubeLength = 400;
+                                type2ShnekDiam = 200;
+                                tubeRad = (type2ShnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
-                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                                JointCreation3(83, 95, tubeLength, 324/2);
-                                HoleType2Creation1(95, tubeRad * 2, 163, 324, tubeLength);
+                                SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
+                                JointCreation3(83, tubeLength, 324/2);
+                                HoleType2Creation1(95, 163, 324, tubeLength);
                                 SpyralCreation(41.5, 16, 163 / 16, 163 * 3 / 4, 8.25, 95);
                                 SpyralCreation(41.5, 16, tubeLength + 324 / 16, 324 * 3 / 8, 8.1, 95);
                                 break;
@@ -308,16 +329,27 @@ namespace GenShnekApp
                     //Выбор исполнения шнека
                     else
                     {
+                        double threadSemiStep = threadStep / 2;
+                        double threadDiam0 = threadDiam * 0.87;
+                        double threadRad0 = threadDiam0 / 2;
+                        tubeRad = (type2ShnekDiam * 10 / 18) / 2;
                         if (ShnekStyle.SelectedIndex == 0)
                         {
-                            MessageBox.Show("Отверстие шнека типа 2 исполнения 1 на данный момент не реализовано");
                             CylinderCreation(tubeRad, tubeLength);
-                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, shnekDiam);
-                            //HoleType2Creation1(tubeRad);
+                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
+                            JointCreation3(threadDiam0, tubeLength, type2T2 / 2);
+                            HoleType2Creation1(threadDiam, type2T1, type2T2, tubeLength);
+                            SpyralCreation(threadRad0, threadStep, type2T1 / 16, type2T1 * 3 / 4, threadSemiStep, threadDiam);
+                            SpyralCreation(threadRad0, threadStep, tubeLength + type2T2 / 16, type2T2 * 3 / 8, threadSemiStep, threadDiam);
                         }
                         else
                         {
-                            MessageBox.Show("Шнек типа 2 исполнения 2 на данный момент не реализован");
+                            CylinderCreation(tubeRad, tubeLength);
+                            SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
+                            JointCreation4(threadDiam, threadDiam0, type2T);
+                            HoleType2Creation2(threadDiam, tubeRad * 2, type2T, tubeLength);
+                            SpyralCreation(threadRad0, threadStep, tubeLength - (type2T * 7 / 8), type2T * 3 / 4, threadSemiStep, threadDiam);
+                            SpyralCreation(threadRad0, threadStep, -type2T * 4 / 3 * 0.95, type2T, threadSemiStep, threadDiam);
                         }
                     }
                 }
@@ -596,12 +628,11 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 3 (тип 2 исполнение 1)/////////////////////////////
-        private void JointCreation3(double threadDiam, double threadDiam0, double length, double jointLength)
+        private void JointCreation3(double threadMinDiam, double length, double jointLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad1 = threadDiam / 2;
-            double rad2 = threadDiam / 2;
+            double rad1 = threadMinDiam / 2;
             double len1 = jointLength * 0.1;
             double len2 = jointLength * 0.8;
             double len3 = jointLength * 0.05;
@@ -721,13 +752,13 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание присоединительного элемента 4 (тип 2 исполнение 2)/////////////////////////////
-        private void JointCreation4(double threadDiam, double threadDiam0, double length)
+        private void JointCreation4(double threadMaxDiam, double threadMinDiam, double length)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
             length = length * 4 / 3;
-            double rad1 = threadDiam / 2;
-            double rad2 = threadDiam0 / 2;
+            double rad1 = threadMaxDiam / 2;
+            double rad2 = threadMinDiam / 2;
             double len1 = length * 0.1;
             double len2 = length * 0.85;
             double len3 = length * 0.05;
@@ -816,14 +847,13 @@ namespace GenShnekApp
             }
 
         }
-
-        //TODO
+        
         ///////////////////////////Создание сквозного отверстия 1 (тип 2 исполнение 1)/////////////////////////////
-        private void HoleType2Creation1(double thredDiam, double diam, double threadLength1, double threadLength2, double fullLength)
+        private void HoleType2Creation1(double thredMaxDiam, double threadLength1, double threadLength2, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad1 = thredDiam / 2;
+            double rad1 = thredMaxDiam / 2;
             double rad2 = rad1 * 3 / 5;
             double rad3 = rad2;
             double rad4 = rad2;
@@ -1017,13 +1047,13 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание сквозного отверстия 2 (тип 2 исполнение 2)/////////////////////////////
-        private void HoleType2Creation2(double threadDiam, double diam, double threadLength, double fullLength)
+        private void HoleType2Creation2(double threadMaxDiam, double diam, double threadLength, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
             
             double jointLength = threadLength * 4 / 3;
             double rad1 = (diam * 0.5) / 2;
-            double rad2 = threadDiam / 2;
+            double rad2 = threadMaxDiam / 2;
             double rad3 = rad2 * 7 / 8;
             double rad4 = rad1 * 1.6;
             double len1 = jointLength * 0.05;
@@ -1349,7 +1379,6 @@ namespace GenShnekApp
                     textBox.BorderBrush = new SolidColorBrush(Color.FromRgb(171, 173, 179));
                 }
             }
-
             if (string.IsNullOrEmpty(inputTubeLength.Text))
             {
                 mistakeCheck = false;
@@ -1398,6 +1427,42 @@ namespace GenShnekApp
                 inputShnekThick.BorderBrush = Brushes.Red;
                 MessageBox.Show("Обнаружено пустое поле ввода!");
             }
+            else if (string.IsNullOrEmpty(inputType2ShnekDiam.Text))
+            {
+                mistakeCheck = false;
+                inputType2ShnekDiam.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputType2T.Text))
+            {
+                mistakeCheck = false;
+                inputType2T.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputType2T1.Text))
+            {
+                mistakeCheck = false;
+                inputType2T1.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputType2T2.Text))
+            {
+                mistakeCheck = false;
+                inputType2T2.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputThreadDiam.Text))
+            {
+                mistakeCheck = false;
+                inputThreadDiam.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
+            else if (string.IsNullOrEmpty(inputThreadStep.Text))
+            {
+                mistakeCheck = false;
+                inputThreadStep.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
             else if (string.IsNullOrEmpty(inputExtrShnekDiam.Text))
             {
                 mistakeCheck = false;
@@ -1421,6 +1486,13 @@ namespace GenShnekApp
                 hex2Size = Convert.ToDouble(inputHex2Size.Text);
                 step = Convert.ToDouble(inputStep.Text);
                 shnekThick = Convert.ToDouble(inputShnekThick.Text);
+
+                type2ShnekDiam = Convert.ToDouble(inputType2ShnekDiam.Text);
+                type2T = Convert.ToDouble(inputType2T.Text);
+                type2T1 = Convert.ToDouble(inputType2T1.Text);
+                type2T2 = Convert.ToDouble(inputType2T2.Text);
+                threadDiam = Convert.ToDouble(inputThreadDiam.Text);
+                threadStep = Convert.ToDouble(inputThreadStep.Text);
 
                 extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
                 extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
@@ -1571,6 +1643,12 @@ namespace GenShnekApp
             inputHoleDistance.IsEnabled = isActive;
             inputStep.IsEnabled = isActive;
             inputHex2Size.IsEnabled = isActive;
+            inputThreadDiam.IsEnabled = isActive;
+            inputThreadStep.IsEnabled = isActive;
+            inputType2ShnekDiam.IsEnabled = isActive;
+            inputType2T.IsEnabled = isActive;
+            inputType2T1.IsEnabled = isActive;
+            inputType2T2.IsEnabled = isActive;
             inputExtrShnekDiam.IsEnabled = isActive;
             inputExtrShnekCoffLength.IsEnabled = isActive;
         }
@@ -1686,6 +1764,9 @@ namespace GenShnekApp
                 }
             }
             DefaultShnekChoose.SelectedIndex = 0;
+
+            inputSelection11.Visibility = Visibility.Visible;
+            inputSelection12.Visibility = Visibility.Collapsed;
         }
         private void DefaultShnekItems2()
         {
@@ -1705,6 +1786,9 @@ namespace GenShnekApp
                 }
             }
             DefaultShnekChoose.SelectedIndex = 0;
+
+            inputSelection11.Visibility = Visibility.Collapsed;
+            inputSelection12.Visibility = Visibility.Visible;
         }
 
         private void DefaultShnekItems3()
@@ -1960,6 +2044,13 @@ namespace GenShnekApp
         private void NoteButton(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Расчёты проводятся только для экструзионных шнеков.");
+        }
+
+        private void ThreadButton(object sender, RoutedEventArgs e)
+        {
+            ThreadInfoWindow threadInfoWindow = new ThreadInfoWindow();
+            threadInfoWindow.Owner = this;
+            threadInfoWindow.ShowDialog();
         }
     }
 }
