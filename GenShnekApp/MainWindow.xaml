@@ -257,10 +257,10 @@
                 <Rectangle Margin="810,32,43,100" Stroke="Black"></Rectangle>
                 <Rectangle Margin="810,32,43,646" Stroke="Black"></Rectangle>
                 <TextBlock Margin="818,35,282,641">Вывод</TextBlock>
-                <TextBlock x:Name="QOutput" Height="20" Margin="824,65,49,615">Q = x м^3/с</TextBlock>
-                <TextBlock x:Name="MKROutput" Height="20" Margin="824,90,49,590">M_кр = x Н*м</TextBlock>
-                <TextBlock x:Name="SosOutput" Height="20" Margin="824,115,49,565">S_ос = x Н</TextBlock>
-                <TextBlock x:Name="WROutput" Height="20" Margin="824,140,49,540">W_р = x м^3</TextBlock>
+                <TextBlock x:Name="QOutput" Height="20" Margin="824,65,49,615">Q = — м^3/с</TextBlock>
+                <TextBlock x:Name="MKROutput" Height="20" Margin="824,90,49,590">M_кр = — Н*м</TextBlock>
+                <TextBlock x:Name="SosOutput" Height="20" Margin="824,115,49,565">S_ос = — Н</TextBlock>
+                <TextBlock x:Name="WROutput" Height="20" Margin="824,140,49,540">W_р = — м^3</TextBlock>
                 <TabControl Margin="20,31,390,100"  Panel.ZIndex="-1">
                     <TabItem Header="Эпюра прочности">
                         <Grid>
@@ -294,7 +294,7 @@
                     Height="23"
                     Width="75"
                     Content="Примечание"
-                    Click="NoteButton" Margin="10,627,1115,50" IsCancel="True"/>
+                    Click="NoteButton" Margin="10,627,1115,50"/>
             </Grid>
         </TabItem>
     </TabControl>

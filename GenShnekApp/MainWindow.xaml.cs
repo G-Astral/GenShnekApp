@@ -53,6 +53,11 @@ namespace GenShnekApp
         double extrCoffLength;
         double extrLength;
 
+        //TODO Добавить стринговые переменные для отчёта по экструзионным шнекам и убрать стринг-заглушку
+        string extrMethod = "—";
+        string extrName = "—";
+        string lorem = "Lorem Ipsum";
+
         KompasObject kompas;
         ksPart part;
 
@@ -300,7 +305,7 @@ namespace GenShnekApp
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation4(32, 28, 56);
-                                HoleType2Creation2(32 ,tubeRad * 2, 56, tubeLength);
+                                HoleType2Creation2(32, 56, tubeLength);
                                 SpyralCreation(28 / 2, 6, tubeLength - (56 * 7 / 8), 56 * 3 / 4, 3, 32);
                                 SpyralCreation(28 / 2, 6, -56 * 4 / 3 * 0.95, 56, 3, 32);
                                 break;
@@ -310,7 +315,7 @@ namespace GenShnekApp
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation4(40, 36, 63);
-                                HoleType2Creation2(40 ,tubeRad * 2, 63, tubeLength);
+                                HoleType2Creation2(40 , 63, tubeLength);
                                 SpyralCreation(36 / 2, 8, tubeLength - (63 * 7 / 8), 63 * 3 / 4, 4, 40);
                                 SpyralCreation(36 / 2, 8, -63 * 4 / 3 * 0.95, 63, 4, 40);
                                 break;
@@ -347,7 +352,7 @@ namespace GenShnekApp
                             CylinderCreation(tubeRad, tubeLength);
                             SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                             JointCreation4(threadDiam, threadDiam0, type2T);
-                            HoleType2Creation2(threadDiam, tubeRad * 2, type2T, tubeLength);
+                            HoleType2Creation2(threadDiam, type2T, tubeLength);
                             SpyralCreation(threadRad0, threadStep, tubeLength - (type2T * 7 / 8), type2T * 3 / 4, threadSemiStep, threadDiam);
                             SpyralCreation(threadRad0, threadStep, -type2T * 4 / 3 * 0.95, type2T, threadSemiStep, threadDiam);
                         }
@@ -360,6 +365,7 @@ namespace GenShnekApp
                 extrRad = extrDiam / 2;
                 if (DefaultShnekChoose.IsEnabled == true)
                 {
+                    extrMethod = "Стандартный";
                     switch (DefaultShnekChoose.SelectedIndex)
                     {
                         case 0:
@@ -428,6 +434,7 @@ namespace GenShnekApp
                             extrLength = extrDiam * extrCoffLength;
                             break;
                     }
+                    extrName = $"ЧП {extrDiam}x{extrCoffLength}";
                     extrRad = extrDiam / 2;
                     CylinderCreation(extrRad, extrLength);
                     SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
@@ -436,6 +443,8 @@ namespace GenShnekApp
                 }
                 else
                 {
+                    extrMethod = "Пользовательский";
+                    extrName = "—";
                     extrLength = extrDiam * extrCoffLength;
                     CylinderCreation(extrRad, extrLength);
                     SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
@@ -861,9 +870,9 @@ namespace GenShnekApp
             double rad6 = rad1;
             double len1 = threadLength1;
             double len2 = len1 / 20;
-            double len3 = len2 * 2;
+            double len3 = 8;
             double len4 = fullLength + threadLength2 / 2;
-            double len5 = len2 * 2;
+            double len5 = 8;
             double len6 = len4 - len1 - len2 - len3 - threadLength2 - len5;
 
             ksEntity plane1 = OffsetPlaneCreation(0, basePlaneZOY);
@@ -1047,22 +1056,22 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание сквозного отверстия 2 (тип 2 исполнение 2)/////////////////////////////
-        private void HoleType2Creation2(double threadMaxDiam, double diam, double threadLength, double fullLength)
+        private void HoleType2Creation2(double threadMaxDiam, double threadLength, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
             
             double jointLength = threadLength * 4 / 3;
-            double rad1 = (diam * 0.5) / 2;
+            double rad1 = threadMaxDiam / 3;
             double rad2 = threadMaxDiam / 2;
             double rad3 = rad2 * 7 / 8;
             double rad4 = rad1 * 1.6;
             double len1 = jointLength * 0.05;
             double len2 = jointLength * 0.9;
-            double len3 = jointLength * 0.15;
+            double len3 = jointLength * 0.1;
             double len4 = threadLength;
             double len5 = threadLength / 2;
-            double len6 = len5 * 1 / 5;
-            double len7 = fullLength - len6 - len5 - len4 - jointLength * 0.09;
+            double len6 = len5 * 1 / 6;
+            double len7 = fullLength - len6 - len5 - len4 - jointLength * 0.05;
 
             ksEntity plane1 = OffsetPlaneCreation(-jointLength + len1, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
@@ -1511,41 +1520,89 @@ namespace GenShnekApp
                 {
                     if (GhostType.SelectedIndex == 1)
                     {
-                        if (holeDiam == 0)
+                        if (ShnekType.SelectedIndex == 0)
                         {
-                            inputHoleDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный диаметр отверстия!");
-                            mistakeCheck = false;
+                            if (holeDiam == 0)
+                            {
+                                inputHoleDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный диаметр отверстия!");
+                                mistakeCheck = false;
+                            }
+                            if (holeDistance == 0)
+                            {
+                                inputHoleDistance.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введено неверное расстояние отверстия!");
+                                mistakeCheck = false;
+                            }
+                            if (shnekDiam == 0)
+                            {
+                                inputShnekDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                                mistakeCheck = false;
+                            }
+                            if (step == 0)
+                            {
+                                inputShnekDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                                mistakeCheck = false;
+                            }
+                            if (shnekThick == 0)
+                            {
+                                inputShnekDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Введён неверный внешний диаметр шнека!");
+                                mistakeCheck = false;
+                            }
+                            if (hexSize * 1.5 >= shnekDiam)
+                            {
+                                inputShnekDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
+                                mistakeCheck = false;
+                            }
                         }
-                        if (holeDistance == 0)
+                        else if (ShnekType.SelectedIndex == 1)
                         {
-                            inputHoleDistance.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введено неверное расстояние отверстия!");
-                            mistakeCheck = false;
-                        }
-                        if (shnekDiam == 0)
-                        {
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                            mistakeCheck = false;
-                        }
-                        if (step == 0)
-                        {
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                            mistakeCheck = false;
-                        }
-                        if (shnekThick == 0)
-                        {
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Введён неверный внешний диаметр шнека!");
-                            mistakeCheck = false;
-                        }
-                        if (hexSize * 1.5 >= shnekDiam)
-                        {
-                            inputShnekDiam.BorderBrush = Brushes.Red;
-                            MessageBox.Show("Внешний диаметр шнека не может быть меньше или равен внутреннему!");
-                            mistakeCheck = false;
+                            if (type2T1 < 100)
+                            {
+                                inputType2T1.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Параметр t1 не может быть меньше 100 мм!");
+                                mistakeCheck = false;
+                            }
+                            if (type2T1 >= tubeLength*0.3)
+                            {
+                                inputType2T1.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Параметр t1 не может быть превышать 30% от длины трубы!");
+                                mistakeCheck = false;
+                            }
+                            if (type2T2 < 200)
+                            {
+                                inputType2T2.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Параметр t2 не может быть меньше 200 мм!");
+                                mistakeCheck = false;
+                            }
+                            if (type2T2 >= tubeLength*0.6)
+                            {
+                                inputType2T2.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Параметр t2 не может быть превышать 60% от длины трубы!");
+                                mistakeCheck = false;
+                            }
+                            if (threadDiam >= type2ShnekDiam / 2)
+                            {
+                                inputThreadDiam.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Диаметр отверстия не может быть больше или равен диаметру трубы!");
+                                mistakeCheck = false;
+                            }
+                            if (type2T < 30 || type2T > 100)
+                            {
+                                inputType2T.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Параметр t должен находиться в диапазоне от 30 до 100 мм!");
+                                mistakeCheck = false;
+                            }
+                            if (threadStep < 4 || threadStep > 20)
+                            {
+                                inputThreadStep.BorderBrush = Brushes.Red;
+                                MessageBox.Show("Шаг резьбы должен находиться в диапазоне от 4 до 20 мм!");
+                                mistakeCheck = false;
+                            }
                         }
                     }
                     if (GhostType.SelectedIndex == 3)
@@ -1877,6 +1934,18 @@ namespace GenShnekApp
             System.Windows.Application.Current.Shutdown();
         }
 
+        private void NoteButton(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Расчёты проводятся только для экструзионных шнеков.");
+        }
+
+        private void ThreadButton(object sender, RoutedEventArgs e)
+        {
+            ThreadInfoWindow threadInfoWindow = new ThreadInfoWindow();
+            threadInfoWindow.Owner = this;
+            threadInfoWindow.ShowDialog();
+        }
+
         //Расчёт шнека на прочность, жёсткость и устойчивость
         ///////////(1)НАЧАЛО
         private void ShnekCalc(double d, double L)
@@ -2018,13 +2087,63 @@ namespace GenShnekApp
                     document.Open();
 
                     BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\4852-font.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                    Font headerFont = new Font(baseFont, 16, Font.BOLD);
+                    Font headerFont1 = new Font(baseFont, 16, Font.BOLD);
+                    Font headerFont2 = new Font(baseFont, 14, Font.BOLD);
                     Font textFont = new Font(baseFont, 14, Font.NORMAL);
 
-                    iTextSharp.text.Paragraph header = new iTextSharp.text.Paragraph("ОТЧЁТ ПО ЭКСТРУЗИОННОМУ ШНЕКУ", headerFont);
-                    header.Alignment = Element.ALIGN_CENTER;
+                    iTextSharp.text.Paragraph enter = new iTextSharp.text.Paragraph(" ");
 
-                    document.Add(header);
+                    iTextSharp.text.Paragraph repHeader = new iTextSharp.text.Paragraph("ОТЧЁТ ПО ЭКСТРУЗИОННОМУ ШНЕКУ", headerFont1);
+                    repHeader.Alignment = Element.ALIGN_CENTER;
+
+                    iTextSharp.text.Paragraph extrInfoHeader = new iTextSharp.text.Paragraph("Информация о шнеке", headerFont2);
+                    extrInfoHeader.Alignment = Element.ALIGN_CENTER;
+                    iTextSharp.text.Paragraph repMethod = new iTextSharp.text.Paragraph("Тип построения шнека: " + extrMethod + ".", textFont);
+                    iTextSharp.text.Paragraph repName = new iTextSharp.text.Paragraph("Наименование шнека: " + extrName + ".", textFont);
+                    iTextSharp.text.Paragraph repDiam = new iTextSharp.text.Paragraph($"Диаметр шнека: {extrDiam} мм.", textFont);
+                    iTextSharp.text.Paragraph repLength = new iTextSharp.text.Paragraph($"Отношение длины к диаметру: L/D = {extrCoffLength}.", textFont);
+                    
+                    iTextSharp.text.Paragraph extrOutputHeader = new iTextSharp.text.Paragraph("Проверочные расчёты", headerFont2);
+                    extrOutputHeader.Alignment = Element.ALIGN_CENTER;
+                    iTextSharp.text.Paragraph repQ = new iTextSharp.text.Paragraph($"Производительность: {QOutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repMKR = new iTextSharp.text.Paragraph($"Крутящий момент: {MKROutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repSos = new iTextSharp.text.Paragraph($"Осевое усилие от давления формования: {SosOutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repWR = new iTextSharp.text.Paragraph($"Временный момент сопротивления кручению: {WROutput.Text}.", textFont);
+
+                    iTextSharp.text.Paragraph extrGraph1Header = new iTextSharp.text.Paragraph("Эпюра прочности", headerFont2);
+                    extrGraph1Header.Alignment = Element.ALIGN_CENTER;
+
+                    iTextSharp.text.Paragraph extrGraph2Header = new iTextSharp.text.Paragraph("Эпюра жёсткости", headerFont2);
+                    extrGraph2Header.Alignment = Element.ALIGN_CENTER;
+
+                    iTextSharp.text.Paragraph extrGraph3Header = new iTextSharp.text.Paragraph("Эпюра устойчивости", headerFont2);
+                    extrGraph3Header.Alignment = Element.ALIGN_CENTER;
+
+                    document.Add(repHeader);
+                    
+                    document.Add(extrInfoHeader);
+                    document.Add(repMethod);
+                    document.Add(repName);
+                    document.Add(repDiam);
+                    document.Add(repLength);
+                    document.Add(enter);
+
+                    document.Add(extrOutputHeader);
+                    document.Add(repQ);
+                    document.Add(repMKR);
+                    document.Add(repSos);
+                    document.Add(repWR);
+                    document.Add(enter);
+
+
+                    document.Add(extrGraph1Header);
+                    document.Add(enter);
+
+                    document.Add(extrGraph2Header);
+                    document.Add(enter);
+
+                    document.Add(extrGraph3Header);
+                    document.Add(enter);
 
                     document.Close();
 
@@ -2039,18 +2158,6 @@ namespace GenShnekApp
                     MessageBox.Show($"An error occurred.\n\nДетали:\n{ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
-
-        private void NoteButton(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Расчёты проводятся только для экструзионных шнеков.");
-        }
-
-        private void ThreadButton(object sender, RoutedEventArgs e)
-        {
-            ThreadInfoWindow threadInfoWindow = new ThreadInfoWindow();
-            threadInfoWindow.Owner = this;
-            threadInfoWindow.ShowDialog();
         }
     }
 }
