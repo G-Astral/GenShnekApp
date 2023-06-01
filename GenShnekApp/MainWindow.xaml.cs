@@ -2081,7 +2081,6 @@ namespace GenShnekApp
 
                 try
                 {
-                    //Создание нового PDF документа
                     Document document = new Document();
                     PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
                     document.Open();
@@ -2093,7 +2092,7 @@ namespace GenShnekApp
 
                     iTextSharp.text.Paragraph enter = new iTextSharp.text.Paragraph(" ");
 
-                    iTextSharp.text.Paragraph repHeader = new iTextSharp.text.Paragraph("ОТЧЁТ ПО ЭКСТРУЗИОННОМУ ШНЕКУ", headerFont1);
+                    iTextSharp.text.Paragraph repHeader = new iTextSharp.text.Paragraph("ОТЧЁТ ПО РАСЧЁТУ ЭКСТРУЗИОННОГО ШНЕКА", headerFont1);
                     repHeader.Alignment = Element.ALIGN_CENTER;
 
                     iTextSharp.text.Paragraph extrInfoHeader = new iTextSharp.text.Paragraph("Информация о шнеке", headerFont2);

@@ -6,25 +6,26 @@
         xmlns:local="clr-namespace:GenShnekApp"
         mc:Ignorable="d"
         Background="LightGray"
-        Title="Генератор шнеков" Height="720" Width="1200" 
+        FontSize="16"
+        Title="Генератор шнеков" Height="720" Width="1200"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <TabControl  Background="LightGray">
         <TabItem Header="Моделирование">
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
-                <Rectangle Margin="31,25,34,426" Stroke="Black"></Rectangle>
-                <Rectangle Margin="31,25,34,657" Stroke="Black"></Rectangle>
-                <Rectangle Margin="466,25,34,426" Stroke="Black"></Rectangle>
-                <Rectangle Margin="31,301,34,126" Stroke="Black"></Rectangle>
-                <Rectangle Margin="31,301,34,381" Stroke="Black"></Rectangle>
-                <Rectangle Margin="466,301,34,126" Stroke="Black"></Rectangle>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="35,301,0,379">Параметры</TextBlock>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="35,25,0,655">Выбор режима</TextBlock>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="471,25,0,655">Таблица размеров</TextBlock>
-                <TextBlock Height="20" HorizontalAlignment="Left" Margin="471,301,0,379">Чертёж</TextBlock>
+                <Rectangle Margin="21,25,34,413" Stroke="Black"></Rectangle>
+                <Rectangle Margin="21,54,34,645" Stroke="Black"></Rectangle>
+                <Rectangle Margin="466,25,733,413" Stroke="Black"></Rectangle>
+                <Rectangle Margin="21,301,34,110" Stroke="Black"></Rectangle>
+                <Rectangle Margin="21,330,34,369" Stroke="Black"></Rectangle>
+                <Rectangle Margin="466,301,733,110" Stroke="Black"></Rectangle>
+                <TextBlock Height="30" HorizontalAlignment="Left" Margin="25,26,0,644" FontSize="18">Выбор режима</TextBlock>
+                <TextBlock Height="30" HorizontalAlignment="Left" Margin="471,26,0,644" FontSize="18">Таблица размеров</TextBlock>
+                <TextBlock Height="30" HorizontalAlignment="Left" Margin="25,302,0,368" FontSize="18">Параметры</TextBlock>
+                <TextBlock Height="30" HorizontalAlignment="Left" Margin="471,302,0,368" FontSize="18">Чертёж</TextBlock>
                 <Grid x:Name="inputSelection1">
-                    <TextBlock Height="20" x:Name="inputTubeLengthText" HorizontalAlignment="Left" Margin="35,328,0,352">Длина трубы, мм</TextBlock>
-                    <TextBlock Height="20" x:Name="inputTubeLengthTextLet" HorizontalAlignment="Left" Margin="225,328,0,352">---</TextBlock>
+                    <TextBlock Height="20" x:Name="inputTubeLengthText" HorizontalAlignment="Left" Margin="25,332,0,348">Длина трубы, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputTubeLengthTextLet" HorizontalAlignment="Left" Margin="239,334,0,346">---</TextBlock>
                     <TextBox 
                         x:Name="inputTubeLength"
                         TextAlignment="Left"
@@ -32,9 +33,9 @@
                         VerticalContentAlignment="Center"
                         PreviewKeyDown="DeleteSpaces"
                         Text="1000"
-                        Height="20" Width="200" Margin="248,328,752,352"/>
-                    <TextBlock Height="20" x:Name="inputStepText" HorizontalAlignment="Left" Margin="35,353,0,327">Шаг винта, мм</TextBlock>
-                    <TextBlock Height="20" x:Name="inputStepTextLet" HorizontalAlignment="Left" Margin="225,353,0,327">---</TextBlock>
+                        Height="25" Width="200" Margin="263,334,737,341"/>
+                    <TextBlock Height="20" x:Name="inputStepText" HorizontalAlignment="Left" Margin="25,362,0,318">Шаг винта, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputStepTextLet" HorizontalAlignment="Left" Margin="239,364,0,316">---</TextBlock>
                     <TextBox 
                         x:Name="inputStep"
                         TextAlignment="Left"
@@ -42,9 +43,9 @@
                         VerticalContentAlignment="Center"
                         PreviewKeyDown="DeleteSpaces"
                         Text="100"
-                        Height="20" Width="200" Margin="248,353,752,327"/>
-                    <TextBlock Height="20" x:Name="inputShnekThickText" HorizontalAlignment="Left" Margin="35,378,0,302">Толщина винта, мм</TextBlock>
-                    <TextBlock Height="20" x:Name="inputShnekThickTextLet" HorizontalAlignment="Left" Margin="225,378,0,302">---</TextBlock>
+                        Height="25" Width="200" Margin="263,364,737,311"/>
+                    <TextBlock Height="20" x:Name="inputShnekThickText" HorizontalAlignment="Left" Margin="25,392,0,288">Толщина винта, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputShnekThickTextLet" HorizontalAlignment="Left" Margin="239,394,0,286">---</TextBlock>
                     <TextBox 
                         x:Name="inputShnekThick"
                         TextAlignment="Left"
@@ -52,10 +53,10 @@
                         VerticalContentAlignment="Center"
                         PreviewKeyDown="DeleteSpaces"
                         Text="2"
-                        Height="20" Width="200" Margin="248,378,752,302"/>
+                        Height="25" Width="200" Margin="263,394,737,281"/>
                     <Grid x:Name="inputSelection11">
-                        <TextBlock Height="20" x:Name="inputShnekDiamText" HorizontalAlignment="Left" Margin="35,403,0,277">Внешник диаметр шнека, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputShnekDiamTextLet" HorizontalAlignment="Left" Margin="225,403,0,277">D</TextBlock>
+                        <TextBlock Height="20" x:Name="inputShnekDiamText" HorizontalAlignment="Left" Margin="25,422,0,258">Диаметр шнека, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputShnekDiamTextLet" HorizontalAlignment="Left" Margin="245,424,0,256">D</TextBlock>
                         <TextBox
                             x:Name="inputShnekDiam"
                             TextAlignment="Left"
@@ -63,9 +64,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="135"
-                            Height="20" Width="200" Margin="248,403,752,277"/>
-                        <TextBlock Height="20" x:Name="inputHoleDiamText" HorizontalAlignment="Left" Margin="35,428,0,252">Диаметр отверстия, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputHoleDiamTextLet" HorizontalAlignment="Left" Margin="225,428,0,252">d</TextBlock>
+                            Height="25" Width="200" Margin="263,424,737,251"/>
+                        <TextBlock Height="20" x:Name="inputHoleDiamText" HorizontalAlignment="Left" Margin="25,452,0,228">Диаметр отверстия, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputHoleDiamTextLet" HorizontalAlignment="Left" Margin="245,454,0,226">d</TextBlock>
                         <TextBox 
                             x:Name="inputHoleDiam"
                             TextAlignment="Left"
@@ -73,9 +74,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="24"
-                            Height="20" Width="200" Margin="248,428,752,252"/>
-                        <TextBlock Height="20" x:Name="inputHexSizeText" HorizontalAlignment="Left" Margin="35,453,0,227">Присоединение (исп. 1), мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputHexSizeTextLet" HorizontalAlignment="Left" Margin="225,453,0,227">S</TextBlock>
+                            Height="25" Width="200" Margin="263,454,737,221"/>
+                        <TextBlock Height="20" x:Name="inputHexSizeText" HorizontalAlignment="Left" Margin="25,482,0,198">Присоединение (исп. 1), мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputHexSizeTextLet" HorizontalAlignment="Left" Margin="245,484,0,196">S</TextBlock>
                         <TextBox 
                             x:Name="inputHexSize"
                             TextAlignment="Left"
@@ -83,9 +84,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="55"
-                            Height="20" Width="200" Margin="248,453,752,227"/>
-                        <TextBlock Height="20" x:Name="inputHex2SizeText" HorizontalAlignment="Left" Margin="35,478,0,202">Присоединение (исп. 2), мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputHex2SizeTextLet" HorizontalAlignment="Left" Margin="225,478,0,202">d1</TextBlock>
+                            Height="25" Width="200" Margin="263,484,737,191"/>
+                        <TextBlock Height="20" x:Name="inputHex2SizeText" HorizontalAlignment="Left" Margin="25,512,0,168">Присоединение (исп. 2), мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputHex2SizeTextLet" HorizontalAlignment="Left" Margin="245,514,0,166">d1</TextBlock>
                         <TextBox
                             x:Name="inputHex2Size"
                             TextAlignment="Left"
@@ -93,9 +94,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="90"
-                            Height="20" Width="200" Margin="248,478,752,202"/>
-                        <TextBlock Height="20" x:Name="inputHoleDistanceText" HorizontalAlignment="Left" Margin="35,503,0,177">Расстояние до отверстия, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputHoleDistanceTextLet" HorizontalAlignment="Left" Margin="225,503,0,177">t</TextBlock>
+                            Height="25" Width="200" Margin="263,514,737,161"/>
+                        <TextBlock Height="20" x:Name="inputHoleDistanceText" HorizontalAlignment="Left" Margin="25,542,0,138">Расстояние отверстия, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputHoleDistanceTextLet" HorizontalAlignment="Left" Margin="245,544,0,136">t</TextBlock>
                         <TextBox 
                             x:Name="inputHoleDistance"
                             TextAlignment="Left"
@@ -103,11 +104,11 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="52"
-                            Height="20" Width="200" Margin="248,503,752,177"/>
+                            Height="25" Width="200" Margin="263,544,737,131"/>
                     </Grid>
                     <Grid x:Name="inputSelection12">
-                        <TextBlock Height="20" x:Name="inputType2ShnekDiamText" HorizontalAlignment="Left" Margin="35,403,0,277">Внешник диаметр шнека, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inpuType2tShnekDiamTextLet" HorizontalAlignment="Left" Margin="225,403,0,277">D</TextBlock>
+                        <TextBlock Height="20" x:Name="inputType2ShnekDiamText" HorizontalAlignment="Left" Margin="25,422,0,258">Диаметр шнека, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inpuType2tShnekDiamTextLet" HorizontalAlignment="Left" Margin="245,424,0,256">D</TextBlock>
                         <TextBox
                             x:Name="inputType2ShnekDiam"
                             TextAlignment="Left"
@@ -115,9 +116,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="80"
-                            Height="20" Width="200" Margin="248,403,752,277"/>
-                        <TextBlock Height="20" x:Name="inputType2TText" HorizontalAlignment="Left" Margin="35,428,0,252">Расстояние, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputType2TTextLet" HorizontalAlignment="Left" Margin="225,428,0,252">t</TextBlock>
+                            Height="25" Width="200" Margin="263,424,737,251"/>
+                        <TextBlock Height="20" x:Name="inputType2TText" HorizontalAlignment="Left" Margin="25,452,0,228">Расстояние, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputType2TTextLet" HorizontalAlignment="Left" Margin="245,454,0,226">t</TextBlock>
                         <TextBox 
                             x:Name="inputType2T"
                             TextAlignment="Left"
@@ -125,9 +126,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="56"
-                            Height="20" Width="200" Margin="248,428,752,252"/>
-                        <TextBlock Height="20" x:Name="inputType2T1Text" HorizontalAlignment="Left" Margin="35,453,0,227">Расстояние, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputType2T1TextLet" HorizontalAlignment="Left" Margin="225,453,0,227">t1</TextBlock>
+                            Height="25" Width="200" Margin="263,454,737,221"/>
+                        <TextBlock Height="20" x:Name="inputType2T1Text" HorizontalAlignment="Left" Margin="25,482,0,198">Расстояние, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputType2T1TextLet" HorizontalAlignment="Left" Margin="245,484,0,196">t1</TextBlock>
                         <TextBox 
                             x:Name="inputType2T1"
                             TextAlignment="Left"
@@ -135,9 +136,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="163"
-                            Height="20" Width="200" Margin="248,453,752,227"/>
-                        <TextBlock Height="20" x:Name="inputType2T2Text" HorizontalAlignment="Left" Margin="35,478,0,202">Расстояние, мм</TextBlock>
-                        <TextBlock Height="20" x:Name="inputType2T2TextLet" HorizontalAlignment="Left" Margin="225,478,0,202">t2</TextBlock>
+                            Height="25" Width="200" Margin="263,484,737,191"/>
+                        <TextBlock Height="20" x:Name="inputType2T2Text" HorizontalAlignment="Left" Margin="25,512,0,168">Расстояние, мм</TextBlock>
+                        <TextBlock Height="20" x:Name="inputType2T2TextLet" HorizontalAlignment="Left" Margin="245,514,0,166">t2</TextBlock>
                         <TextBox
                             x:Name="inputType2T2"
                             TextAlignment="Left"
@@ -145,9 +146,9 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="324"
-                            Height="20" Width="200" Margin="248,478,752,202"/>
-                        <TextBlock Height="20" x:Name="inputThreadText" HorizontalAlignment="Left" Margin="35,503,0,177">Резьба</TextBlock>
-                        <TextBlock Height="20" x:Name="inputThreadTextLet" HorizontalAlignment="Left" Margin="225,503,0,177">d</TextBlock>
+                            Height="25" Width="200" Margin="263,514,737,161"/>
+                        <TextBlock Height="20" x:Name="inputThreadText" HorizontalAlignment="Left" Margin="25,542,0,138">Резьба</TextBlock>
+                        <TextBlock Height="20" x:Name="inputThreadTextLet" HorizontalAlignment="Left" Margin="245,544,0,136">d</TextBlock>
                         <TextBox 
                             x:Name="inputThreadDiam"
                             TextAlignment="Left"
@@ -155,8 +156,8 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="32"
-                            Height="20" Width="90" Margin="248,503,862,177"/>
-                        <TextBlock Height="20" HorizontalAlignment="Left" Margin="345,503,0,177">x</TextBlock>
+                            Height="25" Width="90" Margin="263,544,847,131"/>
+                        <TextBlock Height="20" HorizontalAlignment="Left" Margin="359,544,0,131">x</TextBlock>
                         <TextBox 
                             x:Name="inputThreadStep"
                             TextAlignment="Left"
@@ -164,17 +165,18 @@
                             VerticalContentAlignment="Center"
                             PreviewKeyDown="DeleteSpaces"
                             Text="6"
-                            Height="20" Width="90" Margin="358,503,752,177"/>
+                            Height="25" Width="90" Margin="373,544,737,131"/>
                         <Button 
-                            Height="23"
-                            Width="75"
+                            Height="30"
+                            Width="90"
                             Content="Резьба"
-                            Click="ThreadButton" Margin="10,627,1115,50"/>
+                            Click="ThreadButton" Margin="21,609,1089,61" RenderTransformOrigin="0.493,0.092"
+                            VerticalContentAlignment="Top"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="inputSelection2">
-                    <TextBlock Height="20" x:Name="inputExtrDiamText" HorizontalAlignment="Left" Margin="35,330,0,350">Диаметр шнека, мм</TextBlock>
-                    <TextBlock Height="20" x:Name="inputExtrDiamTextLet" HorizontalAlignment="Left" Margin="225,330,0,350">D</TextBlock>
+                <Grid x:Name="inputSelection2" Margin="0,10,0,-10">
+                    <TextBlock Height="20" x:Name="inputExtrDiamText" HorizontalAlignment="Left" Margin="25,328,0,352">Диаметр шнека, мм</TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrDiamTextLet" HorizontalAlignment="Left" Margin="235,328,0,352">D</TextBlock>
                     <TextBox 
                         x:Name="inputExtrShnekDiam"
                         TextAlignment="Left"
@@ -182,9 +184,9 @@
                         VerticalContentAlignment="Center"
                         PreviewKeyDown="DeleteSpaces"
                         Text="20"
-                        Height="20" Width="200" Margin="248,328,752,352"/>
-                    <TextBlock x:Name="inputExtrShnekCoffLengthText" HorizontalAlignment="Left" Margin="35,355,0,329" Width="209">Отношение длины к диаметру</TextBlock>
-                    <TextBlock Height="20" x:Name="inputExtrShnekCoffLengthTextLet" HorizontalAlignment="Left" Margin="225,355,0,325">L/D</TextBlock>
+                        Height="25" Width="200" Margin="263,328,737,342"/>
+                    <TextBlock x:Name="inputExtrShnekCoffLengthText" HorizontalAlignment="Left" Margin="25,353,0,305" Width="225"><Run Text="Отношение длины"/><LineBreak/><Run Text="к диаметру"/></TextBlock>
+                    <TextBlock Height="20" x:Name="inputExtrShnekCoffLengthTextLet" HorizontalAlignment="Left" Margin="235,367,0,313">L/D</TextBlock>
                     <TextBox
                         x:Name="inputExtrShnekCoffLength"
                         TextAlignment="Left"
@@ -192,35 +194,36 @@
                         VerticalContentAlignment="Center"
                         PreviewKeyDown="DeleteSpaces"
                         Text="20"
-                        Height="20" Width="200" Margin="248,353,752,327"/>
+                        Height="25" Width="200" Margin="263,366,737,309"/>
                 </Grid>
-                <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,76,0,602">Выберите тип шнека:</TextBlock>
+                <TextBlock Height="22" HorizontalAlignment="Left" Margin="25,100,0,578">Выберите тип шнека:</TextBlock>
                 <ComboBox 
                     x:Name="ShnekType" 
-                    Margin="248,74,752,604"
-                    Height="22"
+                    Margin="262,96,738,574"
+                    Height="30"
                     SelectionChanged="ShnekTypeSelectionChanged"
                     VerticalContentAlignment="Stretch">
                 </ComboBox>
-                <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,100,0,578">Выберите исполнение шнека:</TextBlock>
+                <TextBlock Height="22" HorizontalAlignment="Left" Margin="25,134,0,544">Выберите исполнение шнека:</TextBlock>
                 <ComboBox 
                     x:Name="ShnekStyle" 
-                    Margin="248,100,752,578"
-                    Height="22"
+                    Margin="262,132,738,538"
+                    Height="30"
                     SelectionChanged="ShnekStyleSelectionChanged"
                     VerticalContentAlignment="Stretch">
                 </ComboBox>
-                <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,125,0,553">Выберите стандартный шнек:</TextBlock>
+                <TextBlock Height="22" HorizontalAlignment="Left" Margin="25,169,0,509">Выберите стандартный шнек:</TextBlock>
                 <ComboBox            
                     x:Name="DefaultShnekChoose"
-                    Margin="248,125,752,553"
-                    Height="22"
-                    VerticalContentAlignment="Stretch">
+                    Margin="262,167,738,503"
+                    Height="30"
+                    VerticalContentAlignment="Stretch" FontSize="16">
                 </ComboBox>
-                <TextBlock Height="22" HorizontalAlignment="Left" Margin="35,50,0,628">Выберите ГОСТ шнека:</TextBlock>
+                <TextBlock Height="22" HorizontalAlignment="Left" Margin="25,62,0,616">Выберите ГОСТ шнека:</TextBlock>
                 <ComboBox 
                     x:Name="GhostType"
-                    Margin="248,48,752,630" 
+                    Margin="262,60,738,610" 
+                    Height="30"
                     SelectionChanged="GhostTypeSelectionChanged" VerticalContentAlignment="Stretch">
                     <ComboBoxItem IsSelected="True">
                         <TextBlock>ГОСТ 24328-80</TextBlock>
@@ -235,66 +238,71 @@
                         <TextBlock>ГОСТ 14773-80 (Пользовательский)</TextBlock>
                     </ComboBoxItem>
                 </ComboBox>
-                <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="236" Margin="478,328,0,0" VerticalAlignment="Top" Width="671"/>
-                <Image Name="ImgTable" Source="ShnekTable1.png" Margin="494,48,52,433"/>
+                <Image Name="ImgSketch" Source="ShnekSketch1.png" HorizontalAlignment="Left" Height="236" Margin="478,336,0,0" VerticalAlignment="Top" Width="671"/>
+                <Image Name="ImgTable" Source="ShnekTable1.png" Margin="494,61,52,420"/>
                 <Button
-                    Height="23"
-                    Width="75"
+                    Height="30"
+                    Width="90"
                     Content="Создать"
                     Click="CreationButton"
                     IsDefault="True"
-                    Margin="1020,627,105,50"/>
+                    Margin="991,613,119,57"
+                    VerticalContentAlignment="Top"/>
                 <Button
-                    Height="23"
-                    Width="75"
+                    Height="30"
+                    Width="90"
                     Content="Отмена"
-                    Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
+                    Click="CloseButton" Margin="1086,613,24,57" IsCancel="True"
+                    VerticalContentAlignment="Top"/>
             </Grid>
         </TabItem>
         <TabItem Header="Расчёты">
             <Grid Height="700" Width="1200" Margin="0,0,-6,0">
-                <Rectangle Margin="20,32,43,100" Stroke="Black"></Rectangle>
-                <Rectangle Margin="810,32,43,100" Stroke="Black"></Rectangle>
-                <Rectangle Margin="810,32,43,646" Stroke="Black"></Rectangle>
-                <TextBlock Margin="818,35,282,641">Вывод</TextBlock>
-                <TextBlock x:Name="QOutput" Height="20" Margin="824,65,49,615">Q = — м^3/с</TextBlock>
-                <TextBlock x:Name="MKROutput" Height="20" Margin="824,90,49,590">M_кр = — Н*м</TextBlock>
-                <TextBlock x:Name="SosOutput" Height="20" Margin="824,115,49,565">S_ос = — Н</TextBlock>
-                <TextBlock x:Name="WROutput" Height="20" Margin="824,140,49,540">W_р = — м^3</TextBlock>
-                <TabControl Margin="20,31,390,100"  Panel.ZIndex="-1">
-                    <TabItem Header="Эпюра прочности">
+                <Rectangle Margin="21,25,34,110" Stroke="Black"></Rectangle>
+                <Rectangle Margin="818,25,381,110" Stroke="Black"></Rectangle>
+                <Rectangle Margin="818,55,34,644" Stroke="Black"></Rectangle>
+                <TextBlock Margin="823,28,277,648" FontSize="18">Вывод</TextBlock>
+                <TextBlock x:Name="QOutput" Height="20" Margin="828,69,45,611">Q = — м^3/с</TextBlock>
+                <TextBlock x:Name="MKROutput" Height="20" Margin="828,94,45,586">M_кр = — Н*м</TextBlock>
+                <TextBlock x:Name="SosOutput" Height="20" Margin="828,119,45,561">S_ос = — Н</TextBlock>
+                <TextBlock x:Name="WROutput" Height="20" Margin="828,144,45,536">W_р = — м^3</TextBlock>
+                <TabControl Margin="21,25,381,110"  Panel.ZIndex="-1">
+                    <TabItem Header="Эпюра прочности" FontSize="18">
+                        <Grid Margin="16,0,-16,0">
+
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Эпюра жёсткости" FontSize="18">
                         <Grid>
 
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Эпюра жёсткости">
-                        <Grid>
-
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Эпюра устойчивости">
+                    <TabItem Header="Эпюра устойчивости" FontSize="18">
                         <Grid>
 
                         </Grid>
                     </TabItem>
                 </TabControl>
                 <Button
-                    Height="23"
-                    Width="75"
+                    Height="30"
+                    Width="90"
                     Content="Отчёт"
                     Click="ExtrReportCreation"
                     IsDefault="True"
-                    Margin="1020,627,105,50"/>
+                    Margin="991,613,119,57"
+                    VerticalContentAlignment="Top"/>
                 <Button 
-                    Height="23"
-                    Width="75"
+                    Height="30"
+                    Width="90"
                     Content="Отмена"
-                    Click="CloseButton" Margin="1100,627,25,50" IsCancel="True"/>
+                    Click="CloseButton" Margin="1086,613,24,57" IsCancel="True"
+                    VerticalContentAlignment="Top"/>
                 <Button 
-                    Height="23"
-                    Width="75"
+                    Height="30"
+                    Width="120"
                     Content="Примечание"
-                    Click="NoteButton" Margin="10,627,1115,50"/>
+                    Click="NoteButton" Margin="21,609,1059,61"
+                    VerticalContentAlignment="Top"/>
             </Grid>
         </TabItem>
     </TabControl>

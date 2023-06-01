@@ -6,27 +6,15 @@
         xmlns:local="clr-namespace:GenShnekApp"
         mc:Ignorable="d"
         Background="LightGray"
-        Title="ThreadInfoWindow" Height="589" Width="1039"
+        Title="Параметры резьбы" Height="589" Width="1039"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid>
         <Rectangle Margin="10,10,10,10" Stroke="Black"/>
-        <Rectangle Margin="548,10,10,10" Stroke="Black"/>
-        <Image Name="ImgSketch" Source="ThreadSketch.png" HorizontalAlignment="Left" Height="217" Margin="44,310,0,0" VerticalAlignment="Top" Width="483"/>
-        <Image Name="ImgTable" Source="ThreadTable.png" HorizontalAlignment="Left" Height="265" Margin="44,25,0,0" VerticalAlignment="Top" Width="489"/>
-        <TextBlock Margin="559,25,41,157" FontSize="20">
-            <Run Text="Для пользовательских резьб"/>
-            <Run Text=" параметры"/><LineBreak/>
-            <Run Text="расчитываются следующим образом:"/><LineBreak/>
-            <Run Text="1) P1 = P2 = P/2;"/><LineBreak/>
-            <Run Text="2) d = d';"/><LineBreak/>
-            <Run Text="3) d0 = d0';"/><LineBreak/>
-            <Run Text="4) d0 = d*0.87."/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run Language="ru-ru" Text="Входными параметрами являются "/>
-            <Run Text="d"/>
-            <Run Language="ru-ru" Text=" и"/>
-            <Run Text=" P."/>
-        </TextBlock>
+        <Rectangle Margin="606,259,10,10" Stroke="Black"/>
+        <Rectangle Margin="10,259,10,10" Stroke="Black"/>
+        <Image Name="ImgSketch" Source="ThreadSketch.png" HorizontalAlignment="Left" Height="255" Margin="20,269,0,0" VerticalAlignment="Top" Width="581"/>
+        <Image Name="ImgTable" Source="ThreadTable.png" HorizontalAlignment="Center" Height="218" Margin="0,26,0,0" VerticalAlignment="Top" Width="753"/>
+        <TextBlock Margin="617,271,10,34" FontSize="20"><Run Text="Для пользовательских резьб"/><Run Text=" параметры"/><LineBreak/><Run Text="расчитываются следующим образом:"/><LineBreak/><Run Text="1) P1 = P2 = P/2;"/><LineBreak/><Run Text="2) d = d';"/><LineBreak/><Run Text="3) d0 = d0';"/><LineBreak/><Run Text="4) d0 = d*0.87."/><LineBreak/><Run/><LineBreak/><Run Text="Входными параметрами являются "/><Run Text=" "/><Run Text="d"/><Run Text=" "/><Run Text=" и"/><Run Text=" "/><Run Text=" P."/></TextBlock>
     </Grid>
 </Window>
