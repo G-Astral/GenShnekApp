@@ -56,6 +56,9 @@ namespace GenShnekApp
 
         string extrMethod = "—";
         string extrName = "—";
+        string extrDestination = "—";
+        string extrPower = "—";
+        string extrVacuum = "—";
 
         KompasObject kompas;
         ksPart part;
@@ -419,95 +422,304 @@ namespace GenShnekApp
             else
             {
                 extrRad = extrDiam / 2;
-                if (DefaultShnekChoose.IsEnabled == true)
+                //if (DefaultExtrChoose.IsEnabled == true)
+                if (GhostType.SelectedIndex == 2)
                 {
                     //Готовые шнеки
                     extrMethod = "стандартный";
-                    switch (DefaultShnekChoose.SelectedIndex)
+                    //Для термопластов
+                    if (ShnekDestination.SelectedIndex == 0)
                     {
-                        case 0:
-                            extrDiam = 20;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 1:
-                            extrDiam = 32;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 2:
-                            extrDiam = 45;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 3:
-                            extrDiam = 45;
-                            extrCoffLength = 25;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 4:
-                            extrDiam = 63;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 5:
-                            extrDiam = 63;
-                            extrCoffLength = 25;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 6:
-                            extrDiam = 63;
-                            extrCoffLength = 30;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 7:
-                            extrDiam = 90;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 8:
-                            extrDiam = 90;
-                            extrCoffLength = 25;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 9:
-                            extrDiam = 90;
-                            extrCoffLength = 30;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 10:
-                            extrDiam = 125;
-                            extrCoffLength = 25;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 11:
-                            extrDiam = 160;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
-                        case 12:
-                            extrDiam = 200;
-                            extrCoffLength = 20;
-                            extrLength = extrDiam * extrCoffLength;
-                            break;
+                        switch (DefaultExtrChoose.SelectedIndex)
+                        {
+                            case 0:
+                                extrDiam = 20;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 1:
+                                extrDiam = 32;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 2:
+                                extrDiam = 45;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 3:
+                                extrDiam = 45;
+                                extrCoffLength = 25;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 4:
+                                extrDiam = 63;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 5:
+                                extrDiam = 63;
+                                extrCoffLength = 25;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 6:
+                                extrDiam = 63;
+                                extrCoffLength = 30;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 7:
+                                extrDiam = 90;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 8:
+                                extrDiam = 90;
+                                extrCoffLength = 25;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 9:
+                                extrDiam = 90;
+                                extrCoffLength = 30;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 10:
+                                extrDiam = 125;
+                                extrCoffLength = 25;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 11:
+                                extrDiam = 160;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                            case 12:
+                                extrDiam = 200;
+                                extrCoffLength = 20;
+                                extrLength = extrDiam * extrCoffLength;
+                                extrSpyralLength = extrLength;
+                                break;
+                        }
+                        extrName = $"ЧП {extrDiam}x{extrCoffLength}";
+                        extrDestination = "для термопластов";
+                        extrPower = "—";
+                        extrVacuum = "—";
                     }
-                    extrName = $"ЧП {extrDiam}x{extrCoffLength}";
+                    //Для резиновых смесей
+                    else
+                    {
+                        extrDestination = "для резиновых смесей";
+                        //Тёплого питания
+                        if (ShnekPower.SelectedIndex == 0)
+                        {
+                            extrPower = "теплое";
+                            extrVacuum = "—";
+                            int extrNum = 0;
+                            switch (DefaultExtrChoose.SelectedIndex)
+                            {
+                                case 0:
+                                    extrDiam = 32;
+                                    extrCoffLength = 5;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 160;
+                                    extrNum = 1;
+                                    break;
+                                case 1:
+                                    extrDiam = 63;
+                                    extrCoffLength = 5;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 315;
+                                    extrNum = 2;
+                                    break;
+                                case 2:
+                                    extrDiam = 90;
+                                    extrCoffLength = 5;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 450;
+                                    extrNum = 3;
+                                    break;
+                                case 3:
+                                    extrDiam = 90;
+                                    extrCoffLength = 10;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 900;
+                                    extrNum = 4;
+                                    break;
+                                case 4:
+                                    extrDiam = 125;
+                                    extrCoffLength = 5;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 625;
+                                    extrNum = 5;
+                                    break;
+                                case 5:
+                                    extrDiam = 160;
+                                    extrCoffLength = 4;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 640;
+                                    extrNum = 6;
+                                    break;
+                                case 6:
+                                    extrDiam = 200;
+                                    extrCoffLength = 3.8;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 760;
+                                    extrNum = 7;
+                                    break;
+                                case 7:
+                                    extrDiam = 250;
+                                    extrCoffLength = 4.24;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 1060;
+                                    extrNum = 8;
+                                    break;
+                                case 8:
+                                    extrDiam = 250;
+                                    extrCoffLength = 3.8;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 760;
+                                    extrNum = 9;
+                                    break;
+                                case 9:
+                                    extrDiam = 400;
+                                    extrCoffLength = 4.38;
+                                    extrLength = extrDiam * extrCoffLength;
+                                    extrSpyralLength = 1740;
+                                    extrNum = 10;
+                                    break;
+                            }
+                            extrName = $"МЧТ-{extrNum}";
+                        }
+                        //Холодного питания
+                        else
+                        {
+                            extrPower = "холодное";
+                            //С вакуум-отсосом
+                            if (ShnekVacuum.SelectedIndex == 0)
+                            {
+                                extrVacuum = "есть";
+                                switch (DefaultExtrChoose.SelectedIndex)
+                                {
+                                    case 0:
+                                        extrDiam = 63;
+                                        extrCoffLength = 16;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 1000;
+                                        break;
+                                    case 1:
+                                        extrDiam = 90;
+                                        extrCoffLength = 16;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 1440;
+                                        break;
+                                    case 2:
+                                        extrDiam = 125;
+                                        extrCoffLength = 16;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 2000;
+                                        break;
+                                    case 3:
+                                        extrDiam = 160;
+                                        extrCoffLength = 16;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 2560;
+                                        break;
+                                    case 4:
+                                        extrDiam = 250;
+                                        extrCoffLength = 22;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 5500;
+                                        break;
+                                }
+                                extrName = $"МЧХВ-{extrDiam}";
+                            }
+                            //Без вакуум-отсоса
+                            else
+                            {
+                                extrVacuum = "отсутствует";
+                                switch (DefaultExtrChoose.SelectedIndex)
+                                {
+                                    case 0:
+                                        extrDiam = 63;
+                                        extrCoffLength = 10;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 630;
+                                        break;
+                                    case 1:
+                                        extrDiam = 90;
+                                        extrCoffLength = 10;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 900;
+                                        break;
+                                    case 2:
+                                        extrDiam = 125;
+                                        extrCoffLength = 10;
+                                        extrLength = extrDiam * extrCoffLength;
+                                        extrSpyralLength = 1250;
+                                        break;
+                                }
+                                extrName = $"МЧХ-{extrDiam}";
+                            }
+                        }
+                    }
                     extrRad = extrDiam / 2;
-                    extrSpyralLength = extrLength;
-                    CylinderCreation(extrRad, extrLength);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
-                    ConeCreation(extrRad);
+                    CylinderCreation(extrRad / 1.2, extrLength);
+                    SpyralCreation(extrRad / 1.2, extrDiam, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
+                    ConeCreation(extrRad / 1.2);
                     ShnekCalc(extrDiam, extrLength);
                 }
                 //Пользовательский шнек
-                else
+                else if (GhostType.SelectedIndex == 3)
                 {
                     extrMethod = "пользовательский";
                     extrName = "отсутствует";
+                    if (ShnekDestination.SelectedIndex == 0)
+                    {
+                        extrDestination = "для термопластов";
+                        extrPower = "—";
+                        extrVacuum = "—";
+                    }
+                    //Для резиновых смесей
+                    else
+                    {
+                        //Тёплого питания
+                        extrDestination = "для резиновых смесей";
+                        if (ShnekPower.SelectedIndex == 0)
+                        {
+                            extrPower = "теплое";
+                            extrVacuum = "—";
+                        }
+                        //Холодного питания
+                        else
+                        {
+                            //С вакуум-отсосом
+                            extrPower = "холодное";
+                            if (ShnekVacuum.SelectedIndex == 0)
+                            {
+                                extrVacuum = "есть";
+                            }
+                            //Без вакуум-отсоса
+                            else
+                            {
+                                extrVacuum = "отсутствует";
+                            }
+                        }
+                    }
                     extrLength = extrDiam * extrCoffLength;
-                    CylinderCreation(extrRad, extrLength);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
-                    ConeCreation(extrRad);
+                    CylinderCreation(extrRad / 1.2, extrLength);
+                    SpyralCreation(extrRad / 1.2, extrDiam, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
+                    ConeCreation(extrRad / 1.2);
                     ShnekCalc(extrDiam, extrLength);
                 }
             }
@@ -1572,6 +1784,8 @@ namespace GenShnekApp
                 extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
                 extrSpyralLength = Convert.ToDouble(inputExtrSpyralLength.Text);
 
+                extrLength = extrDiam * extrCoffLength;
+
                 if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
                 {
                     if (tubeLength < 1000 || tubeLength > 2500)
@@ -1693,7 +1907,7 @@ namespace GenShnekApp
                         if (extrSpyralLength > extrLength)
                         {
                             inputExtrSpyralLength.BorderBrush = Brushes.Red;
-                            MessageBox.Show("длина нарезной части шнека не может быть больше длины всего шнека!");
+                            MessageBox.Show("Длина нарезной части шнека не может быть больше длины всего шнека!");
                             mistakeCheck = false;
                         }
                         if (ShnekType.SelectedIndex == 0)
@@ -1842,6 +2056,10 @@ namespace GenShnekApp
             DefaultShnekItems3();
             InputFieldIvVisible(false);
             DefaultExtrChoose.IsEnabled = true;
+            ShnekDestination.SelectedIndex = 0;
+            ShnekPower.SelectedIndex = 0;
+            ShnekVacuum.SelectedIndex = 0;
+            DefaultExtrChoose.SelectedIndex = 0;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
             if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
         }
@@ -1851,6 +2069,10 @@ namespace GenShnekApp
             DefaultShnekItems3();
             InputFieldIvVisible(false);
             DefaultExtrChoose.IsEnabled = false;
+            ShnekDestination.SelectedIndex = 0;
+            ShnekPower.SelectedIndex = 0;
+            ShnekVacuum.SelectedIndex = 0;
+            DefaultExtrChoose.SelectedIndex = 0;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
             if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
         }
@@ -2251,8 +2473,12 @@ namespace GenShnekApp
                     extrInfoHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
                     iTextSharp.text.Paragraph repMethod = new iTextSharp.text.Paragraph("Способ построения шнека: " + extrMethod + ".", textFont);
                     iTextSharp.text.Paragraph repName = new iTextSharp.text.Paragraph("Наименование шнека: " + extrName + ".", textFont);
+                    iTextSharp.text.Paragraph repDest = new iTextSharp.text.Paragraph($"Назначение шнека: " + extrDestination + ".", textFont);
+                    iTextSharp.text.Paragraph repPower = new iTextSharp.text.Paragraph($"Тип питания: " + extrPower + ".", textFont);
+                    iTextSharp.text.Paragraph repVacuum = new iTextSharp.text.Paragraph($"Вакуум-отсос: " + extrVacuum + ".", textFont);
                     iTextSharp.text.Paragraph repDiam = new iTextSharp.text.Paragraph($"Диаметр шнека: {extrDiam} мм.", textFont);
                     iTextSharp.text.Paragraph repLength = new iTextSharp.text.Paragraph($"Отношение длины к диаметру: L/D = {extrCoffLength}.", textFont);
+                    iTextSharp.text.Paragraph repSpyralLength = new iTextSharp.text.Paragraph($"Длина нарезной части: {extrSpyralLength} мм.", textFont);
                     
                     iTextSharp.text.Paragraph extrOutputHeader = new iTextSharp.text.Paragraph("Проверочные расчёты", headerFont2);
                     extrOutputHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
@@ -2275,8 +2501,12 @@ namespace GenShnekApp
                     document.Add(extrInfoHeader);
                     document.Add(repMethod);
                     document.Add(repName);
+                    document.Add(repDest);
+                    document.Add(repPower);
+                    document.Add(repVacuum);
                     document.Add(repDiam);
                     document.Add(repLength);
+                    document.Add(repSpyralLength);
                     document.Add(enter);
 
                     document.Add(extrOutputHeader);
