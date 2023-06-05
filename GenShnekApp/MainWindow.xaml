@@ -268,13 +268,13 @@
                 <TextBlock x:Name="WROutput" Height="20" Margin="828,144,45,536">W_р = — м^3</TextBlock>
                 <TabControl Margin="21,25,381,110"  Panel.ZIndex="-1">
                     <TabItem Header="Эпюра прочности" FontSize="18">
-                        <Grid Margin="16,0,-16,0">
-
+                        <Grid>
+                            
                         </Grid>
                     </TabItem>
                     <TabItem Header="Эпюра жёсткости" FontSize="18">
                         <Grid>
-
+                            
                         </Grid>
                     </TabItem>
                     <TabItem Header="Эпюра устойчивости" FontSize="18">

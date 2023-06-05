@@ -53,10 +53,8 @@ namespace GenShnekApp
         double extrCoffLength;
         double extrLength;
 
-        //TODO Добавить стринговые переменные для отчёта по экструзионным шнекам и убрать стринг-заглушку
         string extrMethod = "—";
         string extrName = "—";
-        string lorem = "Lorem Ipsum";
 
         KompasObject kompas;
         ksPart part;
@@ -169,7 +167,7 @@ namespace GenShnekApp
 
         private void TextBoxInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = "0123456789".IndexOf(e.Text) < 0;
+            e.Handled = "0123456789,".IndexOf(e.Text) < 0;
         }
         private void DeleteSpaces(object sender, KeyEventArgs e)
         {
@@ -220,7 +218,7 @@ namespace GenShnekApp
                 if (ShnekType.SelectedIndex == 0)
                 {
                     tubeRad = hexSize * 0.75;
-                    //Дефолтные шнеки
+                    //Готовые шнеки
                     if (DefaultShnekChoose.IsEnabled == true)
                     {
                         switch (DefaultShnekChoose.SelectedIndex)
@@ -294,7 +292,7 @@ namespace GenShnekApp
                 //Шнеки второго типа
                 else
                 {
-                    //Дефолтные шнеки
+                    //Готовые шнеки
                     if (DefaultShnekChoose.IsEnabled == true)
                     {
                         switch (DefaultShnekChoose.SelectedIndex)
@@ -326,7 +324,7 @@ namespace GenShnekApp
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation3(83, tubeLength, 324/2);
                                 HoleType2Creation1(95, 163, 324, tubeLength);
-                                SpyralCreation(41.5, 16, 163 / 16, 163 * 3 / 4, 8.25, 95);
+                                SpyralCreation(41.5, 16, 163 / 16, 163 * 3 / 4, 7.75, 95);
                                 SpyralCreation(41.5, 16, tubeLength + 324 / 16, 324 * 3 / 8, 8.1, 95);
                                 break;
                         }
@@ -365,7 +363,8 @@ namespace GenShnekApp
                 extrRad = extrDiam / 2;
                 if (DefaultShnekChoose.IsEnabled == true)
                 {
-                    extrMethod = "Стандартный";
+                    //Готовые шнеки
+                    extrMethod = "стандартный";
                     switch (DefaultShnekChoose.SelectedIndex)
                     {
                         case 0:
@@ -441,10 +440,11 @@ namespace GenShnekApp
                     ConeCreation(extrRad);
                     ShnekCalc(extrDiam, extrLength);
                 }
+                //Пользовательский шнек
                 else
                 {
-                    extrMethod = "Пользовательский";
-                    extrName = "—";
+                    extrMethod = "пользовательский";
+                    extrName = "отсутствует";
                     extrLength = extrDiam * extrCoffLength;
                     CylinderCreation(extrRad, extrLength);
                     SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
@@ -1385,7 +1385,7 @@ namespace GenShnekApp
             {
                 foreach (TextBox textBox in FindVisualChildren<TextBox>(System.Windows.Application.Current.MainWindow))
                 {
-                    textBox.BorderBrush = new SolidColorBrush(Color.FromRgb(171, 173, 179));
+                    textBox.BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(171, 173, 179));
                 }
             }
             if (string.IsNullOrEmpty(inputTubeLength.Text))
@@ -1516,10 +1516,13 @@ namespace GenShnekApp
                     }
                 }
 
-                if (GhostType.SelectedIndex != 0)
+                if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 2) mistakeCheck = true;
+                else
                 {
+                    //буровые шнеки
                     if (GhostType.SelectedIndex == 1)
                     {
+                        //первый тип
                         if (ShnekType.SelectedIndex == 0)
                         {
                             if (holeDiam == 0)
@@ -1559,6 +1562,7 @@ namespace GenShnekApp
                                 mistakeCheck = false;
                             }
                         }
+                        //второй тип
                         else if (ShnekType.SelectedIndex == 1)
                         {
                             if (type2T1 < 100)
@@ -1605,6 +1609,7 @@ namespace GenShnekApp
                             }
                         }
                     }
+                    //экструзионные шнеки
                     if (GhostType.SelectedIndex == 3)
                     {
                         if (extrDiam == 0)
@@ -1764,7 +1769,7 @@ namespace GenShnekApp
             InputFieldIvVisible(false);
             for (int i = 0; i < typeCount; i++)
             {
-                if (i == 0 ) ShnekType.Items.Add("Для пластических масс");
+                if (i == 0 ) ShnekType.Items.Add("Для термопластов");
                 if (i == 1 ) ShnekType.Items.Add("Для резиновых смесей");
             }
             ShnekType.SelectedIndex = 0;
@@ -1948,11 +1953,11 @@ namespace GenShnekApp
 
         //Расчёт шнека на прочность, жёсткость и устойчивость
         ///////////(1)НАЧАЛО
-        private void ShnekCalc(double d, double L)
+        private void ShnekCalc(double diam, double L)
         {
             //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
             const double PI = Math.PI; //Число ПИ
-            const double g = 9.81; //ускорение свободного падения
+            const double gi = 9.81; //ускорение свободного падения
 
             double A; //постоянная прямого потока
             double B; //постоянная обратного потока
@@ -1963,10 +1968,7 @@ namespace GenShnekApp
             double F; //площадь поперечного сечения
             double Sos; //осевое усилие от давления формования
             double K; //параметр
-
-            //ОТДЕЛЬНАЯ КАСТА ПЕРЕМЕННЫХ, КОТОРЫЕ ЧЁРТ ЗНАЕТ ОТКУДА ПОЯВИЛИСЬ (ПОКА НЕ ВЫЯСНЮ ОТКУДА, БУДУТ РАВНЫ 1)            
-            double DL;
-            DL = 1;
+            double J; //момент инерции поперечного сечения
 
             int size = 401;
             double[] MIZ = new double[size]; //изгибающий момент
@@ -1990,10 +1992,11 @@ namespace GenShnekApp
             double SIG = 400000000; //допускаемое напряжение, Па
             double RO = 7850; //плотность материала шнека, кг/м3
             double P = 50000000; //давление развиваемое шнеком, Па
-            double d1 = 0.001; //диаметр осевого отверстия шнека, м
+            //TODO просто оставлю тудушку, на случай, если всё-таки будет осевое отверстие. пока оно равно нулю, то есть отверстия нет
+            double d1 = 0; //диаметр осевого отверстия шнека, м
             //double d = 0.032; //наружный диаметр шнека, м
             //d = 0.032; //наружный диаметр шнека, м
-            d /= 1000;
+            diam /= 1000;
             //double L = 0.64; //длина нарезной части шнека, м
             L /= 1000;
             double H = 0.0032; //глубина винтового канала шнека, м
@@ -2002,7 +2005,11 @@ namespace GenShnekApp
             double E1 = 0.0032; //ширина гребня винтового канала шнека, м
             double N = 5; //технологическая мощность, кВт
             double W = 70; //частота вращения шнека, об/мин
-            double GAM; //удельный вес материала
+            double GAM = RO * gi; //удельный вес материала
+
+            double AL; //альфа, отношение диаметра осевого отверстия шнека к наружному диаметру шнека
+            AL = d1 / diam;
+
             //}
 
             ///////////(3)ОПРЕДЕЛЕНЕИ ЧИСЛА ОТРЕЗКОВ РАЗБИЕНИЯ ДЛИНЫ НАРЕЗНОЙ ЧАСТИ ШНЕКА
@@ -2010,32 +2017,30 @@ namespace GenShnekApp
 
             ///////////(4)ОПРЕДЕЛЕНИЕ ПОСТОЯННЫХ ПРЯМОГО, ОБРАТНОГО ПОТОКА, ПОТОКА УТЕЧКИ И ПРОИЗВОДИТЕЛЬНОСТИ
             FI = FI * PI / 180;
-            A = PI * d * H * (T - E) * Pow(Cos(FI), 2) / 2;
+            A = PI * diam * H * (T - E) * Pow(Cos(FI), 2) / 2;
             B = Pow(H, 3) * (T - E) * Sin(2 * FI) / (24 * L);
-            G = Pow(PI, 2) * Pow(d, 2) * Pow(DL, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
-            //K = Sqrt(P/(E*J)); TODO  найти J по формулам
-            K = 1;
+            G = Pow(PI, 2) * Pow(diam, 2) * Pow(diam * L, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
+            J = ((PI * Pow(diam, 4)) / 64) * (1 - Pow(AL, 4));
+            K = Sqrt(P / (E * J));
             Q = A * K * N / (K - B - G); //Вывод
             QOutput.Text = $"Q = {Q} м^3/с";
 
             ///////////(5)ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
             MKROutput.Text = $"M_кр = {MKR} Н*м";
-            F = PI * Pow(d, 2) / 4;
+            F = PI * Pow(diam, 2) / 4;
             Sos = F * P; //Вывод
             SosOutput.Text = $"S_ос = {Sos} Н";
 
             ///////////(6)РАСЧЁТ ГИБКОСТИ ШНЕКА
-            double AL; //альфа, отношение диаметра осевого отверстия шнека к наружному диаметру шнека
             double F1; // площадь поперечного сечения шнека сечения А-А
             double J1; // момент инерции поперечного сечения А-А
             double I; // радиус инерции сечения
             double MU = 2; //мю, коэффициент, зависящий от способа закрепления концов вала (в данном частном случае 2)
             double LA; //лямбда, гибкость вала шнека
 
-            AL = d1 / d;
-            F1 = PI * Pow(d, 2) / 4 * (1 - Pow(AL, 2));
-            J1 = PI * Pow(d, 4) / 64 * (1 - Pow(AL, 4));
+            F1 = PI * Pow(diam, 2) / 4 * (1 - Pow(AL, 2));
+            J1 = PI * Pow(diam, 4) / 64 * (1 - Pow(AL, 4));
             I = Sqrt(J1 / F1);
             //I = d * Sqrt(1 + Pow(AL, 2)) / 4; //после подстановки J и F в I=Sqrt(J1/F1) (преобразованная формула)
             LA = MU * L / I;
@@ -2045,12 +2050,12 @@ namespace GenShnekApp
             double TAUmax; //максимальное напряжение кручения
             double q; //распреленная нагрузка
 
-            WR = PI * Pow(d, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
+            WR = PI * Pow(diam, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
             WROutput.Text = $"W_р = {WR} м^3";
             TAUmax = MKR / WR;
-            q = RO * g * L;
+            q = RO * gi * L;
 
-
+            //hardnessPlot.Title
         }
 
         //Кнопка создания отчёта
@@ -2058,22 +2063,7 @@ namespace GenShnekApp
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
-            saveFileDialog.Title = "Save PDF File";
             saveFileDialog.FileName = "Результат расчётов";
-
-            int counter = 0;
-            string filePath = saveFileDialog.FileName;
-
-            while (File.Exists(filePath))
-            {
-                // Append the counter to the file name
-                string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(filePath);
-                string fileExtension = System.IO.Path.GetExtension(filePath);
-                string incrementedFileName = $"{fileNameWithoutExtension} ({counter}){fileExtension}";
-                filePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), incrementedFileName);
-
-                counter++;
-            }
 
             if (saveFileDialog.ShowDialog() == true)
             {
@@ -2093,30 +2083,30 @@ namespace GenShnekApp
                     iTextSharp.text.Paragraph enter = new iTextSharp.text.Paragraph(" ");
 
                     iTextSharp.text.Paragraph repHeader = new iTextSharp.text.Paragraph("ОТЧЁТ ПО РАСЧЁТУ ЭКСТРУЗИОННОГО ШНЕКА", headerFont1);
-                    repHeader.Alignment = Element.ALIGN_CENTER;
+                    repHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     iTextSharp.text.Paragraph extrInfoHeader = new iTextSharp.text.Paragraph("Информация о шнеке", headerFont2);
-                    extrInfoHeader.Alignment = Element.ALIGN_CENTER;
-                    iTextSharp.text.Paragraph repMethod = new iTextSharp.text.Paragraph("Тип построения шнека: " + extrMethod + ".", textFont);
+                    extrInfoHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+                    iTextSharp.text.Paragraph repMethod = new iTextSharp.text.Paragraph("Способ построения шнека: " + extrMethod + ".", textFont);
                     iTextSharp.text.Paragraph repName = new iTextSharp.text.Paragraph("Наименование шнека: " + extrName + ".", textFont);
                     iTextSharp.text.Paragraph repDiam = new iTextSharp.text.Paragraph($"Диаметр шнека: {extrDiam} мм.", textFont);
                     iTextSharp.text.Paragraph repLength = new iTextSharp.text.Paragraph($"Отношение длины к диаметру: L/D = {extrCoffLength}.", textFont);
                     
                     iTextSharp.text.Paragraph extrOutputHeader = new iTextSharp.text.Paragraph("Проверочные расчёты", headerFont2);
-                    extrOutputHeader.Alignment = Element.ALIGN_CENTER;
+                    extrOutputHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
                     iTextSharp.text.Paragraph repQ = new iTextSharp.text.Paragraph($"Производительность: {QOutput.Text}.", textFont);
                     iTextSharp.text.Paragraph repMKR = new iTextSharp.text.Paragraph($"Крутящий момент: {MKROutput.Text}.", textFont);
                     iTextSharp.text.Paragraph repSos = new iTextSharp.text.Paragraph($"Осевое усилие от давления формования: {SosOutput.Text}.", textFont);
                     iTextSharp.text.Paragraph repWR = new iTextSharp.text.Paragraph($"Временный момент сопротивления кручению: {WROutput.Text}.", textFont);
 
                     iTextSharp.text.Paragraph extrGraph1Header = new iTextSharp.text.Paragraph("Эпюра прочности", headerFont2);
-                    extrGraph1Header.Alignment = Element.ALIGN_CENTER;
+                    extrGraph1Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     iTextSharp.text.Paragraph extrGraph2Header = new iTextSharp.text.Paragraph("Эпюра жёсткости", headerFont2);
-                    extrGraph2Header.Alignment = Element.ALIGN_CENTER;
+                    extrGraph2Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     iTextSharp.text.Paragraph extrGraph3Header = new iTextSharp.text.Paragraph("Эпюра устойчивости", headerFont2);
-                    extrGraph3Header.Alignment = Element.ALIGN_CENTER;
+                    extrGraph3Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     document.Add(repHeader);
                     
@@ -2134,8 +2124,8 @@ namespace GenShnekApp
                     document.Add(repWR);
                     document.Add(enter);
 
-
                     document.Add(extrGraph1Header);
+                    //document.Add(image1);
                     document.Add(enter);
 
                     document.Add(extrGraph2Header);
