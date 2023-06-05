@@ -52,6 +52,7 @@ namespace GenShnekApp
         double extrRad;
         double extrCoffLength;
         double extrLength;
+        double extrSpyralLength;
 
         string extrMethod = "—";
         string extrName = "—";
@@ -82,10 +83,11 @@ namespace GenShnekApp
                     GOSTSelection2();
                     break;
                 case 2:
-                    DefaultShnekChoose.Items.Clear();
+                    DefaultExtrChoose.Items.Clear();
                     GOSTSelection3();
                     break;
                 case 3:
+                    DefaultExtrChoose.Items.Clear();
                     GOSTSelection4();
                     break;
             }
@@ -162,6 +164,62 @@ namespace GenShnekApp
                         inputType2T2.IsEnabled = false;
                     }
                 }
+            }
+        }
+        private void ShnekDestinationSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DefaultShnekItems3();
+            switch (ShnekDestination.SelectedIndex)
+            {
+                case 0:
+                    DefaultExtrChoose.Items.Clear();
+                    ShnekPower.IsEnabled = false;
+                    ShnekVacuum.IsEnabled = false;
+                    DefaultShnekItems3();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
+                    break;
+                case 1:
+                    DefaultExtrChoose.Items.Clear();
+                    ShnekPower.IsEnabled = true;
+                    ShnekVacuum.IsEnabled=false;
+                    DefaultShnekItems4();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable32.png"));
+                    break;
+            }
+        }
+
+        private void ShnekPowerSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DefaultExtrChoose.Items.Clear();
+            switch (ShnekPower.SelectedIndex)
+            {
+                case 0:
+                    ShnekVacuum.IsEnabled = false;
+                    DefaultShnekItems4();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable32.png"));
+                    break;
+                case 1:
+                    ShnekVacuum.IsEnabled = true;
+                    DefaultShnekItems5();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable33.png"));
+                    break;
+            }
+        }
+        private void ShnekVacuumSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            switch (ShnekVacuum.SelectedIndex)
+            {
+                case 0:
+                    DefaultExtrChoose.Items.Clear();
+                    DefaultShnekItems5();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable33.png"));
+                    break;
+                case 1:
+                    DefaultExtrChoose.Items.Clear();
+                    DefaultShnekItems6();
+                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable34.png"));
+                    break;
             }
         }
 
@@ -435,8 +493,9 @@ namespace GenShnekApp
                     }
                     extrName = $"ЧП {extrDiam}x{extrCoffLength}";
                     extrRad = extrDiam / 2;
+                    extrSpyralLength = extrLength;
                     CylinderCreation(extrRad, extrLength);
-                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrLength, extrDiam * 0.06, extrDiam);
+                    SpyralCreation(extrRad * 1.2, extrDiam * 1.2, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
                     ConeCreation(extrRad);
                     ShnekCalc(extrDiam, extrLength);
                 }
@@ -1484,6 +1543,12 @@ namespace GenShnekApp
                 inputExtrShnekCoffLength.BorderBrush = Brushes.Red;
                 MessageBox.Show("Обнаружено пустое поле ввода!");
             }
+            else if (string.IsNullOrEmpty(inputExtrSpyralLength.Text))
+            {
+                mistakeCheck = false;
+                inputExtrSpyralLength.BorderBrush = Brushes.Red;
+                MessageBox.Show("Обнаружено пустое поле ввода!");
+            }
             else
             {
                 //mistakeCheck = true;
@@ -1505,6 +1570,7 @@ namespace GenShnekApp
 
                 extrDiam = Convert.ToDouble(inputExtrShnekDiam.Text);
                 extrCoffLength = Convert.ToDouble(inputExtrShnekCoffLength.Text);
+                extrSpyralLength = Convert.ToDouble(inputExtrSpyralLength.Text);
 
                 if (GhostType.SelectedIndex == 0 || GhostType.SelectedIndex == 1)
                 {
@@ -1618,6 +1684,18 @@ namespace GenShnekApp
                             MessageBox.Show("Введён неверный диаметр экструзионного шнека!");
                             mistakeCheck = false;
                         }
+                        if (extrSpyralLength == 0)
+                        {
+                            inputExtrSpyralLength.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Введёна неверная длина нарезной части шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (extrSpyralLength > extrLength)
+                        {
+                            inputExtrSpyralLength.BorderBrush = Brushes.Red;
+                            MessageBox.Show("длина нарезной части шнека не может быть больше длины всего шнека!");
+                            mistakeCheck = false;
+                        }
                         if (ShnekType.SelectedIndex == 0)
                         {
                             if (extrCoffLength < 20 || extrCoffLength > 30)
@@ -1713,6 +1791,7 @@ namespace GenShnekApp
             inputType2T2.IsEnabled = isActive;
             inputExtrShnekDiam.IsEnabled = isActive;
             inputExtrShnekCoffLength.IsEnabled = isActive;
+            inputExtrSpyralLength.IsEnabled = isActive;
         }
 
         private void InputFieldIvVisible(bool isVisible)
@@ -1759,43 +1838,24 @@ namespace GenShnekApp
 
         private void GOSTSelection3()
         {
-            typeCount = 2;
             InputFieldIsActive(false);
-            ShnekStyle.IsEnabled = false;
-            ShnekStyle.Items.Clear();
-            ShnekType.IsEnabled = true;
-            DefaultShnekChoose.IsEnabled = true;
             DefaultShnekItems3();
             InputFieldIvVisible(false);
-            for (int i = 0; i < typeCount; i++)
-            {
-                if (i == 0 ) ShnekType.Items.Add("Для термопластов");
-                if (i == 1 ) ShnekType.Items.Add("Для резиновых смесей");
-            }
-            ShnekType.SelectedIndex = 0;
+            DefaultExtrChoose.IsEnabled = true;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
-            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
+            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
         }
         private void GOSTSelection4()
         {
-            typeCount = 2;
             InputFieldIsActive(true);
-            ShnekStyle.IsEnabled = false;
-            ShnekStyle.Items.Clear();
-            ShnekType.IsEnabled = true;
-            DefaultShnekChoose.IsEnabled = false;
             DefaultShnekItems3();
             InputFieldIvVisible(false);
-            for (int i = 0; i < typeCount; i++)
-            {
-                if (i == 0) ShnekType.Items.Add("Для пластических масс");
-                if (i == 1) ShnekType.Items.Add("Для резиновых смесей");
-            }
-            ShnekType.SelectedIndex = 0;
+            DefaultExtrChoose.IsEnabled = false;
             if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
-            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable3.png"));
+            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
         }
 
+        //буровые, тип 1
         private void DefaultShnekItems1()
         {
             for (int i = 0; i < 6; i++)
@@ -1830,6 +1890,8 @@ namespace GenShnekApp
             inputSelection11.Visibility = Visibility.Visible;
             inputSelection12.Visibility = Visibility.Collapsed;
         }
+
+        //буровые, тип 2
         private void DefaultShnekItems2()
         {
             for (int i = 0; i < 3; i++)
@@ -1853,63 +1915,163 @@ namespace GenShnekApp
             inputSelection12.Visibility = Visibility.Visible;
         }
 
+        //экструзионные, термопласт
         private void DefaultShnekItems3()
         {
             for (int i = 0; i < 13; i++)
             {
                 if (i == 0)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 20х20");
+                    DefaultExtrChoose.Items.Add("ЧП 20х20");
                 }
                 if (i == 1)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 32х20");
+                    DefaultExtrChoose.Items.Add("ЧП 32х20");
                 }
                 if (i == 2)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 45х20");
+                    DefaultExtrChoose.Items.Add("ЧП 45х20");
                 }
                 if (i == 3)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 45х25");
+                    DefaultExtrChoose.Items.Add("ЧП 45х25");
                 }
                 if (i == 4)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 63х20");
+                    DefaultExtrChoose.Items.Add("ЧП 63х20");
                 }
                 if (i == 5)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 63х25");
+                    DefaultExtrChoose.Items.Add("ЧП 63х25");
                 }
                 if (i == 6)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 63х30");
+                    DefaultExtrChoose.Items.Add("ЧП 63х30");
                 }
                 if (i == 7)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 90х20");
+                    DefaultExtrChoose.Items.Add("ЧП 90х20");
                 }
                 if (i == 8)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 90х25");
+                    DefaultExtrChoose.Items.Add("ЧП 90х25");
                 }
                 if (i == 9)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 90х30");
+                    DefaultExtrChoose.Items.Add("ЧП 90х30");
                 }
                 if (i == 10)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 125х25");
+                    DefaultExtrChoose.Items.Add("ЧП 125х25");
                 }
                 if (i == 11)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 160х20");
+                    DefaultExtrChoose.Items.Add("ЧП 160х20");
                 }
                 if (i == 12)
                 {
-                    DefaultShnekChoose.Items.Add("ЧП 200х20");
+                    DefaultExtrChoose.Items.Add("ЧП 200х20");
                 }
-                DefaultShnekChoose.SelectedIndex = 0;
+                DefaultExtrChoose.SelectedIndex = 0;
+            }
+        }
+
+        //экструзионные, резина, теплые
+        private void DefaultShnekItems4()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-1");
+                }
+                if (i == 1)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-2");
+                }
+                if (i == 2)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-3");
+                }
+                if (i == 3)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-4");
+                }
+                if (i == 4)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-5");
+                }
+                if (i == 5)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-6");
+                }
+                if (i == 6)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-7");
+                }
+                if (i == 7)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-8");
+                }
+                if (i == 8)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-9");
+                }
+                if (i == 9)
+                {
+                    DefaultExtrChoose.Items.Add("МЧТ-10");
+                }
+                DefaultExtrChoose.SelectedIndex = 0;
+            }
+        }
+
+        //экструзионные, резина, холодные, с вакуум-отсосом
+        private void DefaultShnekItems5()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХВ-63");
+                }
+                if (i == 1)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХВ-90");
+                }
+                if (i == 2)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХВ-125");
+                }
+                if (i == 3)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХВ-160");
+                }
+                if (i == 4)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХВ-250");
+                }
+                DefaultExtrChoose.SelectedIndex = 0;
+            }
+        }
+
+        //экструзионные, резина, холодные, без вакуум-отсоса
+        private void DefaultShnekItems6()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (i == 0)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХ-63");
+                }
+                if (i == 1)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХ-90");
+                }
+                if (i == 2)
+                {
+                    DefaultExtrChoose.Items.Add("МЧХ-125");
+                }
+                DefaultExtrChoose.SelectedIndex = 0;
             }
         }
 
