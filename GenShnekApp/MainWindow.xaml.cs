@@ -115,14 +115,14 @@ namespace GenShnekApp
                     switch (ShnekType.SelectedIndex)
                     {
                         case 0:
-                            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch1.png"));
-                            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable1.png"));
+                            if (ImgSketch != null) ImgSketch.Source = BitmapToImageSource(Properties.Resources.ShnekSketch1);
+                            if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable1);
                             styleCount = 2;
                             if (GhostType.SelectedIndex == 0) ShnekStyle.IsEnabled = false;
                             DefaultShnekItems1();
                             break;
                         case 1:
-                            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable2.png"));
+                            if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable2);
                             styleCount = 2;
                             DefaultShnekItems2();
                             ShnekStyle.IsEnabled = true;
@@ -140,8 +140,8 @@ namespace GenShnekApp
             {
                 if (ShnekType.SelectedIndex == 1)
                 {
-                    if (ShnekStyle.SelectedIndex == 0) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch21.png"));
-                    if (ShnekStyle.SelectedIndex == 1) if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch22.png"));
+                    if (ShnekStyle.SelectedIndex == 0) if (ImgSketch != null) ImgSketch.Source = BitmapToImageSource(Properties.Resources.ShnekSketch21);
+                    if (ShnekStyle.SelectedIndex == 1) if (ImgSketch != null) ImgSketch.Source = BitmapToImageSource(Properties.Resources.ShnekSketch22);
                 }
             }
             if (GhostType.SelectedIndex == 1)
@@ -186,14 +186,14 @@ namespace GenShnekApp
                     ShnekPower.IsEnabled = false;
                     ShnekVacuum.IsEnabled = false;
                     DefaultShnekItems3();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable31);
                     break;
                 case 1:
                     DefaultExtrChoose.Items.Clear();
                     ShnekPower.IsEnabled = true;
                     ShnekVacuum.IsEnabled = false;
                     DefaultShnekItems4();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable32.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable32);
                     break;
             }
         }
@@ -206,12 +206,12 @@ namespace GenShnekApp
                 case 0:
                     ShnekVacuum.IsEnabled = false;
                     DefaultShnekItems4();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable32.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable32);
                     break;
                 case 1:
                     ShnekVacuum.IsEnabled = true;
                     DefaultShnekItems5();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable33.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable33);
                     break;
             }
         }
@@ -223,12 +223,12 @@ namespace GenShnekApp
                 case 0:
                     DefaultExtrChoose.Items.Clear();
                     DefaultShnekItems5();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable33.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable33);
                     break;
                 case 1:
                     DefaultExtrChoose.Items.Clear();
                     DefaultShnekItems6();
-                    if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable34.png"));
+                    if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable34);
                     break;
             }
         }
@@ -2076,8 +2076,8 @@ namespace GenShnekApp
             ShnekPower.SelectedIndex = 0;
             ShnekVacuum.SelectedIndex = 0;
             DefaultExtrChoose.SelectedIndex = 0;
-            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
-            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
+            if (ImgSketch != null) ImgSketch.Source = BitmapToImageSource(Properties.Resources.ShnekSketch3);
+            if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable31);
         }
         private void GOSTSelection4()
         {
@@ -2089,8 +2089,8 @@ namespace GenShnekApp
             ShnekPower.SelectedIndex = 0;
             ShnekVacuum.SelectedIndex = 0;
             DefaultExtrChoose.SelectedIndex = 0;
-            if (ImgSketch != null) ImgSketch.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekSketch3.png"));
-            if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable31.png"));
+            if (ImgSketch != null) ImgSketch.Source = BitmapToImageSource(Properties.Resources.ShnekSketch3);
+            if (ImgTable != null) ImgTable.Source = BitmapToImageSource(Properties.Resources.ShnekTable31);
         }
 
         //буровые, тип 1
@@ -2352,10 +2352,8 @@ namespace GenShnekApp
         }
 
         //Расчёт шнека на прочность, жёсткость и устойчивость
-        ///////////(1)НАЧАЛО
         private void ShnekCalc(double diam, double L)
         {
-            //РАСЧЁТ НА ПРОЧНОСТЬ КОНСОЛЬНО ЗАКРЕПЛЁННОГО ШНЕКА
             const double PI = Math.PI; //Число ПИ
             const double gi = 9.81; //ускорение свободного падения
 
@@ -2370,25 +2368,12 @@ namespace GenShnekApp
             double K; //параметр
             double J; //момент инерции поперечного сечения
 
-            int size = 401;
-            double[] MIZ = new double[size]; //изгибающий момент
-            double[] X = new double[size]; //текущая координата по длине шнека, м
-            double[] MK = new double[size];
-            double[] Fmax1 = new double[size];
-            double[] Fmax2 = new double[size];
-            double[] Fmax01 = new double[size];
-            double[] Fmax02 = new double[size];
-            double[] Fmax03 = new double[size];
-
             double AF = 0;
             double dX = 0.0045;
             double hx1 = 0.0045;
             const double E = 200000000000; //модуль упругости Юнга, Па
 
-            //if (AF == 0)
-            //{
             //Входные параметры
-            ///////////(2)ГЛАВНЫЕ ПАРАМЕТРЫ
             double SIG = 400000000; //допускаемое напряжение, Па
             double RO = 7850; //плотность материала шнека, кг/м3
             double P = 50000000; //давление развиваемое шнеком, Па
@@ -2410,25 +2395,33 @@ namespace GenShnekApp
             double AL; //альфа, отношение диаметра осевого отверстия шнека к наружному диаметру шнека
             AL = d1 / diam;
 
-            //}
-
-            ///////////(3)ОПРЕДЕЛЕНЕИ ЧИСЛА ОТРЕЗКОВ РАЗБИЕНИЯ ДЛИНЫ НАРЕЗНОЙ ЧАСТИ ШНЕКА
+            //ОПРЕДЕЛЕНИЕ ЧИСЛА ОТРЕЗКОВ РАЗБИЕНИЯ ДЛИНЫ НАРЕЗНОЙ ЧАСТИ ШНЕКА
             ZX = L / dX;
+            int size = (int)ZX+1;
+            double[] MIZ = new double[size]; //изгибающий момент
+            double[] X = new double[size]; //текущая координата по длине шнека
+            double[] MK = new double[size]; //крутящий момент
+            double[] Fmax1 = new double[size]; //прогиб
+            double[] Fmax01 = new double[size]; //прогиб
+            double[] Fmax02 = new double[size]; //прогиб
+            double[] Fmax03 = new double[size]; //прогиб
 
-            ///////////(4)ОПРЕДЕЛЕНИЕ ПОСТОЯННЫХ ПРЯМОГО, ОБРАТНОГО ПОТОКА, ПОТОКА УТЕЧКИ И ПРОИЗВОДИТЕЛЬНОСТИ
+            //ОПРЕДЕЛЕНИЕ ПОСТОЯННЫХ ПРЯМОГО, ОБРАТНОГО ПОТОКА, ПОТОКА УТЕЧКИ И ПРОИЗВОДИТЕЛЬНОСТИ
             FI = FI * PI / 180;
             A = PI * diam * H * (T - E) * Pow(Cos(FI), 2) / 2;
             B = Pow(H, 3) * (T - E) * Sin(2 * FI) / (24 * L);
             G = Pow(PI, 2) * Pow(diam, 2) * Pow(diam * L, 3) * Tan(FI) * Sin(FI) / (10 * E1 * L);
             J = ((PI * Pow(diam, 4)) / 64) * (1 - Pow(AL, 4));
             K = Sqrt(P / (E * J));
-            Q = A * K * N / (K - B - G); //Вывод
+            Q = A * K * N / (K + B + G);
+            Q /= 1000000000; //Вывод
             QOutput.Text = $"Q = {Q} м^3/с";
 
-            ///////////(5)ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
+            ///////////ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
             MKROutput.Text = $"M_кр = {MKR} Н*м";
             F = PI * Pow(diam, 2) / 4;
+            double P1 = F * P;
             Sos = F * P; //Вывод
             SosOutput.Text = $"S_ос = {Sos} Н";
 
@@ -2455,41 +2448,95 @@ namespace GenShnekApp
             TAUmax = MKR / WR;
             q = RO * gi * L;
 
-
-            ///////////////////////////////////////////////////////////////////////////
+            //ЭПЮРА МАКСИМАЛЬНОГО ПРОГИБА, ИЗГИБАЮЩЕГО МОМЕНТА, КРУТЯЩЕГО МОМЕНТА
+            LineSeries lineMIZ = new LineSeries();
+            LineSeries lineMK = new LineSeries();
+            LineSeries lineFmax1 = new LineSeries();
+            for (int i = 0; i < ZX; i++)
+            {
+                X[i] = dX * i;
+                MIZ[i] = RO * F1 * Pow(X[i], 2) / 2 * 10; //вывод ИГИБАЮЩИЙ МОМЕНТ, Н*м
+                lineMIZ.Points.Add(new DataPoint(i, MIZ[i]));
+                MK[i] = 9.55 * N / W; // вывод КРУТЯЩИЙ МОМЕНТ, Н*м
+                lineMK.Points.Add(new DataPoint(i, MK[i]));
+                if (LA <= 90)
+                {
+                    Fmax1[i] = RO * F1 * Pow(X[i], 4) / (8 * E * J1); // Вывод МАКСИМАЛЬНЫЙ ПРОГИБ, м
+                }
+                else
+                {
+                    double K1 = Sqrt(P1 / (E * J1));
+                    double A1 = RO * F1 * (X[i] - (Sin(K1 * X[i])) / K1)/ (K1 * Cos(K1 * X[i]));
+                    Fmax01[i] = RO * (F1 / Pow(K1, 2)) * (1 / Pow(K1, 2) + Pow(X[i], 2) / 2) / (E * J1);
+                    Fmax02[i] = 1 / K1 * (RO * F1 / Pow(K1, 3) + A1 * X[i]) * Cos(K1 * X[i]) / (E * J1);
+                    Fmax03[i] = 1 / Pow(K1, 2) * (RO * F1 * X[i] / K1 - A1) * Sin(K1 * X[i]) / (E * J1);
+                    Fmax1[i] = Fmax01[i] - Fmax02[i] - Fmax03[i]; // Вывод МАКСИМАЛЬНЫЙ ПРОГИБ, м
+                }
+                lineFmax1.Points.Add(new DataPoint(i, Fmax1[i]));
+            }
 
             strengthPlotModel.Series.Clear();
             hardnessPlotModel.Series.Clear();
             stabilityPlotModel.Series.Clear();
 
-            LineSeries series4 = new LineSeries();
-            series4.Points.Add(new DataPoint(0, 0));
-            series4.Points.Add(new DataPoint(diam, -diam));
-            series4.Points.Add(new DataPoint(-5*diam, diam));
-
-            LineSeries series5 = new LineSeries();
-            series5.Points.Add(new DataPoint(0, 0));
-            series5.Points.Add(new DataPoint(-diam, diam));
-            series5.Points.Add(new DataPoint(-6*diam, 7*diam));
-
-            LineSeries series6 = new LineSeries();
-            series6.Points.Add(new DataPoint(diam, 0));
-            series6.Points.Add(new DataPoint(0, 5*diam));
-            series6.Points.Add(new DataPoint(5, -1));
-
-            strengthPlotModel.Series.Add(series4);
-            hardnessPlotModel.Series.Add(series5);
-            stabilityPlotModel.Series.Add(series6);
+            strengthPlotModel.Series.Add(lineFmax1);
+            hardnessPlotModel.Series.Add(lineMIZ);
+            stabilityPlotModel.Series.Add(lineMK);
 
             strengthPlotView.Model = strengthPlotModel;
             hardnessPlotView.Model = hardnessPlotModel;
             stabilityPlotView.Model = stabilityPlotModel;
 
+            strengthPlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            strengthPlotModel.DefaultYAxis.Title = "м";
+            hardnessPlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            hardnessPlotModel.DefaultYAxis.Title = "Н*м";
+            stabilityPlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            stabilityPlotModel.DefaultYAxis.Title = "Н*м";
+
             strengthPlotView.InvalidatePlot();
             hardnessPlotView.InvalidatePlot();
             stabilityPlotView.InvalidatePlot();
 
+            double MIZmax = RO * F1 * Pow(L, 2) / 2 * 10; //максимальный изгибающий момент, Н*м
+            double Wh0 = PI * Pow(diam, 3) * (1 - Pow(AL, 4)) / 32; // расчёт момента временного сопротивления изгиба
+            double SIGRmax = P1 / F1;
+            double SIGmax = SIGRmax +MIZmax/Wh0;// расчёт максимального напряжения изгиба
+            double SIGekv = Sqrt(Pow(SIGmax, 2) + 4 * Pow(TAUmax, 2)); // расчёт эквивалентного напряжения
 
+            TAUmax /= 1000000; // вывод, напряжение кручения, МПа
+            TAUmaxOutput.Text = $"TAUmax = {TAUmax} МПа";
+            SIGRmax /= 1000000; // вывод, напряжение растяжения, МПа
+            SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax} МПа";
+            SIGekv /= 1000000; // вывод, эквивалентное напряжение, МПа
+            SIGekvOutput.Text = $"SIGekv = {SIGekv} МПа";
+
+            //TODO добавить условие прочности
+/*            SIG /= 1000000; // допустимое напряжение, МПА
+            if (SIGekv < SIG)
+            {
+                MessageBox.Show("Условие прочности выполняется");
+            }
+            else
+            {
+                MessageBox.Show("Условие прочности не выполняется");
+            }*/
+        }
+
+        //конвертация битмапов для использования пнг картинок
+        private BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+                return bitmapimage;
+            }
         }
 
         private static byte[] ExportPlotAsImage(PlotModel plotModel, int width, int height)
@@ -2557,14 +2604,17 @@ namespace GenShnekApp
                     iTextSharp.text.Paragraph repMKR = new iTextSharp.text.Paragraph($"Крутящий момент: {MKROutput.Text}.", textFont);
                     iTextSharp.text.Paragraph repSos = new iTextSharp.text.Paragraph($"Осевое усилие от давления формования: {SosOutput.Text}.", textFont);
                     iTextSharp.text.Paragraph repWR = new iTextSharp.text.Paragraph($"Временный момент сопротивления кручению: {WROutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repTAUmax = new iTextSharp.text.Paragraph($"Напряжение кручения: {TAUmaxOutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repSIGRmax = new iTextSharp.text.Paragraph($"Напряжение растяжения: {SIGRmaxOutput.Text}.", textFont);
+                    iTextSharp.text.Paragraph repSIGekv = new iTextSharp.text.Paragraph($"Эквивалентное напряжение: {SIGekvOutput.Text}.", textFont);
 
-                    iTextSharp.text.Paragraph extrGraph1Header = new iTextSharp.text.Paragraph("Эпюра прочности", headerFont2);
+                    iTextSharp.text.Paragraph extrGraph1Header = new iTextSharp.text.Paragraph("Эпюра максимального прогиба", headerFont2);
                     extrGraph1Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
-                    iTextSharp.text.Paragraph extrGraph2Header = new iTextSharp.text.Paragraph("Эпюра жёсткости", headerFont2);
+                    iTextSharp.text.Paragraph extrGraph2Header = new iTextSharp.text.Paragraph("Эпюра изгибающего момента", headerFont2);
                     extrGraph2Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
-                    iTextSharp.text.Paragraph extrGraph3Header = new iTextSharp.text.Paragraph("Эпюра устойчивости", headerFont2);
+                    iTextSharp.text.Paragraph extrGraph3Header = new iTextSharp.text.Paragraph("Эпюра крутящего момента", headerFont2);
                     extrGraph3Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     document.Add(repHeader);
@@ -2585,16 +2635,13 @@ namespace GenShnekApp
                     document.Add(repMKR);
                     document.Add(repSos);
                     document.Add(repWR);
+                    document.Add(repTAUmax);
+                    document.Add(repSIGRmax);
+                    document.Add(repSIGekv);
                     document.Add(enter);
 
                     document.Add(extrGraph1Header);
                     document.Add(strengthImage);
-                    document.Add(enter);
-                    document.Add(enter);
-                    document.Add(enter);
-                    document.Add(enter);
-                    document.Add(enter);
-                    document.Add(enter);
                     document.Add(enter);
 
                     document.Add(extrGraph2Header);

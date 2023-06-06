@@ -299,7 +299,7 @@
                         <TextBlock>ГОСТ 14773-80 (Пользовательский)</TextBlock>
                     </ComboBoxItem>
                 </ComboBox>
-                <Image Name="ImgSketch" Source="ShnekSketch3.png" HorizontalAlignment="Left" Height="236" Margin="478,336,0,0" VerticalAlignment="Top" Width="671"/>
+                <Image Name="ImgSketch" Source="ShnekSketch3.png" HorizontalAlignment="Left" Height="236" Margin="480,343,0,0" VerticalAlignment="Top" Width="671"/>
                 <Image Name="ImgTable" Source="ShnekTable31.png" Margin="494,61,52,420"/>
                 <Button
                     Height="30"
@@ -327,18 +327,21 @@
                 <TextBlock x:Name="MKROutput" Height="20" Margin="828,94,45,586">M_кр = — Н*м</TextBlock>
                 <TextBlock x:Name="SosOutput" Height="20" Margin="828,119,45,561">S_ос = — Н</TextBlock>
                 <TextBlock x:Name="WROutput" Height="20" Margin="828,144,45,536">W_р = — м^3</TextBlock>
+                <TextBlock x:Name="TAUmaxOutput" Height="20" Margin="828,169,45,511">TAUmax = — МПа</TextBlock>
+                <TextBlock x:Name="SIGRmaxOutput" Height="20" Margin="828,194,45,486">SIGRmax = — МПа</TextBlock>
+                <TextBlock x:Name="SIGekvOutput" Height="20" Margin="828,215,45,461">SIGekv = — МПа</TextBlock>
                 <TabControl Margin="21,25,381,110"  Panel.ZIndex="-1">
-                    <TabItem Header="Эпюра прочности" FontSize="18">
+                    <TabItem Header="Эпюра прогиба" FontSize="18">
                         <Grid>
                             <oxy:PlotView x:Name="strengthPlotView"/>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Эпюра жёсткости" FontSize="18">
+                    <TabItem Header="Эпюра изгибающего момента" FontSize="18">
                         <Grid>
                             <oxy:PlotView x:Name="hardnessPlotView"/>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Эпюра устойчивости" FontSize="18">
+                    <TabItem Header="Эпюра крутящего момента" FontSize="18">
                         <Grid>
                             <oxy:PlotView x:Name="stabilityPlotView"/>
                         </Grid>
