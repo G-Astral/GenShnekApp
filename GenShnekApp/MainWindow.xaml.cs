@@ -23,6 +23,9 @@ using static System.Math;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Win32;
+using OxyPlot;
+using OxyPlot.Wpf;
+using OxyPlot.Series;
 
 namespace GenShnekApp
 {
@@ -67,6 +70,10 @@ namespace GenShnekApp
         int styleCount;
 
         bool mistakeCheck;
+
+        PlotModel strengthPlotModel = new PlotModel();
+        PlotModel hardnessPlotModel = new PlotModel();
+        PlotModel stabilityPlotModel = new PlotModel();
 
         public MainWindow()
         {
@@ -152,7 +159,7 @@ namespace GenShnekApp
                         inputHex2Size.IsEnabled = true;
                     }
                 }
-                else if (ShnekType.SelectedIndex ==1)
+                else if (ShnekType.SelectedIndex == 1)
                 {
                     if (ShnekStyle.SelectedIndex == 0)
                     {
@@ -184,7 +191,7 @@ namespace GenShnekApp
                 case 1:
                     DefaultExtrChoose.Items.Clear();
                     ShnekPower.IsEnabled = true;
-                    ShnekVacuum.IsEnabled=false;
+                    ShnekVacuum.IsEnabled = false;
                     DefaultShnekItems4();
                     if (ImgTable != null) ImgTable.Source = (ImageSource)new ImageSourceConverter().ConvertFrom(new Uri(@"D:\Users\Garnik\Desktop\учёба\Диплом\GenShnekApp\GenShnekApp\ShnekTable32.png"));
                     break;
@@ -374,7 +381,7 @@ namespace GenShnekApp
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
                                 JointCreation4(40, 36, 63);
-                                HoleType2Creation2(40 , 63, tubeLength);
+                                HoleType2Creation2(40, 63, tubeLength);
                                 SpyralCreation(36 / 2, 8, tubeLength - (63 * 7 / 8), 63 * 3 / 4, 4, 40);
                                 SpyralCreation(36 / 2, 8, -63 * 4 / 3 * 0.95, 63, 4, 40);
                                 break;
@@ -383,7 +390,7 @@ namespace GenShnekApp
                                 tubeRad = (type2ShnekDiam * 10 / 18) / 2;
                                 CylinderCreation(tubeRad, tubeLength);
                                 SpyralCreation(tubeRad, step, 0, tubeLength, shnekThick, type2ShnekDiam);
-                                JointCreation3(83, tubeLength, 324/2);
+                                JointCreation3(83, tubeLength, 324 / 2);
                                 HoleType2Creation1(95, 163, 324, tubeLength);
                                 SpyralCreation(41.5, 16, 163 / 16, 163 * 3 / 4, 7.75, 95);
                                 SpyralCreation(41.5, 16, tubeLength + 324 / 16, 324 * 3 / 8, 8.1, 95);
@@ -673,11 +680,6 @@ namespace GenShnekApp
                             }
                         }
                     }
-                    extrRad = extrDiam / 2;
-                    CylinderCreation(extrRad / 1.2, extrLength);
-                    SpyralCreation(extrRad / 1.2, extrDiam, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
-                    ConeCreation(extrRad / 1.2);
-                    ShnekCalc(extrDiam, extrLength);
                 }
                 //Пользовательский шнек
                 else if (GhostType.SelectedIndex == 3)
@@ -716,12 +718,20 @@ namespace GenShnekApp
                             }
                         }
                     }
-                    extrLength = extrDiam * extrCoffLength;
-                    CylinderCreation(extrRad / 1.2, extrLength);
-                    SpyralCreation(extrRad / 1.2, extrDiam, 0, extrSpyralLength, extrDiam * 0.06, extrDiam);
-                    ConeCreation(extrRad / 1.2);
-                    ShnekCalc(extrDiam, extrLength);
                 }
+                extrRad = extrDiam / 2;
+
+                double hCoff = 1 - 0.14;
+                double eCoff = 0;
+                if (extrDiam >= 125) eCoff = 0.07;
+                if (extrDiam < 125) eCoff = 0.09;
+                double extrThick = extrDiam * eCoff;
+                extrRad *= hCoff;
+
+                CylinderCreation(extrRad, extrLength);
+                SpyralCreation(extrRad, extrDiam, 0, extrSpyralLength, extrThick, extrDiam);
+                ConeCreation(extrRad);
+                ShnekCalc(extrDiam, extrLength);
             }
         }
 
@@ -1097,7 +1107,7 @@ namespace GenShnekApp
                 bossExtr2.Create();
             }
 
-            ksEntity plane3 = OffsetPlaneCreation(- len1 - len2, basePlaneZOY);
+            ksEntity plane3 = OffsetPlaneCreation(-len1 - len2, basePlaneZOY);
             ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
             SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
@@ -1127,7 +1137,7 @@ namespace GenShnekApp
             }
 
         }
-        
+
         ///////////////////////////Создание сквозного отверстия 1 (тип 2 исполнение 1)/////////////////////////////
         private void HoleType2Creation1(double thredMaxDiam, double threadLength1, double threadLength2, double fullLength)
         {
@@ -1156,19 +1166,19 @@ namespace GenShnekApp
             ksDocument2D Sketch2D1 = (ksDocument2D)ksSketchDef1.BeginEdit();
 
             Sketch2D1.ksCircle(0, 0, rad1, 1);
-            
-/*            ksRectangleParam rect1 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
-            if (rect1 != null)
-            {
-                // Параметры прямоугольника
-                rect1.ang = 0;
-                rect1.x = -thick;
-                rect1.y = rad;
-                rect1.width = thick;
-                rect1.height = sDiam / 2 - rad;
-                rect1.style = 1;
-                Sketch2D1.ksRectangle(rect1);
-            }*/
+
+            /*            ksRectangleParam rect1 = (ksRectangleParam)kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
+                        if (rect1 != null)
+                        {
+                            // Параметры прямоугольника
+                            rect1.ang = 0;
+                            rect1.x = -thick;
+                            rect1.y = rad;
+                            rect1.width = thick;
+                            rect1.height = sDiam / 2 - rad;
+                            rect1.style = 1;
+                            Sketch2D1.ksRectangle(rect1);
+                        }*/
 
             ksSketchDef1.EndEdit();
 
@@ -1330,7 +1340,7 @@ namespace GenShnekApp
         private void HoleType2Creation2(double threadMaxDiam, double threadLength, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
-            
+
             double jointLength = threadLength * 4 / 3;
             double rad1 = threadMaxDiam / 3;
             double rad2 = threadMaxDiam / 2;
@@ -1851,7 +1861,7 @@ namespace GenShnekApp
                                 MessageBox.Show("Параметр t1 не может быть меньше 100 мм!");
                                 mistakeCheck = false;
                             }
-                            if (type2T1 >= tubeLength*0.3)
+                            if (type2T1 >= tubeLength * 0.3)
                             {
                                 inputType2T1.BorderBrush = Brushes.Red;
                                 MessageBox.Show("Параметр t1 не может быть превышать 30% от длины трубы!");
@@ -1863,7 +1873,7 @@ namespace GenShnekApp
                                 MessageBox.Show("Параметр t2 не может быть меньше 200 мм!");
                                 mistakeCheck = false;
                             }
-                            if (type2T2 >= tubeLength*0.6)
+                            if (type2T2 >= tubeLength * 0.6)
                             {
                                 inputType2T2.BorderBrush = Brushes.Red;
                                 MessageBox.Show("Параметр t2 не может быть превышать 60% от длины трубы!");
@@ -1908,6 +1918,12 @@ namespace GenShnekApp
                         {
                             inputExtrSpyralLength.BorderBrush = Brushes.Red;
                             MessageBox.Show("Длина нарезной части шнека не может быть больше длины всего шнека!");
+                            mistakeCheck = false;
+                        }
+                        if (extrSpyralLength < extrLength * 0.9)
+                        {
+                            inputExtrSpyralLength.BorderBrush = Brushes.Red;
+                            MessageBox.Show("Минимальная длина нарезной части шнека равна 90% длины всего шнека!");
                             mistakeCheck = false;
                         }
                         if (ShnekType.SelectedIndex == 0)
@@ -2439,7 +2455,51 @@ namespace GenShnekApp
             TAUmax = MKR / WR;
             q = RO * gi * L;
 
-            //hardnessPlot.Title
+
+            ///////////////////////////////////////////////////////////////////////////
+
+            strengthPlotModel.Series.Clear();
+            hardnessPlotModel.Series.Clear();
+            stabilityPlotModel.Series.Clear();
+
+            LineSeries series4 = new LineSeries();
+            series4.Points.Add(new DataPoint(0, 0));
+            series4.Points.Add(new DataPoint(diam, -diam));
+            series4.Points.Add(new DataPoint(-5*diam, diam));
+
+            LineSeries series5 = new LineSeries();
+            series5.Points.Add(new DataPoint(0, 0));
+            series5.Points.Add(new DataPoint(-diam, diam));
+            series5.Points.Add(new DataPoint(-6*diam, 7*diam));
+
+            LineSeries series6 = new LineSeries();
+            series6.Points.Add(new DataPoint(diam, 0));
+            series6.Points.Add(new DataPoint(0, 5*diam));
+            series6.Points.Add(new DataPoint(5, -1));
+
+            strengthPlotModel.Series.Add(series4);
+            hardnessPlotModel.Series.Add(series5);
+            stabilityPlotModel.Series.Add(series6);
+
+            strengthPlotView.Model = strengthPlotModel;
+            hardnessPlotView.Model = hardnessPlotModel;
+            stabilityPlotView.Model = stabilityPlotModel;
+
+            strengthPlotView.InvalidatePlot();
+            hardnessPlotView.InvalidatePlot();
+            stabilityPlotView.InvalidatePlot();
+
+
+        }
+
+        private static byte[] ExportPlotAsImage(PlotModel plotModel, int width, int height)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                PngExporter exporter = new PngExporter { Width = width, Height = height, };
+                exporter.Export(plotModel, stream);
+                return stream.ToArray();
+            }
         }
 
         //Кнопка создания отчёта
@@ -2458,6 +2518,17 @@ namespace GenShnekApp
                     Document document = new Document();
                     PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
                     document.Open();
+
+                    byte[] strengthImageExport = ExportPlotAsImage(strengthPlotModel, 400, 300);
+                    byte[] hardnessImageExport = ExportPlotAsImage(hardnessPlotModel, 400, 300);
+                    byte[] stabilityImageExport = ExportPlotAsImage(stabilityPlotModel, 400, 300);
+
+                    iTextSharp.text.Image strengthImage = iTextSharp.text.Image.GetInstance(strengthImageExport);
+                    strengthImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+                    iTextSharp.text.Image hardnessImage = iTextSharp.text.Image.GetInstance(hardnessImageExport);
+                    hardnessImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+                    iTextSharp.text.Image stabilityImage = iTextSharp.text.Image.GetInstance(stabilityImageExport);
+                    stabilityImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\4852-font.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                     Font headerFont1 = new Font(baseFont, 16, Font.BOLD);
@@ -2479,7 +2550,7 @@ namespace GenShnekApp
                     iTextSharp.text.Paragraph repDiam = new iTextSharp.text.Paragraph($"Диаметр шнека: {extrDiam} мм.", textFont);
                     iTextSharp.text.Paragraph repLength = new iTextSharp.text.Paragraph($"Отношение длины к диаметру: L/D = {extrCoffLength}.", textFont);
                     iTextSharp.text.Paragraph repSpyralLength = new iTextSharp.text.Paragraph($"Длина нарезной части: {extrSpyralLength} мм.", textFont);
-                    
+
                     iTextSharp.text.Paragraph extrOutputHeader = new iTextSharp.text.Paragraph("Проверочные расчёты", headerFont2);
                     extrOutputHeader.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
                     iTextSharp.text.Paragraph repQ = new iTextSharp.text.Paragraph($"Производительность: {QOutput.Text}.", textFont);
@@ -2497,7 +2568,7 @@ namespace GenShnekApp
                     extrGraph3Header.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     document.Add(repHeader);
-                    
+
                     document.Add(extrInfoHeader);
                     document.Add(repMethod);
                     document.Add(repName);
@@ -2517,15 +2588,23 @@ namespace GenShnekApp
                     document.Add(enter);
 
                     document.Add(extrGraph1Header);
-                    //document.Add(image1);
+                    document.Add(strengthImage);
+                    document.Add(enter);
+                    document.Add(enter);
+                    document.Add(enter);
+                    document.Add(enter);
+                    document.Add(enter);
+                    document.Add(enter);
                     document.Add(enter);
 
                     document.Add(extrGraph2Header);
+                    document.Add(hardnessImage);
                     document.Add(enter);
 
                     document.Add(extrGraph3Header);
+                    document.Add(stabilityImage);
                     document.Add(enter);
-
+                    
                     document.Close();
 
                     Process.Start(path);

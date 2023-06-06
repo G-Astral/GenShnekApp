@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:GenShnekApp"
         mc:Ignorable="d"
         Background="LightGray"
@@ -329,17 +330,17 @@
                 <TabControl Margin="21,25,381,110"  Panel.ZIndex="-1">
                     <TabItem Header="Эпюра прочности" FontSize="18">
                         <Grid>
-
+                            <oxy:PlotView x:Name="strengthPlotView"/>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Эпюра жёсткости" FontSize="18">
                         <Grid>
-
+                            <oxy:PlotView x:Name="hardnessPlotView"/>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Эпюра устойчивости" FontSize="18">
                         <Grid>
-
+                            <oxy:PlotView x:Name="stabilityPlotView"/>
                         </Grid>
                     </TabItem>
                 </TabControl>
