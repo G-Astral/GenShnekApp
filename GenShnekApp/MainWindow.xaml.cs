@@ -71,9 +71,9 @@ namespace GenShnekApp
 
         bool mistakeCheck;
 
-        PlotModel strengthPlotModel = new PlotModel();
-        PlotModel hardnessPlotModel = new PlotModel();
-        PlotModel stabilityPlotModel = new PlotModel();
+        PlotModel deflectionPlotModel = new PlotModel();
+        PlotModel bendingPlotModel = new PlotModel();
+        PlotModel torquePlotModel = new PlotModel();
 
         public MainWindow()
         {
@@ -731,7 +731,7 @@ namespace GenShnekApp
                 CylinderCreation(extrRad, extrLength);
                 SpyralCreation(extrRad, extrDiam, 0, extrSpyralLength, extrThick, extrDiam);
                 ConeCreation(extrRad);
-                ShnekCalc(extrDiam, extrLength);
+                ShnekCalc(extrDiam, extrSpyralLength);
             }
         }
 
@@ -923,10 +923,8 @@ namespace GenShnekApp
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
             double rad1 = threadMinDiam / 2;
-            double len1 = jointLength * 0.1;
-            double len2 = jointLength * 0.8;
-            double len3 = jointLength * 0.05;
-            double len4 = jointLength * 0.05;
+            double len1 = jointLength * 0.95;
+            double len2 = jointLength * 0.05;
 
             ksEntity plane1 = OffsetPlaneCreation(length, basePlaneZOY);
             ksEntity ksSketchE1 = part.NewEntity((int)Obj3dType.o3d_sketch);
@@ -955,7 +953,6 @@ namespace GenShnekApp
                 bossExtr1.Create();
             }
 
-
             ksEntity plane2 = OffsetPlaneCreation(length + len1, basePlaneZOY);
             ksEntity ksSketchE2 = part.NewEntity((int)Obj3dType.o3d_sketch);
 
@@ -980,64 +977,9 @@ namespace GenShnekApp
                 extrProp2.direction = (short)Direction_Type.dtNormal;
                 extrProp2.typeNormal = (short)End_Type.etBlind;
                 extrProp2.depthNormal = len2;
+                extrProp2.draftOutwardNormal = true;
+                extrProp2.draftValueNormal = 45;
                 bossExtr2.Create();
-            }
-
-            ksEntity plane3 = OffsetPlaneCreation(length + len1 + len2, basePlaneZOY);
-            ksEntity ksSketchE3 = part.NewEntity((int)Obj3dType.o3d_sketch);
-
-            SketchDefinition ksSketchDef3 = ksSketchE3.GetDefinition();
-
-            ksSketchDef3.SetPlane(plane3);
-            ksSketchE3.Create();
-            ksDocument2D Sketch2D3 = (ksDocument2D)ksSketchDef3.BeginEdit();
-
-            Sketch2D3.ksCircle(0, 0, rad1, 1);
-
-            ksSketchDef3.EndEdit();
-
-            ksEntity bossExtr3 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
-            ksBaseExtrusionDefinition extrDef3 = bossExtr3.GetDefinition();
-            ksExtrusionParam extrProp3 = (ksExtrusionParam)extrDef3.ExtrusionParam();
-
-            if (extrProp3 != null)
-            {
-                extrDef3.SetSketch(ksSketchE3);
-
-                extrProp3.direction = (short)Direction_Type.dtNormal;
-                extrProp3.typeNormal = (short)End_Type.etBlind;
-                extrProp3.depthNormal = len3;
-                bossExtr3.Create();
-            }
-
-
-            ksEntity plane4 = OffsetPlaneCreation(length + len1 + len2 + len3, basePlaneZOY);
-            ksEntity ksSketchE4 = part.NewEntity((int)Obj3dType.o3d_sketch);
-
-            SketchDefinition ksSketchDef4 = ksSketchE4.GetDefinition();
-
-            ksSketchDef4.SetPlane(plane4);
-            ksSketchE4.Create();
-            ksDocument2D Sketch2D4 = (ksDocument2D)ksSketchDef4.BeginEdit();
-
-            Sketch2D4.ksCircle(0, 0, rad1, 1);
-
-            ksSketchDef4.EndEdit();
-
-            ksEntity bossExtr4 = part.NewEntity((short)Obj3dType.o3d_baseExtrusion);
-            ksBaseExtrusionDefinition extrDef4 = bossExtr4.GetDefinition();
-            ksExtrusionParam extrProp4 = (ksExtrusionParam)extrDef4.ExtrusionParam();
-
-            if (extrProp4 != null)
-            {
-                extrDef4.SetSketch(ksSketchE4);
-
-                extrProp4.direction = (short)Direction_Type.dtNormal;
-                extrProp4.typeNormal = (short)End_Type.etBlind;
-                extrProp4.depthNormal = len4;
-                extrProp4.draftOutwardNormal = true;
-                extrProp4.draftValueNormal = 45;
-                bossExtr4.Create();
             }
         }
 
@@ -1139,11 +1081,11 @@ namespace GenShnekApp
         }
 
         ///////////////////////////Создание сквозного отверстия 1 (тип 2 исполнение 1)/////////////////////////////
-        private void HoleType2Creation1(double thredMaxDiam, double threadLength1, double threadLength2, double fullLength)
+        private void HoleType2Creation1(double threadMaxDiam, double threadLength1, double threadLength2, double fullLength)
         {
             ksEntity basePlaneZOY = (ksEntity)part.GetDefaultEntity((short)Obj3dType.o3d_planeYOZ);
 
-            double rad1 = thredMaxDiam / 2;
+            double rad1 = threadMaxDiam / 2;
             double rad2 = rad1 * 3 / 5;
             double rad3 = rad2;
             double rad4 = rad2;
@@ -2379,10 +2321,7 @@ namespace GenShnekApp
             double P = 50000000; //давление развиваемое шнеком, Па
             //TODO просто оставлю тудушку, на случай, если всё-таки будет осевое отверстие. пока оно равно нулю, то есть отверстия нет
             double d1 = 0; //диаметр осевого отверстия шнека, м
-            //double d = 0.032; //наружный диаметр шнека, м
-            //d = 0.032; //наружный диаметр шнека, м
             diam /= 1000;
-            //double L = 0.64; //длина нарезной части шнека, м
             L /= 1000;
             double H = 0.0032; //глубина винтового канала шнека, м
             double FI = 17; //угол наклона винтовой линии шнека, град
@@ -2415,15 +2354,15 @@ namespace GenShnekApp
             K = Sqrt(P / (E * J));
             Q = A * K * N / (K + B + G);
             Q /= 1000000000; //Вывод
-            QOutput.Text = $"Q = {Q} м^3/с";
+            QOutput.Text = $"Q = {Q.ToString("F2")} м^3/с";
 
             ///////////ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
-            MKROutput.Text = $"M_кр = {MKR} Н*м";
+            MKROutput.Text = $"M_кр = {MKR.ToString("F2")} Н*м";
             F = PI * Pow(diam, 2) / 4;
             double P1 = F * P;
             Sos = F * P; //Вывод
-            SosOutput.Text = $"S_ос = {Sos} Н";
+            SosOutput.Text = $"S_ос = {Sos.ToString("F2")} Н";
 
             ///////////(6)РАСЧЁТ ГИБКОСТИ ШНЕКА
             double F1; // площадь поперечного сечения шнека сечения А-А
@@ -2444,8 +2383,9 @@ namespace GenShnekApp
             double q; //распреленная нагрузка
 
             WR = PI * Pow(diam, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
-            WROutput.Text = $"W_р = {WR} м^3";
             TAUmax = MKR / WR;
+            WR *= 1000000;
+            WROutput.Text = $"W_р = {WR.ToString("F2")} м^3";
             q = RO * gi * L;
 
             //ЭПЮРА МАКСИМАЛЬНОГО ПРОГИБА, ИЗГИБАЮЩЕГО МОМЕНТА, КРУТЯЩЕГО МОМЕНТА
@@ -2457,7 +2397,7 @@ namespace GenShnekApp
                 X[i] = dX * i;
                 MIZ[i] = RO * F1 * Pow(X[i], 2) / 2 * 10; //вывод ИГИБАЮЩИЙ МОМЕНТ, Н*м
                 lineMIZ.Points.Add(new DataPoint(i, MIZ[i]));
-                MK[i] = 9.55 * N / W; // вывод КРУТЯЩИЙ МОМЕНТ, Н*м
+                MK[i] = 9.55 * N / W; // вывод КРУТЯЩИЙ МОМЕНТ, кН*м
                 lineMK.Points.Add(new DataPoint(i, MK[i]));
                 if (LA <= 90)
                 {
@@ -2475,28 +2415,28 @@ namespace GenShnekApp
                 lineFmax1.Points.Add(new DataPoint(i, Fmax1[i]));
             }
 
-            strengthPlotModel.Series.Clear();
-            hardnessPlotModel.Series.Clear();
-            stabilityPlotModel.Series.Clear();
+            deflectionPlotModel.Series.Clear();
+            bendingPlotModel.Series.Clear();
+            torquePlotModel.Series.Clear();
 
-            strengthPlotModel.Series.Add(lineFmax1);
-            hardnessPlotModel.Series.Add(lineMIZ);
-            stabilityPlotModel.Series.Add(lineMK);
+            deflectionPlotModel.Series.Add(lineFmax1);
+            bendingPlotModel.Series.Add(lineMIZ);
+            torquePlotModel.Series.Add(lineMK);
 
-            strengthPlotView.Model = strengthPlotModel;
-            hardnessPlotView.Model = hardnessPlotModel;
-            stabilityPlotView.Model = stabilityPlotModel;
+            deflectionPlotView.Model = deflectionPlotModel;
+            bendingPlotView.Model = bendingPlotModel;
+            torquePlotView.Model = torquePlotModel;
 
-            strengthPlotModel.DefaultXAxis.Title = "Участок нарезной части";
-            strengthPlotModel.DefaultYAxis.Title = "м";
-            hardnessPlotModel.DefaultXAxis.Title = "Участок нарезной части";
-            hardnessPlotModel.DefaultYAxis.Title = "Н*м";
-            stabilityPlotModel.DefaultXAxis.Title = "Участок нарезной части";
-            stabilityPlotModel.DefaultYAxis.Title = "Н*м";
+            deflectionPlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            deflectionPlotModel.DefaultYAxis.Title = "м";
+            bendingPlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            bendingPlotModel.DefaultYAxis.Title = "кН*м";
+            torquePlotModel.DefaultXAxis.Title = "Участок нарезной части";
+            torquePlotModel.DefaultYAxis.Title = "кН*м";
 
-            strengthPlotView.InvalidatePlot();
-            hardnessPlotView.InvalidatePlot();
-            stabilityPlotView.InvalidatePlot();
+            deflectionPlotView.InvalidatePlot();
+            bendingPlotView.InvalidatePlot();
+            torquePlotView.InvalidatePlot();
 
             double MIZmax = RO * F1 * Pow(L, 2) / 2 * 10; //максимальный изгибающий момент, Н*м
             double Wh0 = PI * Pow(diam, 3) * (1 - Pow(AL, 4)) / 32; // расчёт момента временного сопротивления изгиба
@@ -2505,11 +2445,11 @@ namespace GenShnekApp
             double SIGekv = Sqrt(Pow(SIGmax, 2) + 4 * Pow(TAUmax, 2)); // расчёт эквивалентного напряжения
 
             TAUmax /= 1000000; // вывод, напряжение кручения, МПа
-            TAUmaxOutput.Text = $"TAUmax = {TAUmax} МПа";
+            TAUmaxOutput.Text = $"TAUmax = {TAUmax.ToString("F2")} МПа";
             SIGRmax /= 1000000; // вывод, напряжение растяжения, МПа
-            SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax} МПа";
+            SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax.ToString("F2")} МПа";
             SIGekv /= 1000000; // вывод, эквивалентное напряжение, МПа
-            SIGekvOutput.Text = $"SIGekv = {SIGekv} МПа";
+            SIGekvOutput.Text = $"SIGekv = {SIGekv.ToString("F2")} МПа";
 
             //TODO добавить условие прочности
 /*            SIG /= 1000000; // допустимое напряжение, МПА
@@ -2566,9 +2506,9 @@ namespace GenShnekApp
                     PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
                     document.Open();
 
-                    byte[] strengthImageExport = ExportPlotAsImage(strengthPlotModel, 400, 300);
-                    byte[] hardnessImageExport = ExportPlotAsImage(hardnessPlotModel, 400, 300);
-                    byte[] stabilityImageExport = ExportPlotAsImage(stabilityPlotModel, 400, 300);
+                    byte[] strengthImageExport = ExportPlotAsImage(deflectionPlotModel, 400, 300);
+                    byte[] hardnessImageExport = ExportPlotAsImage(bendingPlotModel, 400, 300);
+                    byte[] stabilityImageExport = ExportPlotAsImage(torquePlotModel, 400, 300);
 
                     iTextSharp.text.Image strengthImage = iTextSharp.text.Image.GetInstance(strengthImageExport);
                     strengthImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
@@ -2577,6 +2517,7 @@ namespace GenShnekApp
                     iTextSharp.text.Image stabilityImage = iTextSharp.text.Image.GetInstance(stabilityImageExport);
                     stabilityImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
+                    //TODO сделать путь к шрифту относительным, а не абсолютным
                     BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\4852-font.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                     Font headerFont1 = new Font(baseFont, 16, Font.BOLD);
                     Font headerFont2 = new Font(baseFont, 14, Font.BOLD);
