@@ -2354,15 +2354,15 @@ namespace GenShnekApp
             K = Sqrt(P / (E * J));
             Q = A * K * N / (K + B + G);
             Q /= 1000000000; //Вывод
-            QOutput.Text = $"Q = {Q.ToString("F2")} м^3/с";
+            QOutput.Text = $"Q = {Q:F2} м^3/с";
 
             ///////////ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
-            MKROutput.Text = $"M_кр = {MKR.ToString("F2")} Н*м";
+            MKROutput.Text = $"M_кр = {MKR:F2)} Н*м";
             F = PI * Pow(diam, 2) / 4;
             double P1 = F * P;
             Sos = F * P; //Вывод
-            SosOutput.Text = $"S_ос = {Sos.ToString("F2")} Н";
+            SosOutput.Text = $"S_ос = {Sos:F2} Н";
 
             ///////////(6)РАСЧЁТ ГИБКОСТИ ШНЕКА
             double F1; // площадь поперечного сечения шнека сечения А-А
@@ -2385,7 +2385,7 @@ namespace GenShnekApp
             WR = PI * Pow(diam, 3) * (1 - Pow(AL, 4)) / 16; //Вывод, м3
             TAUmax = MKR / WR;
             WR *= 1000000;
-            WROutput.Text = $"W_р = {WR.ToString("F2")} м^3";
+            WROutput.Text = $"W_р = {WR:F2} м^3";
             q = RO * gi * L;
 
             //ЭПЮРА МАКСИМАЛЬНОГО ПРОГИБА, ИЗГИБАЮЩЕГО МОМЕНТА, КРУТЯЩЕГО МОМЕНТА
@@ -2396,9 +2396,7 @@ namespace GenShnekApp
             {
                 X[i] = dX * i;
                 MIZ[i] = RO * F1 * Pow(X[i], 2) / 2 * 10; //вывод ИГИБАЮЩИЙ МОМЕНТ, Н*м
-                lineMIZ.Points.Add(new DataPoint(i, MIZ[i]));
                 MK[i] = 9.55 * N / W; // вывод КРУТЯЩИЙ МОМЕНТ, кН*м
-                lineMK.Points.Add(new DataPoint(i, MK[i]));
                 if (LA <= 90)
                 {
                     Fmax1[i] = RO * F1 * Pow(X[i], 4) / (8 * E * J1); // Вывод МАКСИМАЛЬНЫЙ ПРОГИБ, м
@@ -2412,6 +2410,8 @@ namespace GenShnekApp
                     Fmax03[i] = 1 / Pow(K1, 2) * (RO * F1 * X[i] / K1 - A1) * Sin(K1 * X[i]) / (E * J1);
                     Fmax1[i] = Fmax01[i] - Fmax02[i] - Fmax03[i]; // Вывод МАКСИМАЛЬНЫЙ ПРОГИБ, м
                 }
+                lineMIZ.Points.Add(new DataPoint(i, MIZ[i]));
+                lineMK.Points.Add(new DataPoint(i, MK[i]));
                 lineFmax1.Points.Add(new DataPoint(i, Fmax1[i]));
             }
 
@@ -2445,11 +2445,11 @@ namespace GenShnekApp
             double SIGekv = Sqrt(Pow(SIGmax, 2) + 4 * Pow(TAUmax, 2)); // расчёт эквивалентного напряжения
 
             TAUmax /= 1000000; // вывод, напряжение кручения, МПа
-            TAUmaxOutput.Text = $"TAUmax = {TAUmax.ToString("F2")} МПа";
+            TAUmaxOutput.Text = $"TAUmax = {TAUmax:F2} МПа";
             SIGRmax /= 1000000; // вывод, напряжение растяжения, МПа
-            SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax.ToString("F2")} МПа";
+            SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax:F2} МПа";
             SIGekv /= 1000000; // вывод, эквивалентное напряжение, МПа
-            SIGekvOutput.Text = $"SIGekv = {SIGekv.ToString("F2")} МПа";
+            SIGekvOutput.Text = $"SIGekv = {SIGekv:F2} МПа";
 
             //TODO добавить условие прочности
 /*            SIG /= 1000000; // допустимое напряжение, МПА
