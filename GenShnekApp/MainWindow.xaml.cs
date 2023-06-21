@@ -2358,7 +2358,7 @@ namespace GenShnekApp
 
             ///////////ОПРЕДЕЛЕНИЕ КРУТЯЩЕГО МОМЕНТА, ПЛОЩАДИ ПОПЕРЕЧНОГО СЕЧЕНИЯ ШНЕКА И ОСЕВОГО УСИЛИЯ
             MKR = 9550 * N / W; //Вывод
-            MKROutput.Text = $"M_кр = {MKR:F2)} Н*м";
+            MKROutput.Text = $"M_кр = {MKR:F2} Н*м";
             F = PI * Pow(diam, 2) / 4;
             double P1 = F * P;
             Sos = F * P; //Вывод
