@@ -2319,7 +2319,6 @@ namespace GenShnekApp
             double SIG = 400000000; //допускаемое напряжение, Па
             double RO = 7850; //плотность материала шнека, кг/м3
             double P = 50000000; //давление развиваемое шнеком, Па
-            //TODO просто оставлю тудушку, на случай, если всё-таки будет осевое отверстие. пока оно равно нулю, то есть отверстия нет
             double d1 = 0; //диаметр осевого отверстия шнека, м
             diam /= 1000;
             L /= 1000;
@@ -2450,17 +2449,6 @@ namespace GenShnekApp
             SIGRmaxOutput.Text = $"SIGRmax = {SIGRmax:F2} МПа";
             SIGekv /= 1000000; // вывод, эквивалентное напряжение, МПа
             SIGekvOutput.Text = $"SIGekv = {SIGekv:F2} МПа";
-
-            //TODO добавить условие прочности
-/*            SIG /= 1000000; // допустимое напряжение, МПА
-            if (SIGekv < SIG)
-            {
-                MessageBox.Show("Условие прочности выполняется");
-            }
-            else
-            {
-                MessageBox.Show("Условие прочности не выполняется");
-            }*/
         }
 
         //конвертация битмапов для использования пнг картинок
@@ -2518,7 +2506,10 @@ namespace GenShnekApp
                     stabilityImage.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
 
                     //TODO сделать путь к шрифту относительным, а не абсолютным
-                    BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\4852-font.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    BaseFont baseFont = BaseFont.CreateFont("D:\\Users\\Garnik\\Desktop\\учёба\\Диплом\\GenShnekApp\\GenShnekApp\\Fonts\\ruTimesNewRoman.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+/*                    string relativeFontPath = @"Fonts/ruTimesNewRoman.ttf";
+                    string absoluteFontPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, relativeFontPath);
+                    BaseFont baseFont = BaseFont.CreateFont(absoluteFontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);*/
                     Font headerFont1 = new Font(baseFont, 16, Font.BOLD);
                     Font headerFont2 = new Font(baseFont, 14, Font.BOLD);
                     Font textFont = new Font(baseFont, 14, Font.NORMAL);
